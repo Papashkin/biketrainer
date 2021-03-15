@@ -3,6 +3,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         package="com.antsfamily.biketrainer">
 
+    <queries>
+        <package android:name="com.dsi.ant.plugins.antplus"/>
+    </queries>
+    <uses-permission
+            android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+            tools:ignore="ScopedStorage" />
+
     <application
             android:name="com.antsfamily.biketrainer.MainApplication"
             android:allowBackup="true"

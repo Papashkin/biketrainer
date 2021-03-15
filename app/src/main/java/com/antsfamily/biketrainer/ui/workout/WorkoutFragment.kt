@@ -1,8 +1,10 @@
 package com.antsfamily.biketrainer.ui.workout
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
@@ -33,14 +35,20 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
     @Inject
     lateinit var factory: WorkoutViewModel.Factory
 
-    override val viewModel: WorkoutViewModel by viewModelsFactory { factory.build() }
+    override val viewModel: WorkoutViewModel by viewModelsFactory {
+        factory.build(args.devices.toList(), args.program)
+    }
 
     private val chartHighlights = mutableListOf<Highlight>()
+
+    private val documentCreationResultLauncher =
+        registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri: Uri? ->
+            uri?.let { viewModel.onFileUriReceived(it) }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        viewModel.onCreate(args.devices.toList(), args.program)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,6 +79,9 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
         viewModel.resetChartHighlightsEvent.observe(viewLifecycleOwner, EventObserver {
             chartHighlights.clear()
             binding.programChart.highlightValues(arrayOf())
+        })
+        viewModel.createDocumentEvent.observe(viewLifecycleOwner, EventObserver {
+            openFileFolder(it)
         })
     }
 
@@ -132,13 +143,13 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
         workoutRemainingTimeTv.text = remainingTime.fullTimeFormat()
     }
 
-    private fun FragmentWorkoutBinding.setNextStep(data: com.antsfamily.data.model.program.ProgramData?) {
+    private fun FragmentWorkoutBinding.setNextStep(data: ProgramData?) {
         workoutNextStepValueTv.text = data?.let {
             getString(R.string.workout_next_round_value, it.power, it.duration.fullTimeFormat())
         } ?: EMPTY_DATA
     }
 
-    private fun FragmentWorkoutBinding.setProgramBarChart(data: List<com.antsfamily.data.model.program.ProgramData>?) {
+    private fun FragmentWorkoutBinding.setProgramBarChart(data: List<ProgramData>?) {
         val entities = data?.mapIndexed { index, _data ->
             BarEntry(index.toFloat(), _data.power.toFloat())
         }
@@ -166,6 +177,10 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
                 invalidate()
             }
         }
+    }
+
+    private fun openFileFolder(fileName: String) {
+        documentCreationResultLauncher.launch(fileName)
     }
 
     companion object {
