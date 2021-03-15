@@ -1,5 +1,6 @@
 package com.antsfamily.biketrainer.presentation.workout
 
+import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,10 +17,14 @@ import com.antsfamily.biketrainer.util.orZero
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceType
 import com.dsi.ant.plugins.antplus.pcc.defines.RequestStatus
 import com.dsi.ant.plugins.antplus.pccbase.MultiDeviceSearch.MultiDeviceSearchResult
+import com.garmin.fit.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.io.File
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.inject.Inject
 
 class WorkoutViewModel @Inject constructor(
@@ -61,6 +66,13 @@ class WorkoutViewModel @Inject constructor(
     private var isWorkoutPaused: Boolean = false
     private var isTargetPowerSetSuccessfully: Boolean = false
     private var currentStepNumber: Int = 0
+    private var programName: String? = null
+    private var activityFile: File? = null
+
+    private val workoutMessage: MutableList<Mesg> = mutableListOf()
+
+    private val timestamp: Long
+        get() = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
 
     fun onStop() {
         closeAccessToSensors()
@@ -71,9 +83,12 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun onStartClick() = viewModelScope.launch {
+        showLoading()
+        createFitFile()
         isWorkoutStarted = true
         changeState {
             it.copy(
+                isLoading = false,
                 startButtonVisible = false,
                 continueButtonVisible = false,
                 pauseButtonVisible = true,
@@ -122,6 +137,7 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun onCreate(devices: List<MultiDeviceSearchResult>, programName: String) {
+        this.programName = programName
         getProgramUseCase(programName) {
             handleProgramResult(it, devices)
         }
@@ -169,12 +185,12 @@ class WorkoutViewModel @Inject constructor(
                 }
             }
         }
-        changeState { it.copy(isLoading = false) }
+        hideLoading()
         startWorkoutTimerFlow()
     }
 
     private fun startWorkoutTimerFlow() = viewModelScope.launch {
-        workoutTimerFlow.invoke(PERIOD).collect {
+        workoutTimerFlow(PERIOD).collect {
             showDataFromSensors()
             if (isWorkoutStarted && !isWorkoutPaused) {
                 setTargetPowerToDevice()
@@ -250,6 +266,7 @@ class WorkoutViewModel @Inject constructor(
                         ?.getOrNull(currentStepNumber)?.duration.orZero()
                     isTargetPowerSetSuccessfully = false
                     updateView(updatedRemainingTime)
+                    createLapMessage(timestamp)
                 } else {
                     resetWorkoutChartHighlights()
                     isWorkoutStarted = false
@@ -260,7 +277,6 @@ class WorkoutViewModel @Inject constructor(
             }
         }
     }
-
 
     private fun updateView(remainingTime: Long) {
         changeState { state ->
@@ -273,6 +289,7 @@ class WorkoutViewModel @Inject constructor(
                 remainingTime = remainingTime
             )
         }
+        createRecordMessage()
     }
 
     private fun resetWorkoutFields() {
@@ -291,21 +308,77 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
-    private fun getHeartRateValue() = heartRateDevice.heartRate
+    private fun getHeartRateValue() = heartRateDevice.heartRate.orZero()
 
     private fun getCadenceValue() = (cadenceDevice.cadence ?: fitnessEquipmentDevice.cadence)
-        ?.setScale(2, RoundingMode.HALF_DOWN)?.toInt()
+        ?.setScale(2, RoundingMode.HALF_DOWN).orZero().toInt()
 
     private fun getSpeedValue() =
         (speedDistanceDevice.speed ?: fitnessEquipmentDevice.speed)
-            ?.setScale(1, RoundingMode.HALF_DOWN)
+            ?.setScale(1, RoundingMode.HALF_DOWN).orZero()
 
     private fun getDistanceValue() =
         (speedDistanceDevice.distance ?: fitnessEquipmentDevice.distance)
-            ?.setScale(1, RoundingMode.HALF_DOWN)?.divide(METERS_IN_KILOMETER)
+            ?.setScale(1, RoundingMode.HALF_DOWN).orZero().divide(METERS_IN_KILOMETER)
 
     private fun getPowerValue() = (powerDevice.power ?: fitnessEquipmentDevice.power)
-        ?.setScale(2, RoundingMode.HALF_DOWN)?.toInt()
+        ?.setScale(2, RoundingMode.HALF_DOWN).orZero().toInt()
+
+    private fun createFitFile() {
+        val folder = File(Environment.getExternalStorageState() + "/activities")
+        if (!folder.exists()) {
+            folder.mkdir()
+        }
+        activityFile = File(folder, "${programName.orEmpty()}.fit")
+        workoutMessage.apply {
+            add(
+                FileIdMesg().apply {
+                    type = com.garmin.fit.File.ACTIVITY
+                    manufacturer = Manufacturer.DEVELOPMENT
+                    timeCreated = DateTime(timestamp)
+                }
+            )
+            add(
+                DeviceInfoMesg().apply {
+                    manufacturer = Manufacturer.DEVELOPMENT
+                    timestamp = DateTime(timestamp)
+                }
+            )
+        }
+        createLapMessage(timestamp)
+    }
+
+    private fun createRecordMessage() {
+        workoutMessage.add(
+            RecordMesg().apply {
+                timestamp = DateTime(timestamp)
+                heartRate = getHeartRateValue().toShort()
+                power = getPowerValue()
+                distance = getDistanceValue().toFloat()
+                cadence = getCadenceValue().toShort()
+                speed = getSpeedValue().toFloat()
+            }
+        )
+    }
+
+    private fun createLapMessage(time: Long) {
+        workoutMessage.add(
+            LapMesg().apply {
+                timestamp = DateTime(timestamp)
+                startTime = DateTime(time)
+                totalElapsedTime = state.value?.program?.getOrNull(currentStepNumber)?.duration.orZero().toFloat()
+                totalTimerTime = state.value?.program?.getOrNull(currentStepNumber)?.duration.orZero().toFloat()
+            }
+        )
+    }
+
+    private fun showLoading() {
+        changeState { it.copy(isLoading = true) }
+    }
+
+    private fun hideLoading() {
+        changeState { it.copy(isLoading = false) }
+    }
 
     private fun resetWorkoutChartHighlights() {
         _resetChartHighlightsEvent.postValue(Event(Unit))
