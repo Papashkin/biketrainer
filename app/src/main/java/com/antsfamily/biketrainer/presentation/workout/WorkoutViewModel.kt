@@ -16,13 +16,14 @@ import com.antsfamily.biketrainer.util.orZero
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceType
 import com.dsi.ant.plugins.antplus.pcc.defines.RequestStatus
 import com.dsi.ant.plugins.antplus.pccbase.MultiDeviceSearch.MultiDeviceSearchResult
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
-import javax.inject.Inject
 
-class WorkoutViewModel @Inject constructor(
+class WorkoutViewModel @AssistedInject constructor(
     private val getProgramUseCase: GetProgramUseCase,
     private val heartRateDevice: HeartRateDevice,
     private val cadenceDevice: BikeCadenceDevice,
@@ -31,6 +32,11 @@ class WorkoutViewModel @Inject constructor(
     private val fitnessEquipmentDevice: FitnessEquipmentDevice,
     private val workoutTimerFlow: WorkoutTimerFlow
 ) : StatefulViewModel<WorkoutViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build(): WorkoutViewModel
+    }
 
     data class State(
         val isLoading: Boolean = true,

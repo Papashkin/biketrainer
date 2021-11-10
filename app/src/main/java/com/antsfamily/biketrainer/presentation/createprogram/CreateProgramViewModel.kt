@@ -1,8 +1,8 @@
 package com.antsfamily.biketrainer.presentation.createprogram
 
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.data.models.program.ProgramData
 import com.antsfamily.biketrainer.data.models.workouts.WorkoutIntervalParams
 import com.antsfamily.biketrainer.data.models.workouts.WorkoutSegmentParams
@@ -16,13 +16,19 @@ import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.biketrainer.ui.createprogram.model.WorkoutItem
 import com.github.mikephil.charting.data.BarEntry
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 
-class CreateProgramViewModel @Inject constructor(
+class CreateProgramViewModel @AssistedInject constructor(
     private val saveProgramUseCase: SaveProgramUseCase
 ) : StatefulViewModel<CreateProgramViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build() : CreateProgramViewModel
+    }
 
     data class State(
         val isLoading: Boolean = false,

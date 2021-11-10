@@ -7,11 +7,17 @@ import com.antsfamily.biketrainer.domain.usecase.GetProgramUseCase
 import com.antsfamily.biketrainer.navigation.ProgramInfoToScan
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.biketrainer.util.fullTimeFormat
-import javax.inject.Inject
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-class ProgramInfoViewModel @Inject constructor(
+class ProgramInfoViewModel @AssistedInject constructor(
     private val getProgramUseCase: GetProgramUseCase
 ) : StatefulViewModel<ProgramInfoViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build() : ProgramInfoViewModel
+    }
 
     data class State(
         val isLoading: Boolean = true,

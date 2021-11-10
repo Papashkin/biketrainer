@@ -13,15 +13,10 @@ import com.antsfamily.biketrainer.navigation.Route
 import com.antsfamily.biketrainer.navigation.mapToDirection
 import com.antsfamily.biketrainer.presentation.BaseViewModel
 import com.antsfamily.biketrainer.presentation.EventObserver
-import com.antsfamily.biketrainer.presentation.ViewModelFactory
-import com.antsfamily.biketrainer.ui.extensions.addDismissListener
+import com.antsfamily.biketrainer.ui.util.addDismissListener
 import com.google.android.material.snackbar.Snackbar
-import javax.inject.Inject
 
 abstract class BaseFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
     abstract val viewModel: BaseViewModel
 

@@ -4,12 +4,18 @@ import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.data.models.profile.Profile
 import com.antsfamily.biketrainer.domain.usecase.GetProfileUseCase
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class ProfilesViewModel @Inject constructor(
+class ProfilesViewModel @AssistedInject constructor(
     private val getProfileUseCase: GetProfileUseCase
 ) : StatefulViewModel<ProfilesViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build(): ProfilesViewModel
+    }
 
     data class State(
         val isLoading: Boolean = true,

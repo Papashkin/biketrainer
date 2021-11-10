@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentScanBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.scan.ScanViewModel
-import com.antsfamily.biketrainer.presentation.withFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
+import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -25,7 +24,9 @@ class ScanFragment : BaseFragment(R.layout.fragment_scan) {
 
     private var alertDialog: AlertDialog? = null
 
-    override val viewModel: ScanViewModel by viewModels { withFactory(viewModelFactory) }
+    @Inject lateinit var factory: ScanViewModel.Factory
+
+    override val viewModel: ScanViewModel by viewModelsFactory { factory.build() }
 
     @Inject
     lateinit var newDeviceAdapter: NewDeviceAdapter

@@ -6,12 +6,17 @@ import com.antsfamily.biketrainer.data.models.workouts.WorkoutSegmentParams
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.biketrainer.util.orZero
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import java.math.BigDecimal
-import javax.inject.Inject
 
-class AddSegmentBottomSheetViewModel @Inject constructor(
+class AddSegmentBottomSheetViewModel @AssistedInject constructor() :
+    StatefulViewModel<AddSegmentBottomSheetViewModel.State>(State()) {
 
-) : StatefulViewModel<AddSegmentBottomSheetViewModel.State>(State()) {
+    @AssistedFactory
+    interface Factory {
+        fun build(): AddSegmentBottomSheetViewModel
+    }
 
     data class State(
         val power: BigDecimal? = null,

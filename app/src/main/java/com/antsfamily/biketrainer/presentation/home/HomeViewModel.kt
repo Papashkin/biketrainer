@@ -9,17 +9,23 @@ import com.antsfamily.biketrainer.domain.usecase.SubscribeToProfileWithProgramsU
 import com.antsfamily.biketrainer.navigation.HomeToCreateProgram
 import com.antsfamily.biketrainer.navigation.HomeToProgramInfo
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(
+class HomeViewModel @AssistedInject constructor(
     private val subscribeToProfileWithProgramsUseCase: SubscribeToProfileWithProgramsUseCase,
 ) : StatefulViewModel<HomeViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build(): HomeViewModel
+    }
 
     data class State(
         val dateTime: String? = null,
