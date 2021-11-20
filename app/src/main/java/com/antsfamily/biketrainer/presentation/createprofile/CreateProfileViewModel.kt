@@ -37,6 +37,11 @@ class CreateProfileViewModel @AssistedInject constructor(
     val clearFieldsEvent: LiveData<Event<Unit>>
         get() = _clearFieldsEvent
 
+    private val _showSuccessAnimationEvent = MutableLiveData<Event<Unit>>()
+    val showSuccessAnimationEvent: LiveData<Event<Unit>>
+        get() = _showSuccessAnimationEvent
+
+    private var userName: String? = null
     private var gender: Gender = Gender.INVALID
 
     fun onUsernameChange() {
@@ -82,9 +87,15 @@ class CreateProfileViewModel @AssistedInject constructor(
         }
     }
 
-    fun navigateForward() {
-        navigateTo(CreateProfileToHome)
+    fun onAnimationEnd() {
+        userName?.let {
+            navigateTo(CreateProfileToHome(it))
+        }
     }
+
+//    fun navigateForward(profileName: String) {
+//        navigateTo(CreateProfileToHome(profileName))
+//    }
 
     private fun isValid(
         username: String?, age: Int, weight: BigDecimal?, height: BigDecimal?
@@ -113,20 +124,19 @@ class CreateProfileViewModel @AssistedInject constructor(
                 age,
                 gender.toString(),
                 weight.toFloat(),
-                height.toFloat(),
-                true
+                height.toFloat()
             )
         , ::handleResult)
     }
 
-    private fun handleResult(result: Result<Unit, Error>) {
-        hideLoading()
+    private fun handleResult(result: Result<String, Error>) {
         when (result) {
             is Result.Success -> {
-                _clearFieldsEvent.postValue(Event(Unit))
-                showSuccessSnackbar("Profile was successfully created")
+                userName = result.successData
+                _showSuccessAnimationEvent.postValue(Event(Unit))
             }
             is Result.Failure -> {
+                hideLoading()
                 showErrorSnackbar(result.errorData.message ?: "Something went wrong :(")
             }
         }

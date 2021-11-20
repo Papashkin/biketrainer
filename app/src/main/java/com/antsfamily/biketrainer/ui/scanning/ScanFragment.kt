@@ -11,8 +11,8 @@ import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentScanBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.scan.ScanViewModel
+import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
-import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

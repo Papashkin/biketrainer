@@ -14,7 +14,10 @@ class SaveProgramUseCase @Inject constructor(
 ) : BaseUseCase<SaveProgramUseCase.Params, Result<Unit, Error>>() {
 
     override suspend fun run(params: Params): Result<Unit, Error> = try {
-        profilesRepository.getSelectedProfile()?.let {
+        val profile = profilesRepository.getSelectedProfileName()?.let {
+            profilesRepository.getProfile(it)
+        }
+        profile?.let {
             val program = Program(
                 title = params.name,
                 data = params.data,

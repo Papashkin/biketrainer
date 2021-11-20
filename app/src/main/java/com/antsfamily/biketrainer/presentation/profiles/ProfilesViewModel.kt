@@ -2,14 +2,14 @@ package com.antsfamily.biketrainer.presentation.profiles
 
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.data.models.profile.Profile
-import com.antsfamily.biketrainer.domain.usecase.GetProfileUseCase
+import com.antsfamily.biketrainer.domain.usecase.GetAllProfilesUseCase
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class ProfilesViewModel @AssistedInject constructor(
-    private val getProfileUseCase: GetProfileUseCase
+    private val getAllProfilesUseCase: GetAllProfilesUseCase
 ) : StatefulViewModel<ProfilesViewModel.State>(State()) {
 
     @AssistedFactory
@@ -37,7 +37,7 @@ class ProfilesViewModel @AssistedInject constructor(
     }
 
     private fun getProfiles() = viewModelScope.launch {
-        getProfileUseCase.run(Unit)
+        getAllProfilesUseCase.run(Unit)
             .handleResult(::handleProfileSuccessResult, ::handleProfileFailureResult)
     }
 

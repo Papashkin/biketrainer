@@ -79,6 +79,8 @@
     <string name="create_profile_height">Рост (см)</string>
     <string name="create_profile_weight">Вес (кг)</string>
     <string name="create_profile_gender">Пол</string>
+    <string name="create_profile_male">Мужской</string>
+    <string name="create_profile_female">Женский</string>
     <string name="create_profile_create">Создать</string>
 
     <!-- ====== Создание программы ====== -->

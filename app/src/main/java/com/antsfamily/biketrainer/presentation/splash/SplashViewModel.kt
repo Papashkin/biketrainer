@@ -2,9 +2,8 @@ package com.antsfamily.biketrainer.presentation.splash
 
 import android.os.Handler
 import android.os.Looper
-import com.antsfamily.biketrainer.data.models.profile.Profile
 import com.antsfamily.biketrainer.domain.Result
-import com.antsfamily.biketrainer.domain.usecase.GetSelectedProfileUseCase
+import com.antsfamily.biketrainer.domain.usecase.GetSelectedProfileNameUseCase
 import com.antsfamily.biketrainer.navigation.SplashToCreateProfile
 import com.antsfamily.biketrainer.navigation.SplashToHome
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
@@ -12,7 +11,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
 class SplashViewModel @AssistedInject constructor(
-    private val getSelectedProfileUseCase: GetSelectedProfileUseCase
+    private val getSelectedProfileNameUseCase: GetSelectedProfileNameUseCase
 ) : StatefulViewModel<SplashViewModel.State>(State()) {
 
     @AssistedFactory
@@ -30,26 +29,30 @@ class SplashViewModel @AssistedInject constructor(
     }
 
     private fun getSelectedProfile() {
-        getSelectedProfileUseCase(Unit, ::handleSelectedProfileResult)
+        getSelectedProfileNameUseCase(Unit, ::handleSelectedProfileResult)
     }
 
-    private fun handleSelectedProfileResult(result: Result<Profile?, Error>) {
+    private fun handleSelectedProfileResult(result: Result<String?, Error>) {
         when (result) {
             is Result.Success -> handleSuccessResult(result.successData)
             else -> navigateToCreateProfile()
         }
     }
 
-    private fun handleSuccessResult(data: Profile?) {
-        data?.let { navigateToStart() } ?: navigateToCreateProfile()
+    private fun handleSuccessResult(profileName: String?) {
+        profileName?.let {
+            navigateToStart(it)
+        } ?: run {
+            navigateToCreateProfile()
+        }
     }
 
     private fun showLoading() {
         changeState { it.copy(isLoading = true) }
     }
 
-    private fun navigateToStart() {
-        navigateTo(SplashToHome)
+    private fun navigateToStart(profileName: String) {
+        navigateTo(SplashToHome(profileName))
         hideLoading()
     }
 

@@ -1,28 +1,27 @@
 package com.antsfamily.biketrainer.ui.createprofile
 
+import android.animation.Animator
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentCreateProfileBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprofile.CreateProfileViewModel
+import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.afterTextChange
-import com.antsfamily.biketrainer.ui.util.resourceId
-import com.antsfamily.biketrainer.ui.util.viewModelsFactory
+import com.antsfamily.biketrainer.ui.util.hideKeyboard
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.antsfamily.biketrainer.util.orZero
-import com.garmin.fit.Gender
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
 
-    @Inject lateinit var factory: CreateProfileViewModel.Factory
+    @Inject
+    lateinit var factory: CreateProfileViewModel.Factory
 
     override val viewModel: CreateProfileViewModel by viewModelsFactory { factory.build() }
 
@@ -59,15 +58,18 @@ class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
     }
 
     private fun observeEvents(binding: FragmentCreateProfileBinding) {
-        viewModel.clearFieldsEvent.observe(viewLifecycleOwner, EventObserver {
-            binding.clearFields()
-        })
-        viewModel.showSuccessSnackBarEvent.observe(viewLifecycleOwner, EventObserver {
-            showSnackBar(it, dismissListener = { viewModel.navigateForward() })
-        })
-        viewModel.showSuccessSnackBarMessageEvent.observe(viewLifecycleOwner, EventObserver {
-            showSnackBar(it, dismissListener = { viewModel.navigateForward() })
-        })
+        with(binding) {
+            viewModel.clearFieldsEvent.observe(viewLifecycleOwner, EventObserver {
+                clearFields()
+            })
+            viewModel.showSuccessAnimationEvent.observe(viewLifecycleOwner, EventObserver {
+                binding.loadingPb.isVisible = false
+                binding.successAnimationView.apply {
+                    isVisible = true
+                    playAnimation()
+                }
+            })
+        }
     }
 
     private fun bindInteractions(binding: FragmentCreateProfileBinding) {
@@ -81,10 +83,23 @@ class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
                 femaleRb.setOnClickListener { viewModel.onFemaleGenderSelected() }
                 maleRb.setOnClickListener { viewModel.onMaleGenderSelected() }
             }
+            successAnimationView.addAnimatorListener(object :
+                Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    viewModel.onAnimationEnd()
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {}
+
+                override fun onAnimationRepeat(animation: Animator?) {}
+            })
         }
     }
 
     private fun FragmentCreateProfileBinding.createProfile() {
+        this.root.findFocus().hideKeyboard()
         viewModel.onCreateClick(
             usernameEt.text.toString(),
             ageEt.text.toString().toIntOrNull().orZero(),
@@ -92,12 +107,6 @@ class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
             heightEt.text.toString().toBigDecimalOrNull()
         )
     }
-
-    private fun getAdapter(items: List<Gender>) = ArrayAdapter(
-        requireContext(),
-        R.layout.card_dropdown_item,
-        items.map { getString(it.resourceId()) }
-    )
 
     private fun FragmentCreateProfileBinding.clearFields() {
         usernameEt.text = null

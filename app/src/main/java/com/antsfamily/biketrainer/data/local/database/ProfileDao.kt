@@ -14,15 +14,9 @@ abstract class ProfileDao {
     @Query("Select * from profile where name = :profileName")
     abstract suspend fun getProfile(profileName: String): Profile?
 
-    @Query("Select * from profile where isSelected = 1")
-    abstract suspend fun getSelectedProfile(): Profile?
-
-    @Query("Update profile set isSelected = 0")
-    abstract suspend fun clearSelectedProfiles()
-
     @Transaction
-    @Query("SELECT * from profile where isSelected = 1")
-    abstract fun getSelectedProfileWithProgramsFlow(): Flow<ProfileWithPrograms>
+    @Query("SELECT * from profile where name = :profileName")
+    abstract fun getProfileFlow(profileName: String): Flow<ProfileWithPrograms>
 
     @Insert
     abstract suspend fun addProfile(profile: Profile)

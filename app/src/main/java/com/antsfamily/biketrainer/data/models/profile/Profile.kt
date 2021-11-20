@@ -1,6 +1,5 @@
 package com.antsfamily.biketrainer.data.models.profile
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import javax.inject.Inject
@@ -12,7 +11,6 @@ import javax.inject.Inject
  * @param gender - Male or Female;
  * @param weight - user weight;
  * @param height - user height;
- * @param isSelected - Flag shows is it main profile or not;
  */
 @Entity
 class Profile @Inject constructor(
@@ -20,6 +18,5 @@ class Profile @Inject constructor(
     var age: Int,
     var gender: String,
     var weight: Float,
-    var height: Float,
-    var isSelected: Boolean
+    var height: Float
 )

@@ -12,8 +12,8 @@ import com.antsfamily.biketrainer.BaseBottomSheetDialogFragment
 import com.antsfamily.biketrainer.databinding.BottomSheetFragmentAddSegmentBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprogram.AddSegmentBottomSheetViewModel
+import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.util.afterTextChange
-import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.antsfamily.biketrainer.util.orZero
 import com.google.android.material.bottomsheet.BottomSheetBehavior

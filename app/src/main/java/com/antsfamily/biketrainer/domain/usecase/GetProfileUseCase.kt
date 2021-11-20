@@ -8,10 +8,10 @@ import javax.inject.Inject
 
 class GetProfileUseCase @Inject constructor(
     private val profileRepository: ProfilesRepository
-) : BaseUseCase<Unit, Result<List<Profile>, Error>>() {
+) : BaseUseCase<String, Result<Profile?, Error>>() {
 
-    override suspend fun run(params: Unit): Result<List<Profile>, Error> = try {
-        Result.Success(profileRepository.getAllProfiles())
+    override suspend fun run(params: String): Result<Profile?, Error> = try {
+        Result.Success(profileRepository.getProfile(params))
     } catch (e: Exception) {
         Result.Failure(Error("Epic fail"))
     }

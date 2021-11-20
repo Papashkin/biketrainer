@@ -6,8 +6,8 @@ import androidx.core.view.isVisible
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentSplashBinding
 import com.antsfamily.biketrainer.presentation.splash.SplashViewModel
+import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
-import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

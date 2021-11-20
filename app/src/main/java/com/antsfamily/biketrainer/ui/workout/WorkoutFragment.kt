@@ -9,11 +9,11 @@ import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.data.models.program.ProgramData
 import com.antsfamily.biketrainer.databinding.FragmentWorkoutBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
+import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.presentation.workout.WorkoutViewModel
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.hideAllLabels
 import com.antsfamily.biketrainer.ui.util.setHighlightedMode
-import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.fullTimeFormat
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.github.mikephil.charting.data.BarData
