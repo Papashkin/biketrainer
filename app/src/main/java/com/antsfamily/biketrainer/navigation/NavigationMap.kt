@@ -9,9 +9,13 @@ import com.antsfamily.biketrainer.ui.home.HomeFragmentDirections
 import com.antsfamily.biketrainer.ui.programinfo.ProgramInfoFragmentDirections
 
 fun Route.mapToDirection(): NavDirections = when (this) {
-    is SplashToHome -> SplashFragmentDirections.actionStartFragmentToStartFragment()
+    is SplashToHome -> SplashFragmentDirections.actionStartFragmentToStartFragment(
+        profileName
+    )
     is SplashToCreateProfile -> SplashFragmentDirections.actionStartFragmentToCreateProfileFragment()
-    is CreateProfileToHome -> CreateProfileFragmentDirections.actionCreateProfileFragmentToStartFragment()
+    is CreateProfileToHome -> CreateProfileFragmentDirections.actionCreateProfileFragmentToStartFragment(
+        profileName
+    )
     is HomeToProfile -> HomeFragmentDirections.actionStartFragmentToProfilesFragment()
     is HomeToCreateProgram -> HomeFragmentDirections.actionHomeFragmentToCreateProgramFragment()
     is HomeToProgramInfo -> HomeFragmentDirections.actionHomeFragmentToProgramInfoFragment(

@@ -3,7 +3,6 @@ package com.antsfamily.biketrainer.ui.createprogram
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.data.models.workouts.WorkoutIntervalParams
 import com.antsfamily.biketrainer.data.models.workouts.WorkoutSegmentParams
@@ -11,6 +10,7 @@ import com.antsfamily.biketrainer.data.models.workouts.WorkoutStairsParams
 import com.antsfamily.biketrainer.databinding.FragmentCreateProgramBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprogram.CreateProgramViewModel
+import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.createprogram.dialog.AddIntervalBottomSheetDialogFragment.Companion.KEY_INTERVAL
 import com.antsfamily.biketrainer.ui.createprogram.dialog.AddIntervalBottomSheetDialogFragment.Companion.REQUEST_KEY_INTERVAL
@@ -19,7 +19,6 @@ import com.antsfamily.biketrainer.ui.createprogram.dialog.AddSegmentBottomSheetD
 import com.antsfamily.biketrainer.ui.createprogram.dialog.AddStairsBottomSheetDialogFragment.Companion.KEY_STAIRS
 import com.antsfamily.biketrainer.ui.createprogram.dialog.AddStairsBottomSheetDialogFragment.Companion.REQUEST_KEY_STAIRS
 import com.antsfamily.biketrainer.ui.util.afterTextChange
-import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

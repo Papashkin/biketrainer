@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class SubscribeToProfileWithProgramsUseCase @Inject constructor(
     private val repository: ProfilesRepository
-) : FlowUseCase<Unit, ProfileWithPrograms>() {
+) : FlowUseCase<String, ProfileWithPrograms>() {
 
-    override fun run(params: Unit): Flow<ProfileWithPrograms> =
-        repository.selectedProfileWithPrograms
+    override fun run(params: String): Flow<ProfileWithPrograms> =
+        repository.getProfileWithPrograms(params)
 }

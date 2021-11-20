@@ -6,14 +6,12 @@ import com.antsfamily.biketrainer.domain.BaseUseCase
 import com.antsfamily.biketrainer.domain.Result
 import javax.inject.Inject
 
-class GetSelectedProfileUseCase @Inject constructor(
+class GetAllProfilesUseCase @Inject constructor(
     private val profileRepository: ProfilesRepository
-) : BaseUseCase<Unit, Result<Profile, Error>>() {
+) : BaseUseCase<Unit, Result<List<Profile>, Error>>() {
 
-    override suspend fun run(params: Unit): Result<Profile, Error> = try {
-        profileRepository.getSelectedProfile()?.let {
-            Result.Success(it)
-        } ?: Result.Failure(Error("There is no selected profile"))
+    override suspend fun run(params: Unit): Result<List<Profile>, Error> = try {
+        Result.Success(profileRepository.getAllProfiles())
     } catch (e: Exception) {
         Result.Failure(Error("Epic fail"))
     }

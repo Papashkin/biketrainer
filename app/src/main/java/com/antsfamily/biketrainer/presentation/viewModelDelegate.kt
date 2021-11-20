@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.util
+package com.antsfamily.biketrainer.presentation
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

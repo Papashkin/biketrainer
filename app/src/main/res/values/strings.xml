@@ -79,6 +79,8 @@
     <string name="create_profile_height">Height (sm)</string>
     <string name="create_profile_weight">Weight (kg)</string>
     <string name="create_profile_gender">Gender</string>
+    <string name="create_profile_male">Male</string>
+    <string name="create_profile_female">Female</string>
     <string name="create_profile_create">Create</string>
     <string name="create_program_create">Create</string>
     <string name="create_program_add_segment_question">What kind of segment you want to add?</string>

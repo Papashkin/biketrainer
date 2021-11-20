@@ -8,6 +8,7 @@ import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.data.models.program.ProgramData
 import com.antsfamily.biketrainer.databinding.FragmentProgramInfoBinding
 import com.antsfamily.biketrainer.presentation.programinfo.ProgramInfoViewModel
+import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.*
 import com.antsfamily.biketrainer.ui.util.BarCharsStaticFields.BAR_WIDTH_95

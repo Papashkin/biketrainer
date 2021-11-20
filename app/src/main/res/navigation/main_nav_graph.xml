@@ -4,7 +4,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_nav_graph"
         app:startDestination="@id/splashFragment">
-
     <fragment
             android:id="@+id/splashFragment"
             android:name="com.antsfamily.biketrainer.ui.splash.SplashFragment"
@@ -24,6 +23,10 @@
             android:name="com.antsfamily.biketrainer.ui.home.HomeFragment"
             android:label="HomeFragment"
             tools:layout="@layout/fragment_home">
+        <argument
+                android:name="profileName"
+                app:argType="string"
+                app:nullable="false" />
         <action
                 android:id="@+id/action_startFragment_to_profilesFragment"
                 app:destination="@id/profilesFragment" />
@@ -38,7 +41,7 @@
             android:id="@+id/profilesFragment"
             android:name="com.antsfamily.biketrainer.ui.profiles.ProfilesFragment"
             android:label="ProfilesFragment"
-            tools:layout="@layout/fragment_profiles"/>
+            tools:layout="@layout/fragment_profiles" />
     <fragment
             android:id="@+id/createProgramFragment"
             android:name="com.antsfamily.biketrainer.ui.createprogram.CreateProgramFragment"
@@ -82,7 +85,7 @@
             android:id="@+id/createProfileFragment"
             android:name="com.antsfamily.biketrainer.ui.createprofile.CreateProfileFragment"
             android:label="fragment_create_profile"
-            tools:layout="@layout/fragment_create_profile" >
+            tools:layout="@layout/fragment_create_profile">
         <action
                 android:id="@+id/action_createProfileFragment_to_startFragment"
                 app:destination="@id/homeFragment"

@@ -3,16 +3,17 @@ package com.antsfamily.biketrainer.ui.home
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.data.models.profile.Profile
 import com.antsfamily.biketrainer.databinding.FragmentHomeBinding
 import com.antsfamily.biketrainer.presentation.home.HomeViewModel
+import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.home.adapter.CreateProgramAdapter
 import com.antsfamily.biketrainer.ui.home.adapter.ProgramsAdapter
 import com.antsfamily.biketrainer.ui.util.iconId
-import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.garmin.fit.Gender
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment(R.layout.fragment_home) {
+
+    private val args: HomeFragmentArgs by navArgs()
 
     @Inject
     lateinit var factory: HomeViewModel.Factory
@@ -30,7 +33,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     @Inject
     lateinit var createProgramAdapter: CreateProgramAdapter
 
-    override val viewModel by viewModelsFactory { factory.build() }
+    override val viewModel by viewModelsFactory { factory.build(args.profileName) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

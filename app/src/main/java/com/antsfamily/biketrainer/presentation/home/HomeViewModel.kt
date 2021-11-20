@@ -1,6 +1,7 @@
 package com.antsfamily.biketrainer.presentation.home
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.data.models.profile.Profile
 import com.antsfamily.biketrainer.data.models.profile.ProfileWithPrograms
@@ -9,6 +10,7 @@ import com.antsfamily.biketrainer.domain.usecase.SubscribeToProfileWithProgramsU
 import com.antsfamily.biketrainer.navigation.HomeToCreateProgram
 import com.antsfamily.biketrainer.navigation.HomeToProgramInfo
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.collect
@@ -20,11 +22,12 @@ import java.time.format.DateTimeFormatter
 
 class HomeViewModel @AssistedInject constructor(
     private val subscribeToProfileWithProgramsUseCase: SubscribeToProfileWithProgramsUseCase,
+    @Assisted private val profileName: String,
 ) : StatefulViewModel<HomeViewModel.State>(State()) {
 
     @AssistedFactory
     interface Factory {
-        fun build(): HomeViewModel
+        fun build(profileName: String): HomeViewModel
     }
 
     data class State(
@@ -54,7 +57,7 @@ class HomeViewModel @AssistedInject constructor(
     }
 
     private fun getProfileWithPrograms() = viewModelScope.launch {
-        subscribeToProfileWithProgramsUseCase(Unit)
+        subscribeToProfileWithProgramsUseCase(profileName)
             .onStart { showLoading() }
             .onCompletion { Log.e("ProgramsRepo", "!!!! COMPLETE !!!!") }
             .collect { handleProfileWithPrograms(it) }

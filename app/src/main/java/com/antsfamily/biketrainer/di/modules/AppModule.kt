@@ -3,11 +3,8 @@ package com.antsfamily.biketrainer.di.modules
 import android.content.Context
 import androidx.room.Room
 import com.antsfamily.biketrainer.ant.service.AntRadioServiceConnection
+import com.antsfamily.biketrainer.data.local.SharedPrefs
 import com.antsfamily.biketrainer.data.local.database.AntsBikeTrainerDatabase
-import com.antsfamily.biketrainer.data.local.database.ProfileDao
-import com.antsfamily.biketrainer.data.local.database.ProgramDao
-import com.antsfamily.biketrainer.data.local.repositories.ProfilesRepository
-import com.antsfamily.biketrainer.data.local.repositories.ProgramsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,17 +28,15 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideProfilesRepository(dao: ProfileDao) = ProfilesRepository(dao)
-
-    @Singleton
-    @Provides
     fun provideProgramDao(database: AntsBikeTrainerDatabase) = database.programsDao()
 
     @Singleton
     @Provides
-    fun provideProgramsRepository(dao: ProgramDao) = ProgramsRepository(dao)
+    fun provideKeyValueStorage(@ApplicationContext appContext: Context): SharedPrefs =
+        SharedPrefs(appContext)
 
     @Singleton
     @Provides
-    fun provideAntRadioServiceConnection(@ApplicationContext appContext: Context) = AntRadioServiceConnection(appContext)
+    fun provideAntRadioServiceConnection(@ApplicationContext appContext: Context) =
+        AntRadioServiceConnection(appContext)
 }
