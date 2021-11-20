@@ -9,19 +9,22 @@ import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentCreateProfileBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprofile.CreateProfileViewModel
-import com.antsfamily.biketrainer.presentation.withFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.afterTextChange
 import com.antsfamily.biketrainer.ui.util.resourceId
+import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.antsfamily.biketrainer.util.orZero
 import com.garmin.fit.Gender
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
 
-    override val viewModel: CreateProfileViewModel by viewModels { withFactory(viewModelFactory) }
+    @Inject lateinit var factory: CreateProfileViewModel.Factory
+
+    override val viewModel: CreateProfileViewModel by viewModelsFactory { factory.build() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

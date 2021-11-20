@@ -3,19 +3,21 @@ package com.antsfamily.biketrainer.ui.splash
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentSplashBinding
 import com.antsfamily.biketrainer.presentation.splash.SplashViewModel
-import com.antsfamily.biketrainer.presentation.withFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
+import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
-    override val viewModel: SplashViewModel by viewModels { withFactory(viewModelFactory) }
+    @Inject lateinit var factory: SplashViewModel.Factory
+
+    override val viewModel: SplashViewModel by viewModelsFactory { factory.build() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.profiles
+package com.antsfamily.biketrainer.ui.profiles.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -4,17 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.data.models.program.ProgramData
 import com.antsfamily.biketrainer.databinding.FragmentWorkoutBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
-import com.antsfamily.biketrainer.presentation.withFactory
 import com.antsfamily.biketrainer.presentation.workout.WorkoutViewModel
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.hideAllLabels
 import com.antsfamily.biketrainer.ui.util.setHighlightedMode
+import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.fullTimeFormat
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.github.mikephil.charting.data.BarData
@@ -23,13 +22,17 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
 
     private val args: WorkoutFragmentArgs by navArgs()
 
-    override val viewModel: WorkoutViewModel by viewModels { withFactory(viewModelFactory) }
+    @Inject
+    lateinit var factory: WorkoutViewModel.Factory
+
+    override val viewModel: WorkoutViewModel by viewModelsFactory { factory.build() }
 
     private val chartHighlights = mutableListOf<Highlight>()
 

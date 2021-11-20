@@ -2,14 +2,19 @@ package com.antsfamily.biketrainer.presentation.createprogram
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.antsfamily.biketrainer.data.models.program.ProgramType
 import com.antsfamily.biketrainer.data.models.workouts.WorkoutStairsParams
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import javax.inject.Inject
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-class AddStairsBottomSheetViewModel @Inject constructor() :
+class AddStairsBottomSheetViewModel @AssistedInject constructor() :
     StatefulViewModel<AddStairsBottomSheetViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build(): AddStairsBottomSheetViewModel
+    }
 
     data class State(
         val startPowerError: String? = null,

@@ -7,14 +7,10 @@ import com.antsfamily.biketrainer.navigation.Route
 import com.antsfamily.biketrainer.navigation.mapToDirection
 import com.antsfamily.biketrainer.presentation.BaseViewModel
 import com.antsfamily.biketrainer.presentation.EventObserver
-import com.antsfamily.biketrainer.presentation.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
 
 abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
     abstract val viewModel: BaseViewModel
 

@@ -3,13 +3,11 @@ package com.antsfamily.biketrainer.ui.programinfo
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.data.models.program.ProgramData
 import com.antsfamily.biketrainer.databinding.FragmentProgramInfoBinding
 import com.antsfamily.biketrainer.presentation.programinfo.ProgramInfoViewModel
-import com.antsfamily.biketrainer.presentation.withFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.*
 import com.antsfamily.biketrainer.ui.util.BarCharsStaticFields.BAR_WIDTH_95
@@ -29,7 +27,9 @@ class ProgramInfoFragment : BaseFragment(R.layout.fragment_program_info) {
     @Inject
     lateinit var barChartGestureListener: BarChartGestureListener
 
-    override val viewModel: ProgramInfoViewModel by viewModels { withFactory(viewModelFactory) }
+    @Inject lateinit var factory: ProgramInfoViewModel.Factory
+
+    override val viewModel: ProgramInfoViewModel by viewModelsFactory { factory.build() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

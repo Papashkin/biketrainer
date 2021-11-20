@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.extensions
+package com.antsfamily.biketrainer.ui.util
 
 import com.google.android.material.snackbar.Snackbar
 

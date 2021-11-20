@@ -11,7 +11,6 @@ import com.antsfamily.biketrainer.data.models.workouts.WorkoutStairsParams
 import com.antsfamily.biketrainer.databinding.FragmentCreateProgramBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprogram.CreateProgramViewModel
-import com.antsfamily.biketrainer.presentation.withFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.createprogram.dialog.AddIntervalBottomSheetDialogFragment.Companion.KEY_INTERVAL
 import com.antsfamily.biketrainer.ui.createprogram.dialog.AddIntervalBottomSheetDialogFragment.Companion.REQUEST_KEY_INTERVAL
@@ -20,13 +19,18 @@ import com.antsfamily.biketrainer.ui.createprogram.dialog.AddSegmentBottomSheetD
 import com.antsfamily.biketrainer.ui.createprogram.dialog.AddStairsBottomSheetDialogFragment.Companion.KEY_STAIRS
 import com.antsfamily.biketrainer.ui.createprogram.dialog.AddStairsBottomSheetDialogFragment.Companion.REQUEST_KEY_STAIRS
 import com.antsfamily.biketrainer.ui.util.afterTextChange
+import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateProgramFragment : BaseFragment(R.layout.fragment_create_program) {
 
-    override val viewModel: CreateProgramViewModel by viewModels { withFactory(viewModelFactory) }
+    @Inject
+    lateinit var factory: CreateProgramViewModel.Factory
+
+    override val viewModel: CreateProgramViewModel by viewModelsFactory { factory.build() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

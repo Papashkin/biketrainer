@@ -8,25 +8,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import com.antsfamily.biketrainer.BaseBottomSheetDialogFragment
 import com.antsfamily.biketrainer.databinding.BottomSheetFragmentAddIntervalBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprogram.AddIntervalBottomSheetViewModel
-import com.antsfamily.biketrainer.presentation.withFactory
 import com.antsfamily.biketrainer.ui.util.afterTextChange
+import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.antsfamily.biketrainer.util.orZero
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddIntervalBottomSheetDialogFragment : BaseBottomSheetDialogFragment() {
 
     private lateinit var behavior: BottomSheetBehavior<View>
 
-    override val viewModel: AddIntervalBottomSheetViewModel by viewModels {
-        withFactory(viewModelFactory)
+    @Inject
+    lateinit var factory: AddIntervalBottomSheetViewModel.Factory
+
+    override val viewModel: AddIntervalBottomSheetViewModel by viewModelsFactory {
+        factory.build()
     }
 
     override fun onAttach(context: Context) {

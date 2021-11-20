@@ -8,12 +8,17 @@ import com.antsfamily.biketrainer.domain.usecase.GetSelectedProfileUseCase
 import com.antsfamily.biketrainer.navigation.SplashToCreateProfile
 import com.antsfamily.biketrainer.navigation.SplashToHome
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import java.lang.Error
-import javax.inject.Inject
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-class SplashViewModel @Inject constructor(
+class SplashViewModel @AssistedInject constructor(
     private val getSelectedProfileUseCase: GetSelectedProfileUseCase
 ) : StatefulViewModel<SplashViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build(): SplashViewModel
+    }
 
     data class State(
         val isLoading: Boolean = false

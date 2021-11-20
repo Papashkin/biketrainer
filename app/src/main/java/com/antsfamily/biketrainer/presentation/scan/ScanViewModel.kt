@@ -18,10 +18,11 @@ import com.dsi.ant.plugins.antplus.pcc.*
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceType
 import com.dsi.ant.plugins.antplus.pcc.defines.RequestAccessResult
 import com.dsi.ant.plugins.antplus.pccbase.MultiDeviceSearch.MultiDeviceSearchResult
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class ScanViewModel @Inject constructor(
+class ScanViewModel @AssistedInject constructor(
     private val bindAntChannelUseCase: BindAntChannelUseCase,
     private val unbindAntChannelUseCase: UnbindAntChannelUseCase,
     private val deviceSearcher: DeviceSearcher,
@@ -31,6 +32,11 @@ class ScanViewModel @Inject constructor(
     private val bikePowerDevice: BikePowerDevice,
     private val fitnessEquipmentDevice: FitnessEquipmentDevice
 ) : StatefulViewModel<ScanViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build(): ScanViewModel
+    }
 
     data class State(
         val devices: List<DeviceItem> = emptyList(),

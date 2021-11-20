@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentProfilesBinding
 import com.antsfamily.biketrainer.presentation.profiles.ProfilesViewModel
-import com.antsfamily.biketrainer.presentation.withFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
+import com.antsfamily.biketrainer.ui.profiles.adapter.ProfilesAdapter
+import com.antsfamily.biketrainer.ui.util.viewModelsFactory
 import com.antsfamily.biketrainer.util.mapDistinct
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -18,10 +18,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ProfilesFragment : BaseFragment(R.layout.fragment_profiles) {
 
-    override val viewModel: ProfilesViewModel by viewModels { withFactory(viewModelFactory) }
+    @Inject
+    lateinit var factory: ProfilesViewModel.Factory
 
     @Inject
     lateinit var profilesAdapter: ProfilesAdapter
+
+    override val viewModel by viewModelsFactory { factory.build() }
 
     override fun onCreateView(
         inflater: LayoutInflater,

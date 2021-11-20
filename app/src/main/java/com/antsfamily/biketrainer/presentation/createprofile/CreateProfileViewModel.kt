@@ -10,12 +10,18 @@ import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.biketrainer.util.orZero
 import com.garmin.fit.Gender
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import java.math.BigDecimal
-import javax.inject.Inject
 
-class CreateProfileViewModel @Inject constructor(
+class CreateProfileViewModel @AssistedInject constructor(
     private val createProfileUseCase: CreateProfileUseCase
 ) : StatefulViewModel<CreateProfileViewModel.State>(State()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun build(): CreateProfileViewModel
+    }
 
     data class State(
         val isLoading: Boolean = false,
