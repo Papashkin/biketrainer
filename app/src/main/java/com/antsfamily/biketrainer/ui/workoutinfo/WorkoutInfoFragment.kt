@@ -1,13 +1,10 @@
 package com.antsfamily.biketrainer.ui.workoutinfo
 
-import android.animation.Animator
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentWorkoutInfoBinding
-import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.programinfo.WorkoutInfoViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
@@ -41,31 +38,18 @@ class WorkoutInfoFragment : BaseFragment(R.layout.fragment_workout_info) {
         super.onViewCreated(view, savedInstanceState)
         with(FragmentWorkoutInfoBinding.bind(view)) {
             observeState(this)
-            observeEvents(this)
             bindInteractions(this)
         }
     }
 
     private fun observeState(binding: FragmentWorkoutInfoBinding) {
         with(binding) {
-            viewModel.mapDistinct { it.isLoading }.observe { loadingView.isVisible = it }
+            viewModel.mapDistinct { it.loadingState }.observe { loadingView.state = it }
             viewModel.mapDistinct { it.program }.observe { setChart(it) }
             viewModel.mapDistinct { it.programName }.observe { workoutInfoNameTv.text = it }
             viewModel.mapDistinct { it.duration }.observe { workoutDurationTv.text = it }
             viewModel.mapDistinct { it.maxPower }.observe { workoutMaxPowerTv.text = it }
             viewModel.mapDistinct { it.avgPower }.observe { workoutAvgPowerTv.text = it }
-        }
-    }
-
-    private fun observeEvents(binding: FragmentWorkoutInfoBinding) {
-        with(binding) {
-            viewModel.showRemoveWorkoutAnimationEvent.observe(viewLifecycleOwner, EventObserver {
-                loadingPb.isVisible = false
-                deleteWorkoutSuccessAnimation.apply {
-                    isVisible = true
-                    playAnimation()
-                }
-            })
         }
     }
 
@@ -76,18 +60,9 @@ class WorkoutInfoFragment : BaseFragment(R.layout.fragment_workout_info) {
             runWorkoutBtn.setOnClickListener { viewModel.onRunWorkoutClick() }
             deleteBtn.setOnClickListener { viewModel.onDeleteClick() }
             barChartGestureListener.setBarChart(workoutChart)
-            deleteWorkoutSuccessAnimation.addAnimatorListener(object :
-                Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator?) {}
-
-                override fun onAnimationEnd(animation: Animator?) {
-                    viewModel.onRemoveWorkoutAnimationEnd()
-                }
-
-                override fun onAnimationCancel(animation: Animator?) {}
-
-                override fun onAnimationRepeat(animation: Animator?) {}
-            })
+            loadingView.setOnAnimationFinishedListener {
+                viewModel.onRemoveWorkoutAnimationEnd()
+            }
         }
     }
 

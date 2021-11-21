@@ -183,40 +183,9 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
-            android:id="@+id/loading_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.9"
-            android:background="?attr/colorOnPrimary"
-            tools:visibility="gone">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/create_workout_success_animation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:lottie_loop="false"
-            app:lottie_autoPlay="false"
-            android:visibility="gone"
-            app:lottie_fileName="success_animation.json" />
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/delete_workout_success_animation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:lottie_loop="false"
-            app:lottie_autoPlay="false"
-            android:visibility="gone"
-            app:lottie_fileName="delete_animation.json" />
-
-        <ProgressBar
-                android:id="@+id/loading_pb"
-                android:layout_width="@dimen/progress_bar_size"
-                android:layout_height="@dimen/progress_bar_size"
-                android:layout_gravity="center"
-                android:indeterminateTint="?attr/colorPrimary" />
-    </FrameLayout>
+    <com.antsfamily.biketrainer.ui.createprofile.view.LoadingWithAnimationView
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
