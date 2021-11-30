@@ -2,13 +2,14 @@ package com.antsfamily.biketrainer
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.antsfamily.biketrainer.navigation.Route
 import com.antsfamily.biketrainer.navigation.mapToDirection
 import com.antsfamily.biketrainer.presentation.BaseViewModel
-import com.antsfamily.biketrainer.presentation.EventObserver
+import com.antsfamily.biketrainer.presentation.SingleEvent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 
 abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -19,10 +20,18 @@ abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
         observeNavigationEvents()
     }
 
-    private fun observeNavigationEvents() {
-        viewModel.navigationEvent.observe(viewLifecycleOwner, EventObserver { navigateTo(it) })
+    private fun observeNavigationEvents() = lifecycleScope.launchWhenStarted {
+        viewModel.singleEvent.collect { event -> handleEvent(event) }
     }
 
+    private fun handleEvent(event: SingleEvent) {
+        when (event) {
+            is SingleEvent.NavigationEvent -> navigateTo(event.route)
+            else -> {
+                /* no-op */
+            }
+        }
+    }
     private fun navigateTo(route: Route) {
         NavHostFragment.findNavController(this).navigate(route.mapToDirection())
     }
