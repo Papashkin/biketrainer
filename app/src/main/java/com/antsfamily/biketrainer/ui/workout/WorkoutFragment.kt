@@ -67,12 +67,6 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
     }
 
     private fun observeEvents(binding: FragmentWorkoutBinding) {
-        viewModel.showSuccessSnackBarEvent.observe(viewLifecycleOwner, EventObserver {
-            showSnackBar(it)
-        })
-        viewModel.showSuccessSnackBarMessageEvent.observe(viewLifecycleOwner, EventObserver {
-            showSnackBar(it)
-        })
         viewModel.resetChartHighlightsEvent.observe(viewLifecycleOwner, EventObserver {
             chartHighlights.clear()
             binding.programChart.highlightValues(arrayOf())
@@ -81,57 +75,57 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
 
     private fun observeState(binding: FragmentWorkoutBinding) {
         with(binding) {
-            viewModel.state.mapDistinct { it.isLoading }
+            viewModel.mapDistinct { it.isLoading }
                 .observe(viewLifecycleOwner) { loadingView.isVisible = it }
-            viewModel.state.mapDistinct { it.title }
+            viewModel.mapDistinct { it.title }
                 .observe(viewLifecycleOwner) { titleTv.text = it }
-            viewModel.state.mapDistinct { it.allRounds }.observe(viewLifecycleOwner) {
+            viewModel.mapDistinct { it.allRounds }.observe(viewLifecycleOwner) {
                 workoutAllStepsTv.text = it?.toString() ?: EMPTY_DATA
             }
-            viewModel.state.mapDistinct { it.currentRound }.observe(viewLifecycleOwner) {
+            viewModel.mapDistinct { it.currentRound }.observe(viewLifecycleOwner) {
                 workoutCurrentStepTv.text = it.toString()
                 highlightAppropriateBar(it)
             }
-            viewModel.state.mapDistinct { it.currentStep }.observe(viewLifecycleOwner) { data ->
+            viewModel.mapDistinct { it.currentStep }.observe(viewLifecycleOwner) { data ->
                 workoutTargetPowerTv.text =
                     data?.let { getString(R.string.workout_power, it.power.toString()) }
                         ?: EMPTY_DATA
             }
-            viewModel.state.mapDistinct { it.nextStep }
+            viewModel.mapDistinct { it.nextStep }
                 .observe(viewLifecycleOwner) { setNextStep(it) }
-            viewModel.state.mapDistinct { it.startButtonVisible }
+            viewModel.mapDistinct { it.startButtonVisible }
                 .observe(viewLifecycleOwner) { startWorkoutBtn.isVisible = it }
-            viewModel.state.mapDistinct { it.pauseButtonVisible }
+            viewModel.mapDistinct { it.pauseButtonVisible }
                 .observe(viewLifecycleOwner) { pauseWorkoutBtn.isVisible = it }
-            viewModel.state.mapDistinct { it.stopButtonVisible }
+            viewModel.mapDistinct { it.stopButtonVisible }
                 .observe(viewLifecycleOwner) { stopWorkoutBtn.isVisible = it }
-            viewModel.state.mapDistinct { it.continueButtonVisible }
+            viewModel.mapDistinct { it.continueButtonVisible }
                 .observe(viewLifecycleOwner) { continueWorkoutBtn.isVisible = it }
-            viewModel.state.mapDistinct { it.progress }
+            viewModel.mapDistinct { it.progress }
                 .observe(viewLifecycleOwner) { stepCountdownRb.progress = it }
-            viewModel.state.mapDistinct { it.remainingTime }
+            viewModel.mapDistinct { it.remainingTime }
                 .observe(viewLifecycleOwner) { setRemainingTime(it) }
-            viewModel.state.mapDistinct { it.heartRate }.observe(viewLifecycleOwner) {
+            viewModel.mapDistinct { it.heartRate }.observe(viewLifecycleOwner) {
                 workoutHeartRateTv.text =
                     getString(R.string.workout_heart_rate, it?.toString() ?: EMPTY_DATA)
             }
-            viewModel.state.mapDistinct { it.cadence }.observe(viewLifecycleOwner) {
+            viewModel.mapDistinct { it.cadence }.observe(viewLifecycleOwner) {
                 workoutCadenceTv.text =
                     getString(R.string.workout_cadence, it?.toString() ?: EMPTY_DATA)
             }
-            viewModel.state.mapDistinct { it.distance }.observe(viewLifecycleOwner) {
+            viewModel.mapDistinct { it.distance }.observe(viewLifecycleOwner) {
                 workoutDistanceTv.text =
                     getString(R.string.workout_distance, it?.toString() ?: EMPTY_DATA)
             }
-            viewModel.state.mapDistinct { it.speed }.observe(viewLifecycleOwner) {
+            viewModel.mapDistinct { it.speed }.observe(viewLifecycleOwner) {
                 workoutSpeedTv.text =
                     getString(R.string.workout_speed, it?.toString() ?: EMPTY_DATA)
             }
-            viewModel.state.mapDistinct { it.power }.observe(viewLifecycleOwner) { power ->
+            viewModel.mapDistinct { it.power }.observe(viewLifecycleOwner) { power ->
                 workoutUserPowerTv.text =
                     power?.let { getString(R.string.workout_power, it.toString()) } ?: EMPTY_DATA
             }
-            viewModel.state.mapDistinct { it.program }
+            viewModel.mapDistinct { it.program }
                 .observe(viewLifecycleOwner) { setProgramBarChart(it) }
         }
     }

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.fragment.FragmentNavigator
@@ -12,9 +13,10 @@ import androidx.navigation.fragment.findNavController
 import com.antsfamily.biketrainer.navigation.Route
 import com.antsfamily.biketrainer.navigation.mapToDirection
 import com.antsfamily.biketrainer.presentation.BaseViewModel
-import com.antsfamily.biketrainer.presentation.EventObserver
+import com.antsfamily.biketrainer.presentation.SingleEvent
 import com.antsfamily.biketrainer.ui.util.addDismissListener
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 
 abstract class BaseFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
 
@@ -63,19 +65,16 @@ abstract class BaseFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
         snackbar?.dismiss()
     }
 
-    private fun observeEvents() {
-        viewModel.navigationEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateTo(it)
-        })
-        viewModel.navigationBackEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateBack()
-        })
-        viewModel.showErrorSnackBarEvent.observe(viewLifecycleOwner, EventObserver {
-            showSnackBar(it)
-        })
-        viewModel.showErrorSnackBarMessageEvent.observe(viewLifecycleOwner, EventObserver {
-            showSnackBar(it)
-        })
+    private fun observeEvents() = lifecycleScope.launchWhenStarted {
+        viewModel.singleEvent.collect {
+            when (it) {
+                is SingleEvent.NavigationEvent -> navigateTo(it.route)
+                SingleEvent.NavigationBackEvent -> navigateBack()
+                is SingleEvent.ErrorMessageEvent -> showSnackBar(it.message)
+                is SingleEvent.SuccessMessageEvent -> showSnackBar(it.message)
+                is SingleEvent.ErrorMessageIdEvent -> showSnackBar(getString(it.id))
+            }
+        }
     }
 
     private fun navigateTo(route: Route) {

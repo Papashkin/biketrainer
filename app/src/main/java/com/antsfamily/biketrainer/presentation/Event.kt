@@ -1,6 +1,7 @@
 package com.antsfamily.biketrainer.presentation
 
 import androidx.lifecycle.Observer
+import com.antsfamily.biketrainer.navigation.Route
 
 /**
  * This solution is taken from Medium post
@@ -45,4 +46,12 @@ class EventObserver<T>(private val onEventUnhandledContent: (T) -> Unit) : Obser
             onEventUnhandledContent(value)
         }
     }
+}
+
+sealed class SingleEvent {
+    data class NavigationEvent(val route: Route): SingleEvent()
+    object NavigationBackEvent: SingleEvent()
+    data class ErrorMessageEvent(val message: String): SingleEvent()
+    data class ErrorMessageIdEvent(val id: Int): SingleEvent()
+    data class SuccessMessageEvent(val message: String): SingleEvent()
 }

@@ -36,24 +36,18 @@ class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
 
     private fun observeState(binding: FragmentCreateProfileBinding) {
         with(binding) {
-            viewModel.state.mapDistinct { it.isLoading }.observe(viewLifecycleOwner) {
-                loadingView.isVisible = it
-            }
-            viewModel.state.mapDistinct { it.usernameError }.observe(viewLifecycleOwner) {
-                usernameTil.error = it
-            }
-            viewModel.state.mapDistinct { it.ageError }.observe(viewLifecycleOwner) {
-                ageTil.error = it
-            }
-            viewModel.state.mapDistinct { it.weightError }.observe(viewLifecycleOwner) {
-                weightTil.error = it
-            }
-            viewModel.state.mapDistinct { it.heightError }.observe(viewLifecycleOwner) {
-                heightTil.error = it
-            }
-            viewModel.state.mapDistinct { it.genderError }.observe(viewLifecycleOwner) {
-                setupGenderError(it)
-            }
+            viewModel.mapDistinct { it.isLoading }
+                .observe(viewLifecycleOwner) { loadingView.isVisible = it }
+            viewModel.mapDistinct { it.usernameError }
+                .observe(viewLifecycleOwner) { usernameTil.error = it }
+            viewModel.mapDistinct { it.ageError }
+                .observe(viewLifecycleOwner) { ageTil.error = it }
+            viewModel.mapDistinct { it.weightError }
+                .observe(viewLifecycleOwner) { weightTil.error = it }
+            viewModel.mapDistinct { it.heightError }
+                .observe(viewLifecycleOwner) { heightTil.error = it }
+            viewModel.mapDistinct { it.genderError }
+                .observe(viewLifecycleOwner) { setupGenderError(it) }
         }
     }
 
@@ -99,7 +93,7 @@ class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
     }
 
     private fun FragmentCreateProfileBinding.createProfile() {
-        this.root.findFocus().hideKeyboard()
+        getFocus()?.hideKeyboard()
         viewModel.onCreateClick(
             usernameEt.text.toString(),
             ageEt.text.toString().toIntOrNull().orZero(),
@@ -107,6 +101,9 @@ class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
             heightEt.text.toString().toBigDecimalOrNull()
         )
     }
+
+    private fun FragmentCreateProfileBinding.getFocus(): View? =
+        root.findFocus() ?: root.focusedChild
 
     private fun FragmentCreateProfileBinding.clearFields() {
         usernameEt.text = null

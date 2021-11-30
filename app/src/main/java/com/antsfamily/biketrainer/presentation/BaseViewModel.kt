@@ -1,57 +1,34 @@
 package com.antsfamily.biketrainer.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.navigation.Route
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val _navigationEvent = MutableLiveData<Event<Route>>()
-    val navigationEvent: LiveData<Event<Route>>
-        get() = _navigationEvent
+    private val _singleEvent = Channel<SingleEvent>()
+    val singleEvent = _singleEvent.receiveAsFlow()
 
-    private val _navigationBackEvent = MutableLiveData<Event<Unit>>()
-    val navigationBackEvent: LiveData<Event<Unit>>
-        get() = _navigationBackEvent
-
-    private val _showSuccessSnackBarMessageEvent = MutableLiveData<Event<String>>()
-    val showSuccessSnackBarMessageEvent: LiveData<Event<String>>
-        get() = _showSuccessSnackBarMessageEvent
-
-    private val _showSuccessSnackBarEvent = MutableLiveData<Event<Int>>()
-    val showSuccessSnackBarEvent: LiveData<Event<Int>>
-        get() = _showSuccessSnackBarEvent
-
-    private val _showErrorSnackBarMessageEvent = MutableLiveData<Event<String>>()
-    val showErrorSnackBarMessageEvent: LiveData<Event<String>>
-        get() = _showErrorSnackBarMessageEvent
-
-    private val _showErrorSnackBarEvent = MutableLiveData<Event<Int>>()
-    val showErrorSnackBarEvent: LiveData<Event<Int>>
-        get() = _showErrorSnackBarEvent
-
-    fun navigateTo(route: Route) {
-        _navigationEvent.postValue(Event(route))
+    fun navigateTo(route: Route) = viewModelScope.launch {
+        _singleEvent.send(SingleEvent.NavigationEvent(route))
     }
 
-    fun navigateBack() {
-        _navigationBackEvent.postValue(Event(Unit))
+    fun navigateBack() = viewModelScope.launch {
+        _singleEvent.send(SingleEvent.NavigationBackEvent)
     }
 
-    fun showErrorSnackbar(message: String?) {
-        message?.let { _showErrorSnackBarMessageEvent.postValue(Event(it)) }
+    fun showErrorSnackbar(message: String?) = viewModelScope.launch {
+        _singleEvent.send(SingleEvent.ErrorMessageEvent(message.orEmpty()))
     }
 
-    fun showErrorSnackbar(messageId: Int) {
-        _showErrorSnackBarEvent.postValue(Event(messageId))
+    fun showErrorSnackbar(messageId: Int) = viewModelScope.launch {
+        _singleEvent.send(SingleEvent.ErrorMessageIdEvent(messageId))
     }
 
-    fun showSuccessSnackbar(message: String) {
-        _showSuccessSnackBarMessageEvent.postValue(Event(message))
-    }
-
-    fun showSuccessSnackbar(messageId: Int) {
-        _showSuccessSnackBarEvent.postValue(Event(messageId))
+    fun showSuccessSnackbar(message: String) = viewModelScope.launch {
+        _singleEvent.send(SingleEvent.SuccessMessageEvent(message))
     }
 }

@@ -59,12 +59,6 @@ class CreateProgramFragment : BaseFragment(R.layout.fragment_create_program) {
     }
 
     private fun observeEvents(binding: FragmentCreateProgramBinding) {
-        viewModel.showSuccessSnackBarEvent.observe(viewLifecycleOwner, EventObserver {
-            showSnackBar(it)
-        })
-        viewModel.showSuccessSnackBarMessageEvent.observe(viewLifecycleOwner, EventObserver {
-            showSnackBar(it)
-        })
         viewModel.clearInputFieldsEvent.observe(viewLifecycleOwner, EventObserver {
             binding.programNameEt.text = null
         })
