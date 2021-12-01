@@ -91,7 +91,7 @@
     <string name="add_segment_add">Add</string>
     <string name="add_segment_power">Power, W</string>
     <string name="add_segment_title">Add segment</string>
-    <string name="add_interval_title">Add interval</string>
+    <string name="add_interval_title">Add intervals</string>
     <string name="add_interval_peak_power">Peak power, W</string>
     <string name="add_interval_rest_power">Rest power, W</string>
     <string name="add_interval_peak_power_duration">Peak power duration</string>

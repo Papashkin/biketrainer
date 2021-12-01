@@ -10,19 +10,19 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import java.math.BigDecimal
 
-class AddSegmentBottomSheetViewModel @AssistedInject constructor() :
-    StatefulViewModel<AddSegmentBottomSheetViewModel.State>(State()) {
+class AddSegmentViewModel @AssistedInject constructor() :
+    StatefulViewModel<AddSegmentViewModel.State>(State()) {
 
     @AssistedFactory
     interface Factory {
-        fun build(): AddSegmentBottomSheetViewModel
+        fun build(): AddSegmentViewModel
     }
 
     data class State(
         val power: BigDecimal? = null,
         val powerError: String? = null,
         val duration: Long = 0,
-        val durationError: String? = null
+        val durationError: String? = null,
     )
 
     private val _setSegmentResult = MutableLiveData<Event<WorkoutSegmentParams>>()
@@ -32,7 +32,12 @@ class AddSegmentBottomSheetViewModel @AssistedInject constructor() :
     fun onAddClick(power: Int, duration: Long) {
         if (isValid(power, duration)) {
             _setSegmentResult.postValue(Event(WorkoutSegmentParams(power, duration)))
+            navigateBack()
         }
+    }
+
+    fun onBackClick() {
+        navigateBack()
     }
 
     fun onPowerTextChange() {

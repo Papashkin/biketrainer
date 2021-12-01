@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/bg_bottom_sheet_dialog">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_pre_regular"
+                android:src="@drawable/ic_arrow_back_32"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
         <TextView
                 android:id="@+id/title_tv"
-                style="@style/Body1.onSurface"
-                android:layout_width="match_parent"
+                style="@style/Title2.onSurface"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_large_extra"
-                android:gravity="center"
-                android:text="@string/add_interval_title" />
+                android:text="@string/add_interval_title"
+                app:layout_constraintBottom_toBottomOf="@id/back_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/back_btn"
+                app:layout_constraintTop_toTopOf="@id/back_btn" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
+                android:id="@+id/content_sv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_pre_regular"
                 android:fillViewport="true"
-                android:overScrollMode="never">
+                android:overScrollMode="never"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_tv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -126,11 +141,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/times_til"
                         app:layout_constraintVertical_bias="1" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-    </LinearLayout>
-
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
