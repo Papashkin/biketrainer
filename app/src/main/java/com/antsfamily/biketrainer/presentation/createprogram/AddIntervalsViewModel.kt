@@ -8,12 +8,12 @@ import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-class AddIntervalBottomSheetViewModel @AssistedInject constructor(
-) : StatefulViewModel<AddIntervalBottomSheetViewModel.State>(State()) {
+class AddIntervalsViewModel @AssistedInject constructor(
+) : StatefulViewModel<AddIntervalsViewModel.State>(State()) {
 
     @AssistedFactory
     interface Factory {
-        fun build(): AddIntervalBottomSheetViewModel
+        fun build(): AddIntervalsViewModel
     }
 
     data class State(
@@ -21,7 +21,7 @@ class AddIntervalBottomSheetViewModel @AssistedInject constructor(
         val restPowerError: String? = null,
         val peakDurationError: String? = null,
         val restDurationError: String? = null,
-        val countError: String? = null
+        val countError: String? = null,
     )
 
     private val _setIntervalResult = MutableLiveData<Event<WorkoutIntervalParams>>()
@@ -47,7 +47,12 @@ class AddIntervalBottomSheetViewModel @AssistedInject constructor(
                     )
                 )
             )
+            navigateBack()
         }
+    }
+
+    fun onBackClick() {
+        navigateBack()
     }
 
     fun onPeakPowerTextChange() {

@@ -8,19 +8,19 @@ import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-class AddStairsBottomSheetViewModel @AssistedInject constructor() :
-    StatefulViewModel<AddStairsBottomSheetViewModel.State>(State()) {
+class AddStairsViewModel @AssistedInject constructor() :
+    StatefulViewModel<AddStairsViewModel.State>(State()) {
 
     @AssistedFactory
     interface Factory {
-        fun build(): AddStairsBottomSheetViewModel
+        fun build(): AddStairsViewModel
     }
 
     data class State(
         val startPowerError: String? = null,
         val endPowerError: String? = null,
         val stepCountError: String? = null,
-        val durationError: String? = null
+        val durationError: String? = null,
     )
 
     private val _setStairsResult = MutableLiveData<Event<WorkoutStairsParams>>()
@@ -30,7 +30,12 @@ class AddStairsBottomSheetViewModel @AssistedInject constructor() :
     fun onAddClick(startPower: Int, endPower: Int, stepCount: Int, duration: Long) {
         if (isValid(startPower, endPower, stepCount, duration)) {
             setResult(startPower, endPower, stepCount, duration)
+            navigateBack()
         }
+    }
+
+    fun onBackClick() {
+        navigateBack()
     }
 
     fun onStartPowerTextChange() {
@@ -71,16 +76,16 @@ class AddStairsBottomSheetViewModel @AssistedInject constructor() :
     }
 
     private fun setResult(startPower: Int, endPower: Int, stepCount: Int, duration: Long) {
-            _setStairsResult.postValue(
-                Event(
-                    WorkoutStairsParams(
-                        startPower = startPower,
-                        endPower = endPower,
-                        duration = duration,
-                        steps = stepCount
-                    )
+        _setStairsResult.postValue(
+            Event(
+                WorkoutStairsParams(
+                    startPower = startPower,
+                    endPower = endPower,
+                    duration = duration,
+                    steps = stepCount
                 )
             )
+        )
     }
 
     companion object {
