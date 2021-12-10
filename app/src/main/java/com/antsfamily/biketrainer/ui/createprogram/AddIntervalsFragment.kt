@@ -36,16 +36,11 @@ class AddIntervalsFragment : BaseFragment(R.layout.fragment_add_intervals) {
     }
 
     private fun FragmentAddIntervalsBinding.observeState() {
-        viewModel.mapDistinct { it.restPowerError }
-            .observe(viewLifecycleOwner) { restPowerTil.error = it }
-        viewModel.mapDistinct { it.peakPowerError }
-            .observe(viewLifecycleOwner) { peakPowerTil.error = it }
-        viewModel.mapDistinct { it.restDurationError }
-            .observe(viewLifecycleOwner) { restPowerDurationView.error = it }
-        viewModel.mapDistinct { it.peakDurationError }
-            .observe(viewLifecycleOwner) { peakPowerDurationView.error = it }
-        viewModel.mapDistinct { it.countError }
-            .observe(viewLifecycleOwner) { timesTil.error = it }
+        viewModel.mapDistinct { it.restPowerError }.observe { restPowerTil.error = it }
+        viewModel.mapDistinct { it.peakPowerError }.observe { peakPowerTil.error = it }
+        viewModel.mapDistinct { it.restDurationError }.observe { restPowerDurationView.error = it }
+        viewModel.mapDistinct { it.peakDurationError }.observe { peakPowerDurationView.error = it }
+        viewModel.mapDistinct { it.countError }.observe { timesTil.error = it }
     }
 
     private fun observeEvents() {

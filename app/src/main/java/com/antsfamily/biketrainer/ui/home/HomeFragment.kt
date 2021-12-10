@@ -45,18 +45,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private fun observeState(binding: FragmentHomeBinding) {
         with(binding) {
-            viewModel.state.mapDistinct { it.dateTime }
-                .observe(viewLifecycleOwner) { homeDateTimeTv.text = it }
-            viewModel.state.mapDistinct { it.isProgramsLoading }
-                .observe(viewLifecycleOwner) { homeProgramsLoadingFl.isVisible = it }
-            viewModel.state.mapDistinct { it.isProgramsVisible }
-                .observe(viewLifecycleOwner) { homeProgramsRv.isVisible = it }
-            viewModel.state.mapDistinct { it.isEmptyProgramsVisible }
-                .observe(viewLifecycleOwner) { emptyProgramsCl.isVisible = it }
-            viewModel.state.mapDistinct { it.profile }
-                .observe(viewLifecycleOwner) { setupProfile(it) }
-            viewModel.state.mapDistinct { it.programs }
-                .observe(viewLifecycleOwner) { programsAdapter.items = it }
+            viewModel.mapDistinct { it.dateTime }.observe { homeDateTimeTv.text = it }
+            viewModel.mapDistinct { it.isProgramsLoading }
+                .observe { homeProgramsLoadingFl.isVisible = it }
+            viewModel.mapDistinct { it.isProgramsVisible }.observe { homeProgramsRv.isVisible = it }
+            viewModel.mapDistinct { it.isEmptyProgramsVisible }
+                .observe { emptyProgramsCl.isVisible = it }
+            viewModel.mapDistinct { it.profile }.observe { setupProfile(it) }
+            viewModel.mapDistinct { it.programs }.observe { programsAdapter.items = it }
         }
     }
 

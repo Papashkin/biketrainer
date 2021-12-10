@@ -36,18 +36,12 @@ class CreateProfileFragment : BaseFragment(R.layout.fragment_create_profile) {
 
     private fun observeState(binding: FragmentCreateProfileBinding) {
         with(binding) {
-            viewModel.mapDistinct { it.isLoading }
-                .observe(viewLifecycleOwner) { loadingView.isVisible = it }
-            viewModel.mapDistinct { it.usernameError }
-                .observe(viewLifecycleOwner) { usernameTil.error = it }
-            viewModel.mapDistinct { it.ageError }
-                .observe(viewLifecycleOwner) { ageTil.error = it }
-            viewModel.mapDistinct { it.weightError }
-                .observe(viewLifecycleOwner) { weightTil.error = it }
-            viewModel.mapDistinct { it.heightError }
-                .observe(viewLifecycleOwner) { heightTil.error = it }
-            viewModel.mapDistinct { it.genderError }
-                .observe(viewLifecycleOwner) { setupGenderError(it) }
+            viewModel.mapDistinct { it.isLoading }.observe { loadingView.isVisible = it }
+            viewModel.mapDistinct { it.usernameError }.observe { usernameTil.error = it }
+            viewModel.mapDistinct { it.ageError }.observe { ageTil.error = it }
+            viewModel.mapDistinct { it.weightError }.observe { weightTil.error = it }
+            viewModel.mapDistinct { it.heightError }.observe { heightTil.error = it }
+            viewModel.mapDistinct { it.genderError }.observe { setupGenderError(it) }
         }
     }
 

@@ -24,7 +24,8 @@ class ScanFragment : BaseFragment(R.layout.fragment_scan) {
 
     private var alertDialog: AlertDialog? = null
 
-    @Inject lateinit var factory: ScanViewModel.Factory
+    @Inject
+    lateinit var factory: ScanViewModel.Factory
 
     override val viewModel: ScanViewModel by viewModelsFactory { factory.build() }
 
@@ -57,10 +58,9 @@ class ScanFragment : BaseFragment(R.layout.fragment_scan) {
 
     private fun observeState(binding: FragmentScanBinding) {
         with(binding) {
-            viewModel.state.mapDistinct { it.devices }
-                .observe(viewLifecycleOwner) { newDeviceAdapter.items = it }
-            viewModel.state.mapDistinct { it.isContinueButtonVisible }
-                .observe(viewLifecycleOwner) { continueFl.isVisible = it }
+            viewModel.mapDistinct { it.devices }.observe { newDeviceAdapter.items = it }
+            viewModel.mapDistinct { it.isContinueButtonVisible }
+                .observe { continueFl.isVisible = it }
         }
     }
 
