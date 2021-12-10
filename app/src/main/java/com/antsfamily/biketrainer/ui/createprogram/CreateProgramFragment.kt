@@ -42,18 +42,14 @@ class CreateProgramFragment : BaseFragment(R.layout.fragment_create_program) {
     }
 
     private fun FragmentCreateProgramBinding.observeState() {
-        viewModel.mapDistinct { it.isLoading }
-            .observe(viewLifecycleOwner) { loadingView.isVisible = it }
-        viewModel.mapDistinct { it.programNameError }
-            .observe(viewLifecycleOwner) { programNameTil.error = it }
-        viewModel.mapDistinct { it.barItem }
-            .observe(viewLifecycleOwner) { workoutChart.item = it }
+        viewModel.mapDistinct { it.isLoading }.observe { loadingView.isVisible = it }
+        viewModel.mapDistinct { it.programNameError }.observe { programNameTil.error = it }
+        viewModel.mapDistinct { it.barItem }.observe { workoutChart.item = it }
         viewModel.mapDistinct { it.isEmptyBarChartVisible }
-            .observe(viewLifecycleOwner) { workoutChart.isEmptyDataVisible = it }
+            .observe { workoutChart.isEmptyDataVisible = it }
         viewModel.mapDistinct { it.isBarChartVisible }
-            .observe(viewLifecycleOwner) { workoutChart.isBarChartVisible = it }
-        viewModel.mapDistinct { it.workoutError }
-            .observe(viewLifecycleOwner) { workoutChart.error = it }
+            .observe { workoutChart.isBarChartVisible = it }
+        viewModel.mapDistinct { it.workoutError }.observe { workoutChart.error = it }
     }
 
     private fun FragmentCreateProgramBinding.observeEvents() {

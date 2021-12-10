@@ -5,6 +5,8 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.DialogFragmentNavigator
@@ -60,6 +62,9 @@ abstract class BaseFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
             }
             .also { it.show() }
     }
+
+    protected fun <X> LiveData<X>.observe(observer: Observer<X>) =
+        observe(viewLifecycleOwner, observer)
 
     fun hideSnackBar() {
         snackbar?.dismiss()

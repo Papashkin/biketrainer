@@ -43,14 +43,11 @@ class ProfilesFragment : BaseFragment(R.layout.fragment_profiles) {
 
     private fun observeState(binding: FragmentProfilesBinding) {
         with(binding) {
-            viewModel.state.mapDistinct { it.isLoading }
-                .observe(viewLifecycleOwner) { loadingView.isVisible = it }
-            viewModel.state.mapDistinct { it.isProfilesVisible }
-                .observe(viewLifecycleOwner) { profilesRv.isVisible = it }
-            viewModel.state.mapDistinct { it.isEmptyProfileVisible }
-                .observe(viewLifecycleOwner) { emptyListProfiles.isVisible = it }
-            viewModel.state.mapDistinct { it.profiles }
-                .observe(viewLifecycleOwner) { profilesAdapter.setProfileList(it) }
+            viewModel.mapDistinct { it.isLoading }.observe { loadingView.isVisible = it }
+            viewModel.mapDistinct { it.isProfilesVisible }.observe { profilesRv.isVisible = it }
+            viewModel.mapDistinct { it.isEmptyProfileVisible }
+                .observe { emptyListProfiles.isVisible = it }
+            viewModel.mapDistinct { it.profiles }.observe { profilesAdapter.setProfileList(it) }
         }
     }
 

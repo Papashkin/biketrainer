@@ -15,7 +15,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
-    @Inject lateinit var factory: SplashViewModel.Factory
+    @Inject
+    lateinit var factory: SplashViewModel.Factory
 
     override val viewModel: SplashViewModel by viewModelsFactory { factory.build() }
 
@@ -32,9 +33,6 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
     }
 
     private fun observeState(binding: FragmentSplashBinding) {
-        with(binding) {
-            viewModel.state.mapDistinct { it.isLoading }
-                .observe(viewLifecycleOwner) { loadingPb.isVisible = it }
-        }
+        viewModel.mapDistinct { it.isLoading }.observe { binding.loadingPb.isVisible = it }
     }
 }

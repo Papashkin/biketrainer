@@ -47,18 +47,12 @@ class ProgramInfoFragment : BaseFragment(R.layout.fragment_program_info) {
 
     private fun observeState(binding: FragmentProgramInfoBinding) {
         with(binding) {
-            viewModel.state.mapDistinct { it.isLoading }
-                .observe(viewLifecycleOwner) { loadingView.isVisible = it }
-            viewModel.state.mapDistinct { it.program }
-                .observe(viewLifecycleOwner) { setChart(it) }
-            viewModel.state.mapDistinct { it.programName }
-                .observe(viewLifecycleOwner) { programInfoNameTv.text = it }
-            viewModel.state.mapDistinct { it.duration }
-                .observe(viewLifecycleOwner) { programDurationTv.text = it }
-            viewModel.state.mapDistinct { it.maxPower }
-                .observe(viewLifecycleOwner) { programMaxPowerTv.text = it }
-            viewModel.state.mapDistinct { it.avgPower }
-                .observe(viewLifecycleOwner) { programAvgPowerTv.text = it }
+            viewModel.mapDistinct { it.isLoading }.observe { loadingView.isVisible = it }
+            viewModel.mapDistinct { it.program }.observe { setChart(it) }
+            viewModel.mapDistinct { it.programName }.observe { programInfoNameTv.text = it }
+            viewModel.mapDistinct { it.duration }.observe { programDurationTv.text = it }
+            viewModel.mapDistinct { it.maxPower }.observe { programMaxPowerTv.text = it }
+            viewModel.mapDistinct { it.avgPower }.observe { programAvgPowerTv.text = it }
         }
     }
 

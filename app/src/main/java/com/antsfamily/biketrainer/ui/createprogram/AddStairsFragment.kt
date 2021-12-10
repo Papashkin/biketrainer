@@ -34,14 +34,10 @@ class AddStairsFragment : BaseFragment(R.layout.fragment_add_stairs) {
     }
 
     private fun FragmentAddStairsBinding.observeState() {
-        viewModel.mapDistinct { it.startPowerError }
-            .observe(viewLifecycleOwner) { startPowerTil.error = it }
-        viewModel.mapDistinct { it.endPowerError }
-            .observe(viewLifecycleOwner) { endPowerTil.error = it }
-        viewModel.mapDistinct { it.durationError }
-            .observe(viewLifecycleOwner) { durationView.error = it }
-        viewModel.mapDistinct { it.stepCountError }
-            .observe(viewLifecycleOwner) { stepCountTil.error = it }
+        viewModel.mapDistinct { it.startPowerError }.observe { startPowerTil.error = it }
+        viewModel.mapDistinct { it.endPowerError }.observe { endPowerTil.error = it }
+        viewModel.mapDistinct { it.durationError }.observe { durationView.error = it }
+        viewModel.mapDistinct { it.stepCountError }.observe { stepCountTil.error = it }
     }
 
     private fun observeEvents() {

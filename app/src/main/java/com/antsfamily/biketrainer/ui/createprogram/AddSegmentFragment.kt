@@ -36,10 +36,8 @@ class AddSegmentFragment : BaseFragment(R.layout.fragment_add_segment) {
     }
 
     private fun FragmentAddSegmentBinding.observeState() {
-        viewModel.mapDistinct { it.powerError }
-            .observe(viewLifecycleOwner) { powerTil.error = it }
-        viewModel.mapDistinct { it.durationError }
-            .observe(viewLifecycleOwner) { durationView.error = it }
+        viewModel.mapDistinct { it.powerError }.observe { powerTil.error = it }
+        viewModel.mapDistinct { it.durationError }.observe { durationView.error = it }
     }
 
     private fun observeEvents() {
