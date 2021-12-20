@@ -2,9 +2,9 @@ package com.antsfamily.biketrainer.presentation.createprogram
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.antsfamily.biketrainer.data.models.workouts.WorkoutStairsParams
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import com.antsfamily.data.model.workouts.WorkoutStairsParams
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 

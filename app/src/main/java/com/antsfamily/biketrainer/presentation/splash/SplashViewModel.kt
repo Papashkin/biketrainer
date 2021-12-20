@@ -2,11 +2,11 @@ package com.antsfamily.biketrainer.presentation.splash
 
 import android.os.Handler
 import android.os.Looper
-import com.antsfamily.biketrainer.domain.Result
-import com.antsfamily.biketrainer.domain.usecase.GetSelectedProfileNameUseCase
 import com.antsfamily.biketrainer.navigation.SplashToCreateProfile
 import com.antsfamily.biketrainer.navigation.SplashToHome
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import com.antsfamily.domain.Result
+import com.antsfamily.domain.usecase.GetSelectedProfileNameUseCase
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 

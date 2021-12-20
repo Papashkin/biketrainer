@@ -2,13 +2,13 @@ package com.antsfamily.biketrainer.presentation.createprofile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.antsfamily.biketrainer.data.models.profile.Profile
-import com.antsfamily.biketrainer.domain.Result
-import com.antsfamily.biketrainer.domain.usecase.CreateProfileUseCase
 import com.antsfamily.biketrainer.navigation.CreateProfileToHome
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.biketrainer.util.orZero
+import com.antsfamily.data.model.profile.Profile
+import com.antsfamily.domain.Result
+import com.antsfamily.domain.usecase.CreateProfileUseCase
 import com.garmin.fit.Gender
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -125,8 +125,8 @@ class CreateProfileViewModel @AssistedInject constructor(
                 gender.toString(),
                 weight.toFloat(),
                 height.toFloat()
-            )
-        , ::handleResult)
+            ), ::handleResult
+        )
     }
 
     private fun handleResult(result: Result<String, Error>) {

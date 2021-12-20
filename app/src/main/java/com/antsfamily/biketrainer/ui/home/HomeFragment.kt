@@ -6,7 +6,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.data.models.profile.Profile
 import com.antsfamily.biketrainer.databinding.FragmentHomeBinding
 import com.antsfamily.biketrainer.presentation.home.HomeViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
@@ -15,6 +14,7 @@ import com.antsfamily.biketrainer.ui.home.adapter.CreateProgramAdapter
 import com.antsfamily.biketrainer.ui.home.adapter.ProgramsAdapter
 import com.antsfamily.biketrainer.ui.util.iconId
 import com.antsfamily.biketrainer.util.mapDistinct
+import com.antsfamily.data.model.profile.Profile
 import com.garmin.fit.Gender
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

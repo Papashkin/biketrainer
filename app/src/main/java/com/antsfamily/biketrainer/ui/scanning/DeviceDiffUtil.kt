@@ -2,11 +2,11 @@ package com.antsfamily.biketrainer.ui.scanning
 
 import android.os.Bundle
 import androidx.recyclerview.widget.DiffUtil
-import com.antsfamily.biketrainer.data.models.DeviceItem
+import com.antsfamily.data.model.DeviceItem
 
 class DeviceDiffUtil(
-    private val oldDevices: List<DeviceItem>,
-    private val newDevices: List<DeviceItem>
+    private val oldDevices: List<com.antsfamily.data.model.DeviceItem>,
+    private val newDevices: List<com.antsfamily.data.model.DeviceItem>
 ) : DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldListItemId: Int, newListItemId: Int): Boolean =

@@ -6,7 +6,7 @@ import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.data.models.program.ProgramData
+import com.antsfamily.data.model.program.ProgramData
 import com.antsfamily.biketrainer.databinding.FragmentWorkoutBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
@@ -132,13 +132,13 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
         workoutRemainingTimeTv.text = remainingTime.fullTimeFormat()
     }
 
-    private fun FragmentWorkoutBinding.setNextStep(data: ProgramData?) {
+    private fun FragmentWorkoutBinding.setNextStep(data: com.antsfamily.data.model.program.ProgramData?) {
         workoutNextStepValueTv.text = data?.let {
             getString(R.string.workout_next_round_value, it.power, it.duration.fullTimeFormat())
         } ?: EMPTY_DATA
     }
 
-    private fun FragmentWorkoutBinding.setProgramBarChart(data: List<ProgramData>?) {
+    private fun FragmentWorkoutBinding.setProgramBarChart(data: List<com.antsfamily.data.model.program.ProgramData>?) {
         val entities = data?.mapIndexed { index, _data ->
             BarEntry(index.toFloat(), _data.power.toFloat())
         }

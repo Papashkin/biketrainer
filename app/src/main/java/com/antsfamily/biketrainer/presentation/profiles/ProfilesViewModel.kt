@@ -1,9 +1,9 @@
 package com.antsfamily.biketrainer.presentation.profiles
 
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.data.models.profile.Profile
-import com.antsfamily.biketrainer.domain.usecase.GetAllProfilesUseCase
+import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import com.antsfamily.domain.usecase.GetAllProfilesUseCase
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch

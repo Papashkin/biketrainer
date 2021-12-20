@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.data.models.workouts.WorkoutIntervalParams
-import com.antsfamily.biketrainer.data.models.workouts.WorkoutSegmentParams
-import com.antsfamily.biketrainer.data.models.workouts.WorkoutStairsParams
+import com.antsfamily.data.model.workouts.WorkoutIntervalParams
+import com.antsfamily.data.model.workouts.WorkoutSegmentParams
+import com.antsfamily.data.model.workouts.WorkoutStairsParams
 import com.antsfamily.biketrainer.databinding.FragmentCreateProgramBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprogram.CreateProgramViewModel
@@ -70,13 +70,13 @@ class CreateProgramFragment : BaseFragment(R.layout.fragment_create_program) {
     private fun setupFragmentResultListener() {
         with(parentFragmentManager) {
             setFragmentResultListener(RQ_KEY_ADD_SEGMENT, viewLifecycleOwner) { _, bundle ->
-                viewModel.onSegmentAdd(bundle[KEY_ADD_SEGMENT] as? WorkoutSegmentParams)
+                viewModel.onSegmentAdd(bundle[KEY_ADD_SEGMENT] as? com.antsfamily.data.model.workouts.WorkoutSegmentParams)
             }
             setFragmentResultListener(RQ_KEY_ADD_INTERVAL, viewLifecycleOwner) { _, bundle ->
-                viewModel.onIntervalAdd(bundle[KEY_ADD_INTERVAL] as? WorkoutIntervalParams)
+                viewModel.onIntervalAdd(bundle[KEY_ADD_INTERVAL] as? com.antsfamily.data.model.workouts.WorkoutIntervalParams)
             }
             setFragmentResultListener(RQ_KEY_ADD_STAIRS, viewLifecycleOwner) { _, bundle ->
-                viewModel.onStairsAdd(bundle[KEY_ADD_STAIRS] as? WorkoutStairsParams)
+                viewModel.onStairsAdd(bundle[KEY_ADD_STAIRS] as? com.antsfamily.data.model.workouts.WorkoutStairsParams)
             }
         }
     }

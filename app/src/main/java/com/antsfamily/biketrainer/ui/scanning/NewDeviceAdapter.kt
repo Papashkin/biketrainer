@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.data.models.DeviceItem
+import com.antsfamily.data.model.DeviceItem
 import com.antsfamily.biketrainer.databinding.CardSensorInfoBinding
 import com.antsfamily.biketrainer.ui.scanning.DeviceDiffUtil.Companion.KEY_IS_LOADING_CHANGE
 import com.antsfamily.biketrainer.ui.scanning.DeviceDiffUtil.Companion.KEY_IS_SELECTED_CHANGE
@@ -15,13 +15,13 @@ import javax.inject.Inject
 
 class NewDeviceAdapter @Inject constructor() : RecyclerView.Adapter<NewDeviceAdapter.ViewHolder>() {
 
-    var items: List<DeviceItem> = emptyList()
+    var items: List<com.antsfamily.data.model.DeviceItem> = emptyList()
         set(value) {
             DiffUtil.calculateDiff(DeviceDiffUtil(items, value)).dispatchUpdatesTo(this)
             field = value
         }
 
-    private var onItemClickListener: ((item: DeviceItem) -> Unit)? = null
+    private var onItemClickListener: ((item: com.antsfamily.data.model.DeviceItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
         val binding =
@@ -52,7 +52,7 @@ class NewDeviceAdapter @Inject constructor() : RecyclerView.Adapter<NewDeviceAda
         }
     }
 
-    fun setOnItemClickListener(listener: (item: DeviceItem) -> Unit) {
+    fun setOnItemClickListener(listener: (item: com.antsfamily.data.model.DeviceItem) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -64,7 +64,7 @@ class NewDeviceAdapter @Inject constructor() : RecyclerView.Adapter<NewDeviceAda
     inner class ViewHolder(val binding: CardSensorInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DeviceItem) {
+        fun bind(item: com.antsfamily.data.model.DeviceItem) {
             with(binding) {
                 sensorInfoIv.setImageResource(item.device.antDeviceType.iconId())
                 updateSelection(item)
@@ -81,11 +81,11 @@ class NewDeviceAdapter @Inject constructor() : RecyclerView.Adapter<NewDeviceAda
             }
         }
 
-        fun updateSelection(item: DeviceItem) {
+        fun updateSelection(item: com.antsfamily.data.model.DeviceItem) {
             binding.sensorSelectCb.isChecked = item.isSelected
         }
 
-        fun updateLoading(item: DeviceItem) {
+        fun updateLoading(item: com.antsfamily.data.model.DeviceItem) {
             binding.loadingView.isVisible = item.isLoading
         }
     }
