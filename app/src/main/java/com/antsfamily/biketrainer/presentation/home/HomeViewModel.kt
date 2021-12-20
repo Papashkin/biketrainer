@@ -1,15 +1,14 @@
 package com.antsfamily.biketrainer.presentation.home
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.data.models.profile.Profile
-import com.antsfamily.biketrainer.data.models.profile.ProfileWithPrograms
-import com.antsfamily.biketrainer.data.models.program.Program
-import com.antsfamily.biketrainer.domain.usecase.SubscribeToProfileWithProgramsUseCase
 import com.antsfamily.biketrainer.navigation.HomeToCreateProgram
 import com.antsfamily.biketrainer.navigation.HomeToProgramInfo
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import com.antsfamily.data.model.profile.Profile
+import com.antsfamily.data.model.profile.ProfileWithPrograms
+import com.antsfamily.data.model.program.Program
+import com.antsfamily.domain.usecase.SubscribeToProfileWithProgramsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

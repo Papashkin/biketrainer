@@ -3,7 +3,7 @@ package com.antsfamily.biketrainer.ui.profiles.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.antsfamily.biketrainer.data.models.profile.Profile
+import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.biketrainer.databinding.CardProfileInfoBinding
 import java.util.*
 import javax.inject.Inject
@@ -11,14 +11,14 @@ import javax.inject.Inject
 class ProfilesAdapter @Inject constructor() :
     RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder>() {
 
-    private var profiles: ArrayList<Profile> = arrayListOf()
+    private var profiles: ArrayList<com.antsfamily.data.model.profile.Profile> = arrayListOf()
     private var deletedPosition: Int = -1
 
     private var onEditClickListener: ((id: Int) -> Unit)? = null
     private var onDeleteClickListener: ((position: Int) -> Unit)? = null
     private var onItemClickListener: ((id: Int) -> Unit)? = null
 
-    private lateinit var deletedItem: Profile
+    private lateinit var deletedItem: com.antsfamily.data.model.profile.Profile
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder =
         ProfileViewHolder(
@@ -59,7 +59,7 @@ class ProfilesAdapter @Inject constructor() :
 //        onEditClickListener?.invoke(selectedId)
     }
 
-    fun setProfileList(newProfiles: List<Profile>) {
+    fun setProfileList(newProfiles: List<com.antsfamily.data.model.profile.Profile>) {
         profiles.clear()
         profiles.addAll(newProfiles)
         notifyDataSetChanged()
@@ -68,7 +68,7 @@ class ProfilesAdapter @Inject constructor() :
     inner class ProfileViewHolder(private val binding: CardProfileInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(profile: Profile) {
+        fun bind(profile: com.antsfamily.data.model.profile.Profile) {
             with(binding) {
                 nameTv.text = profile.name
 //                this.root.setOnClickListener { onItemClickListener?.invoke(profile.getId()) }

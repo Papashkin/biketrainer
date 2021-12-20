@@ -1,12 +1,12 @@
 package com.antsfamily.biketrainer.presentation.programinfo
 
-import com.antsfamily.biketrainer.data.models.program.Program
-import com.antsfamily.biketrainer.data.models.program.ProgramData
-import com.antsfamily.biketrainer.domain.Result
-import com.antsfamily.biketrainer.domain.usecase.GetProgramUseCase
 import com.antsfamily.biketrainer.navigation.ProgramInfoToScan
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.biketrainer.util.fullTimeFormat
+import com.antsfamily.data.model.program.Program
+import com.antsfamily.data.model.program.ProgramData
+import com.antsfamily.domain.Result
+import com.antsfamily.domain.usecase.GetProgramUseCase
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 

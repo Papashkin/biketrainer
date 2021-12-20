@@ -2,7 +2,7 @@ package com.antsfamily.biketrainer.presentation.createprogram
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.antsfamily.biketrainer.data.models.workouts.WorkoutIntervalParams
+import com.antsfamily.data.model.workouts.WorkoutIntervalParams
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import dagger.assisted.AssistedFactory

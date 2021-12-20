@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.data.models.program.ProgramData
 import com.antsfamily.biketrainer.databinding.FragmentProgramInfoBinding
 import com.antsfamily.biketrainer.presentation.programinfo.ProgramInfoViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
@@ -14,6 +13,7 @@ import com.antsfamily.biketrainer.ui.util.*
 import com.antsfamily.biketrainer.ui.util.BarCharsStaticFields.BAR_WIDTH_95
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.antsfamily.biketrainer.util.timeFormat
+import com.antsfamily.data.model.program.ProgramData
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry

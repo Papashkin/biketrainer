@@ -2,7 +2,7 @@ package com.antsfamily.biketrainer.presentation.createprogram
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.antsfamily.biketrainer.data.models.workouts.WorkoutSegmentParams
+import com.antsfamily.data.model.workouts.WorkoutSegmentParams
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.biketrainer.util.orZero

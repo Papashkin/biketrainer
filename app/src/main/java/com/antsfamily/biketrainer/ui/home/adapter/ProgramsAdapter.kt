@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.data.models.program.Program
-import com.antsfamily.biketrainer.data.models.program.ProgramData
 import com.antsfamily.biketrainer.databinding.CardProgramInfoBinding
 import com.antsfamily.biketrainer.ui.util.hideAllLabels
 import com.antsfamily.biketrainer.ui.util.setHighlightedMode
 import com.antsfamily.biketrainer.util.fullTimeFormat
+import com.antsfamily.data.model.program.Program
+import com.antsfamily.data.model.program.ProgramData
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
