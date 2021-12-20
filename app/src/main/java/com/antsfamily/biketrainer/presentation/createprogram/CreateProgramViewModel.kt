@@ -127,8 +127,8 @@ class CreateProgramViewModel @AssistedInject constructor(
         changeState {
             it.copy(
                 barItem = workoutItem,
-                isEmptyBarChartVisible = it.barItem == null,
-                isBarChartVisible = it.barItem != null,
+                isEmptyBarChartVisible = dataSet.isEmpty(),
+                isBarChartVisible = dataSet.isNotEmpty(),
                 workoutError = null
             )
         }
