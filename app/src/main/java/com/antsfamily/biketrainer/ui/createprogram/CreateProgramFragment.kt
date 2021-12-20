@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import com.antsfamily.biketrainer.R
-import com.antsfamily.data.model.workouts.WorkoutIntervalParams
-import com.antsfamily.data.model.workouts.WorkoutSegmentParams
-import com.antsfamily.data.model.workouts.WorkoutStairsParams
 import com.antsfamily.biketrainer.databinding.FragmentCreateProgramBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprogram.CreateProgramViewModel
@@ -20,6 +17,9 @@ import com.antsfamily.biketrainer.ui.createprogram.AddStairsFragment.Companion.K
 import com.antsfamily.biketrainer.ui.createprogram.AddStairsFragment.Companion.RQ_KEY_ADD_STAIRS
 import com.antsfamily.biketrainer.ui.util.afterTextChange
 import com.antsfamily.biketrainer.util.mapDistinct
+import com.antsfamily.data.model.workouts.WorkoutIntervalParams
+import com.antsfamily.data.model.workouts.WorkoutSegmentParams
+import com.antsfamily.data.model.workouts.WorkoutStairsParams
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -70,13 +70,13 @@ class CreateProgramFragment : BaseFragment(R.layout.fragment_create_program) {
     private fun setupFragmentResultListener() {
         with(parentFragmentManager) {
             setFragmentResultListener(RQ_KEY_ADD_SEGMENT, viewLifecycleOwner) { _, bundle ->
-                viewModel.onSegmentAdd(bundle[KEY_ADD_SEGMENT] as? com.antsfamily.data.model.workouts.WorkoutSegmentParams)
+                viewModel.onSegmentAdd(bundle[KEY_ADD_SEGMENT] as? WorkoutSegmentParams)
             }
             setFragmentResultListener(RQ_KEY_ADD_INTERVAL, viewLifecycleOwner) { _, bundle ->
-                viewModel.onIntervalAdd(bundle[KEY_ADD_INTERVAL] as? com.antsfamily.data.model.workouts.WorkoutIntervalParams)
+                viewModel.onIntervalAdd(bundle[KEY_ADD_INTERVAL] as? WorkoutIntervalParams)
             }
             setFragmentResultListener(RQ_KEY_ADD_STAIRS, viewLifecycleOwner) { _, bundle ->
-                viewModel.onStairsAdd(bundle[KEY_ADD_STAIRS] as? com.antsfamily.data.model.workouts.WorkoutStairsParams)
+                viewModel.onStairsAdd(bundle[KEY_ADD_STAIRS] as? WorkoutStairsParams)
             }
         }
     }
