@@ -35,7 +35,7 @@
                 app:destination="@id/createWorkoutFragment" />
         <action
                 android:id="@+id/action_homeFragment_to_programInfoFragment"
-                app:destination="@id/programInfoFragment" />
+                app:destination="@id/workoutInfoFragment" />
     </fragment>
     <fragment
             android:id="@+id/profilesFragment"
@@ -107,10 +107,10 @@
             android:label="AddStairsFragment"
             tools:layout="@layout/fragment_add_stairs" />
     <fragment
-            android:id="@+id/programInfoFragment"
-            android:name="com.antsfamily.biketrainer.ui.programinfo.ProgramInfoFragment"
-            android:label="ProgramInfoFragment"
-            tools:layout="@layout/fragment_program_info">
+            android:id="@+id/workoutInfoFragment"
+            android:name="com.antsfamily.biketrainer.ui.workoutinfo.WorkoutInfoFragment"
+            android:label="WorkoutInfoFragment"
+            tools:layout="@layout/fragment_workout_info">
         <argument
                 android:name="programName"
                 app:argType="string" />

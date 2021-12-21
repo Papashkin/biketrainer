@@ -5,8 +5,8 @@ import com.antsfamily.biketrainer.ui.createprofile.CreateProfileFragmentDirectio
 import com.antsfamily.biketrainer.ui.createworkout.CreateWorkoutFragmentDirections
 import com.antsfamily.biketrainer.ui.devicesearch.ScanFragmentDirections
 import com.antsfamily.biketrainer.ui.home.HomeFragmentDirections
-import com.antsfamily.biketrainer.ui.programinfo.ProgramInfoFragmentDirections
 import com.antsfamily.biketrainer.ui.splash.SplashFragmentDirections
+import com.antsfamily.biketrainer.ui.workoutinfo.WorkoutInfoFragmentDirections
 
 fun Route.mapToDirection(): NavDirections = when (this) {
     is SplashToHome -> SplashFragmentDirections.actionStartFragmentToStartFragment(
@@ -21,7 +21,7 @@ fun Route.mapToDirection(): NavDirections = when (this) {
     is HomeToProgramInfo -> HomeFragmentDirections.actionHomeFragmentToProgramInfoFragment(
         programName
     )
-    is ProgramInfoToScan -> ProgramInfoFragmentDirections.actionProgramInfoFragmentToScanFragment(
+    is ProgramInfoToScan -> WorkoutInfoFragmentDirections.actionProgramInfoFragmentToScanFragment(
         programName
     )
     is ScanToWorkout -> ScanFragmentDirections.actionScanFragmentToWorkoutFragment(

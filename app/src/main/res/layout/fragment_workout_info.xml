@@ -25,7 +25,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_large"
-                android:text="@string/program_information_title"
+                android:text="@string/workout_information_title"
                 app:layout_constraintBottom_toBottomOf="@id/back_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/back_btn"
@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content">
 
                 <TextView
-                        android:id="@+id/program_info_name_tv"
+                        android:id="@+id/workout_info_name_tv"
                         style="@style/Title2.Bold.onSurface"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -58,29 +58,29 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/program_chart"
+                        android:id="@+id/workout_chart"
                         android:layout_width="match_parent"
                         android:layout_height="240dp"
                         android:layout_marginTop="@dimen/margin_small"
                         android:layout_marginHorizontal="@dimen/margin_small_extra"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/program_info_name_tv" />
+                        app:layout_constraintTop_toBottomOf="@+id/workout_info_name_tv" />
 
                 <TextView
-                        android:id="@+id/program_duration_hint_tv"
+                        android:id="@+id/workout_duration_hint_tv"
                         style="@style/Body3.Bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_large"
                         android:layout_marginTop="@dimen/margin_medium"
-                        android:text="@string/program_information_total_duration"
+                        android:text="@string/workout_information_total_duration"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/program_chart" />
+                        app:layout_constraintTop_toBottomOf="@id/workout_chart" />
 
                 <TextView
-                        android:id="@+id/program_duration_tv"
+                        android:id="@+id/workout_duration_tv"
                         style="@style/Body1.onSurface"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -89,22 +89,22 @@
                         tools:text="1:20:32"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/program_duration_hint_tv" />
+                        app:layout_constraintTop_toBottomOf="@id/workout_duration_hint_tv" />
 
                 <TextView
-                        android:id="@+id/program_max_power_hint_tv"
+                        android:id="@+id/workout_max_power_hint_tv"
                         style="@style/Body3.Bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_large"
                         android:layout_marginTop="@dimen/margin_pre_regular"
-                        android:text="@string/program_information_maximum_power"
+                        android:text="@string/workout_information_maximum_power"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/program_duration_tv" />
+                        app:layout_constraintTop_toBottomOf="@id/workout_duration_tv" />
 
                 <TextView
-                        android:id="@+id/program_max_power_tv"
+                        android:id="@+id/workout_max_power_tv"
                         style="@style/Body1.onSurface"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -113,22 +113,22 @@
                         tools:text="999 W"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/program_max_power_hint_tv" />
+                        app:layout_constraintTop_toBottomOf="@id/workout_max_power_hint_tv" />
 
                 <TextView
-                        android:id="@+id/program_avg_power_hint_tv"
+                        android:id="@+id/workout_avg_power_hint_tv"
                         style="@style/Body3.Bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_large"
                         android:layout_marginTop="@dimen/margin_pre_regular"
-                        android:text="@string/program_information_average_power"
+                        android:text="@string/workout_information_average_power"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/program_max_power_tv" />
+                        app:layout_constraintTop_toBottomOf="@id/workout_max_power_tv" />
 
                 <TextView
-                        android:id="@+id/program_avg_power_tv"
+                        android:id="@+id/workout_avg_power_tv"
                         style="@style/Body1.onSurface"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                         tools:text="666 W"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/program_avg_power_hint_tv" />
+                        app:layout_constraintTop_toBottomOf="@id/workout_avg_power_hint_tv" />
 
                 <com.google.android.material.button.MaterialButton
                         android:id="@+id/edit_btn"
@@ -146,10 +146,10 @@
                         android:layout_marginHorizontal="@dimen/margin_large"
                         android:layout_marginVertical="@dimen/margin_small_extra"
                         android:background="@drawable/bg_button_rounded_small"
-                        android:text="@string/program_information_edit"
+                        android:text="@string/workout_information_edit"
                         app:layout_constraintVertical_chainStyle="packed"
                         app:layout_constraintBottom_toTopOf="@id/run_workout_btn"
-                        app:layout_constraintTop_toBottomOf="@id/program_avg_power_tv"
+                        app:layout_constraintTop_toBottomOf="@id/workout_avg_power_tv"
                         app:layout_constraintVertical_bias="1" />
 
                 <com.google.android.material.button.MaterialButton
@@ -159,7 +159,7 @@
                         android:layout_marginHorizontal="@dimen/margin_large"
                         android:layout_marginVertical="@dimen/margin_small_extra"
                         android:background="@drawable/bg_button_rounded_small"
-                        android:text="@string/program_information_run_workout"
+                        android:text="@string/workout_information_run_workout"
                         app:layout_constraintBottom_toTopOf="@id/delete_btn"
                         app:layout_constraintTop_toBottomOf="@id/edit_btn"
                         app:layout_constraintVertical_bias="1" />
@@ -172,7 +172,7 @@
                         android:layout_marginTop="@dimen/margin_small_extra"
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:background="@drawable/bg_button_rounded_small"
-                        android:text="@string/program_information_delete"
+                        android:text="@string/workout_information_delete"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/run_workout_btn"
                         app:layout_constraintVertical_bias="1" />
