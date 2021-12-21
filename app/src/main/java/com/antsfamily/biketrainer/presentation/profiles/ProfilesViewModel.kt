@@ -3,7 +3,7 @@ package com.antsfamily.biketrainer.presentation.profiles
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.domain.usecase.GetAllProfilesUseCase
+import com.antsfamily.domain.usecase.profile.GetAllProfilesUseCase
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch

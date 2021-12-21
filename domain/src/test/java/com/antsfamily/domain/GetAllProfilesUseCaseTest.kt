@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.domain.antservice.orFalse
-import com.antsfamily.domain.usecase.GetAllProfilesUseCase
+import com.antsfamily.domain.usecase.profile.GetAllProfilesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
