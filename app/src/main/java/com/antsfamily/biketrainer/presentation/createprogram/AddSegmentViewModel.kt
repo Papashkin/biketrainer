@@ -2,10 +2,10 @@ package com.antsfamily.biketrainer.presentation.createprogram
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.antsfamily.data.model.workouts.WorkoutSegmentParams
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.biketrainer.util.orZero
+import com.antsfamily.data.model.workouts.WorkoutSegmentParams
+import com.antsfamily.domain.antservice.orZero
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import java.math.BigDecimal

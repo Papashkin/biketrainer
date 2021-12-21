@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.biketrainer.util.orZero
 import com.antsfamily.data.model.program.Program
 import com.antsfamily.data.model.program.ProgramData
 import com.antsfamily.domain.Result
 import com.antsfamily.domain.antservice.device.*
+import com.antsfamily.domain.antservice.orZero
 import com.antsfamily.domain.usecase.GetProgramUseCase
 import com.antsfamily.domain.usecase.WorkoutTimerFlow
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceType

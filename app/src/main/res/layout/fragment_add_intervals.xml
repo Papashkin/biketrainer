@@ -68,7 +68,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.antsfamily.biketrainer.ui.createprogram.view.DurationView
+                <com.antsfamily.biketrainer.ui.createworkout.view.DurationView
                         android:id="@+id/peak_power_duration_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.antsfamily.biketrainer.ui.createprogram.view.DurationView
+                <com.antsfamily.biketrainer.ui.createworkout.view.DurationView
                         android:id="@+id/rest_power_duration_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

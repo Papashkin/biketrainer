@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.antsfamily.biketrainer.navigation.CreateProfileToHome
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.biketrainer.util.orZero
 import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.domain.Result
+import com.antsfamily.domain.antservice.orZero
 import com.antsfamily.domain.usecase.CreateProfileUseCase
 import com.garmin.fit.Gender
 import dagger.assisted.AssistedFactory

@@ -5,7 +5,7 @@ import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.ui.util.BarCharsStaticFields.BAR_BORDER_WIDTH
 import com.antsfamily.biketrainer.ui.util.BarCharsStaticFields.BAR_GRANULARITY
 import com.antsfamily.biketrainer.ui.util.BarCharsStaticFields.FORMATTER_SCALE_X
-import com.antsfamily.biketrainer.util.orZero
+import com.antsfamily.domain.antservice.orZero
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarDataSet

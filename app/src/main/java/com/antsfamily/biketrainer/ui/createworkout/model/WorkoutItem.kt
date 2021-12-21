@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.createprogram.model
+package com.antsfamily.biketrainer.ui.createworkout.model
 
 import com.antsfamily.biketrainer.util.fullTimeFormat
 import com.antsfamily.biketrainer.util.timeFormat

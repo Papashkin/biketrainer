@@ -11,14 +11,14 @@ import javax.inject.Inject
 class ProfilesAdapter @Inject constructor() :
     RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder>() {
 
-    private var profiles: ArrayList<com.antsfamily.data.model.profile.Profile> = arrayListOf()
+    private var profiles: ArrayList<Profile> = arrayListOf()
     private var deletedPosition: Int = -1
 
     private var onEditClickListener: ((id: Int) -> Unit)? = null
     private var onDeleteClickListener: ((position: Int) -> Unit)? = null
     private var onItemClickListener: ((id: Int) -> Unit)? = null
 
-    private lateinit var deletedItem: com.antsfamily.data.model.profile.Profile
+    private lateinit var deletedItem: Profile
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileViewHolder =
         ProfileViewHolder(
@@ -59,7 +59,7 @@ class ProfilesAdapter @Inject constructor() :
 //        onEditClickListener?.invoke(selectedId)
     }
 
-    fun setProfileList(newProfiles: List<com.antsfamily.data.model.profile.Profile>) {
+    fun setProfileList(newProfiles: List<Profile>) {
         profiles.clear()
         profiles.addAll(newProfiles)
         notifyDataSetChanged()
@@ -68,7 +68,7 @@ class ProfilesAdapter @Inject constructor() :
     inner class ProfileViewHolder(private val binding: CardProfileInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(profile: com.antsfamily.data.model.profile.Profile) {
+        fun bind(profile: Profile) {
             with(binding) {
                 nameTv.text = profile.name
 //                this.root.setOnClickListener { onItemClickListener?.invoke(profile.getId()) }

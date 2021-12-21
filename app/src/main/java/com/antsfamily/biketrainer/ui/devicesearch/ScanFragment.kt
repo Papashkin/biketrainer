@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.scanning
+package com.antsfamily.biketrainer.ui.devicesearch
 
 import android.content.Intent
 import android.net.Uri
