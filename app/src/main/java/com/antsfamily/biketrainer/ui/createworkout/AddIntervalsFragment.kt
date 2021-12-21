@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.createprogram
+package com.antsfamily.biketrainer.ui.createworkout
 
 import android.os.Bundle
 import android.view.View
@@ -12,7 +12,7 @@ import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.afterTextChange
 import com.antsfamily.biketrainer.util.mapDistinct
-import com.antsfamily.biketrainer.util.orZero
+import com.antsfamily.domain.antservice.orZero
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

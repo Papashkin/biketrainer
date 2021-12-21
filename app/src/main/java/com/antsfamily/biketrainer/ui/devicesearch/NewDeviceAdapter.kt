@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.scanning
+package com.antsfamily.biketrainer.ui.devicesearch
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.antsfamily.biketrainer.R
-import com.antsfamily.data.model.DeviceItem
 import com.antsfamily.biketrainer.databinding.CardSensorInfoBinding
-import com.antsfamily.biketrainer.ui.scanning.DeviceDiffUtil.Companion.KEY_IS_LOADING_CHANGE
-import com.antsfamily.biketrainer.ui.scanning.DeviceDiffUtil.Companion.KEY_IS_SELECTED_CHANGE
+import com.antsfamily.biketrainer.ui.devicesearch.DeviceDiffUtil.Companion.KEY_IS_LOADING_CHANGE
+import com.antsfamily.biketrainer.ui.devicesearch.DeviceDiffUtil.Companion.KEY_IS_SELECTED_CHANGE
 import javax.inject.Inject
 
 class NewDeviceAdapter @Inject constructor() : RecyclerView.Adapter<NewDeviceAdapter.ViewHolder>() {

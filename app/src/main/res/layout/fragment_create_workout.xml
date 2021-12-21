@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <com.antsfamily.biketrainer.ui.createprogram.view.WorkoutChart
+                <com.antsfamily.biketrainer.ui.createworkout.view.WorkoutChart
                         android:id="@+id/workout_chart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

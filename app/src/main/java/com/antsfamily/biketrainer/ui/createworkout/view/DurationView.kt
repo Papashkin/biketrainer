@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.createprogram.view
+package com.antsfamily.biketrainer.ui.createworkout.view
 
 import android.content.Context
 import android.util.AttributeSet

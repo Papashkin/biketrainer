@@ -8,7 +8,7 @@ import com.antsfamily.biketrainer.navigation.CreateProgramToAddSegment
 import com.antsfamily.biketrainer.navigation.CreateProgramToAddStairs
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.biketrainer.ui.createprogram.model.WorkoutItem
+import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutItem
 import com.antsfamily.data.model.program.ProgramData
 import com.antsfamily.data.model.workouts.WorkoutIntervalParams
 import com.antsfamily.data.model.workouts.WorkoutSegmentParams

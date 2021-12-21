@@ -1,8 +1,7 @@
-package com.antsfamily.biketrainer.ui.scanning
+package com.antsfamily.biketrainer.ui.devicesearch
 
 import android.os.Bundle
 import androidx.recyclerview.widget.DiffUtil
-import com.antsfamily.data.model.DeviceItem
 
 class DeviceDiffUtil(
     private val oldDevices: List<com.antsfamily.data.model.DeviceItem>,

@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.createprogram.view
+package com.antsfamily.biketrainer.ui.createworkout.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,7 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.ViewWorkoutChartBinding
-import com.antsfamily.biketrainer.ui.createprogram.model.WorkoutItem
+import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutItem
 import com.antsfamily.biketrainer.util.timeFormat
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet

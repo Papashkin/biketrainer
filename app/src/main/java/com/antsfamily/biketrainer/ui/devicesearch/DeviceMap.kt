@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.scanning
+package com.antsfamily.biketrainer.ui.devicesearch
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

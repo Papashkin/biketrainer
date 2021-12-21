@@ -31,8 +31,8 @@
                 android:id="@+id/action_startFragment_to_profilesFragment"
                 app:destination="@id/profilesFragment" />
         <action
-                android:id="@+id/action_homeFragment_to_createProgramFragment"
-                app:destination="@id/createProgramFragment" />
+                android:id="@+id/action_homeFragment_to_createWorkoutFragment"
+                app:destination="@id/createWorkoutFragment" />
         <action
                 android:id="@+id/action_homeFragment_to_programInfoFragment"
                 app:destination="@id/programInfoFragment" />
@@ -43,10 +43,10 @@
             android:label="ProfilesFragment"
             tools:layout="@layout/fragment_profiles" />
     <fragment
-            android:id="@+id/createProgramFragment"
-            android:name="com.antsfamily.biketrainer.ui.createprogram.CreateProgramFragment"
-            android:label="ProgramSettingsFragment"
-            tools:layout="@layout/fragment_create_program">
+            android:id="@+id/createWorkoutFragment"
+            android:name="com.antsfamily.biketrainer.ui.createworkout.CreateWorkoutFragment"
+            android:label="CreateWorkoutFragment"
+            tools:layout="@layout/fragment_create_workout">
         <action
                 android:id="@+id/action_createProgramFragment_to_addSegmentFragment"
                 app:destination="@id/addSegmentFragment" />
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
             android:id="@+id/scanFragment"
-            android:name="com.antsfamily.biketrainer.ui.scanning.ScanFragment"
+            android:name="com.antsfamily.biketrainer.ui.devicesearch.ScanFragment"
             android:label="ScanFragment"
             tools:layout="@layout/fragment_scan">
         <action
@@ -93,17 +93,17 @@
     </fragment>
     <fragment
             android:id="@+id/addSegmentFragment"
-            android:name="com.antsfamily.biketrainer.ui.createprogram.AddSegmentFragment"
+            android:name="com.antsfamily.biketrainer.ui.createworkout.AddSegmentFragment"
             android:label="AddSegmentFragment"
             tools:layout="@layout/fragment_add_segment" />
     <fragment
             android:id="@+id/addIntervalsFragment"
-            android:name="com.antsfamily.biketrainer.ui.createprogram.AddIntervalsFragment"
+            android:name="com.antsfamily.biketrainer.ui.createworkout.AddIntervalsFragment"
             android:label="AddIntervalsFragment"
             tools:layout="@layout/fragment_add_intervals" />
     <fragment
             android:id="@+id/addStairsFragment"
-            android:name="com.antsfamily.biketrainer.ui.createprogram.AddStairsFragment"
+            android:name="com.antsfamily.biketrainer.ui.createworkout.AddStairsFragment"
             android:label="AddStairsFragment"
             tools:layout="@layout/fragment_add_stairs" />
     <fragment
