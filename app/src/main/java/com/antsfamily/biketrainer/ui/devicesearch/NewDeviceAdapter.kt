@@ -10,6 +10,7 @@ import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.CardSensorInfoBinding
 import com.antsfamily.biketrainer.ui.devicesearch.DeviceDiffUtil.Companion.KEY_IS_LOADING_CHANGE
 import com.antsfamily.biketrainer.ui.devicesearch.DeviceDiffUtil.Companion.KEY_IS_SELECTED_CHANGE
+import com.antsfamily.data.model.DeviceItem
 import javax.inject.Inject
 
 class NewDeviceAdapter @Inject constructor() : RecyclerView.Adapter<NewDeviceAdapter.ViewHolder>() {
