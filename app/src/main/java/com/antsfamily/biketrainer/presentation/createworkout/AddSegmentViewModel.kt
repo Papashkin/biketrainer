@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.presentation.createprogram
+package com.antsfamily.biketrainer.presentation.createworkout
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

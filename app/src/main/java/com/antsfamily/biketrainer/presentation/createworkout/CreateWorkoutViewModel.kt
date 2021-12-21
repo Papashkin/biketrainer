@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.presentation.createprogram
+package com.antsfamily.biketrainer.presentation.createworkout
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,13 +21,13 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import java.util.*
 
-class CreateProgramViewModel @AssistedInject constructor(
+class CreateWorkoutViewModel @AssistedInject constructor(
     private val saveWorkoutUseCase: SaveWorkoutUseCase
-) : StatefulViewModel<CreateProgramViewModel.State>(State()) {
+) : StatefulViewModel<CreateWorkoutViewModel.State>(State()) {
 
     @AssistedFactory
     interface Factory {
-        fun build() : CreateProgramViewModel
+        fun build() : CreateWorkoutViewModel
     }
 
     data class State(
@@ -99,13 +99,13 @@ class CreateProgramViewModel @AssistedInject constructor(
 
     private fun setInterval(workout: WorkoutIntervalParams) {
         for (interval in 0 until workout.times) {
-            setSegment(WorkoutSegmentParams(workout.peakPower, workout.restDuration))
+            setSegment(WorkoutSegmentParams(workout.peakPower, workout.peakDuration))
             setSegment(WorkoutSegmentParams(workout.restPower, workout.restDuration))
         }
     }
 
     private fun setStairs(workout: WorkoutStairsParams) {
-        val stepPower = (workout.endPower - workout.startPower) / workout.steps
+        val stepPower = (workout.endPower - workout.startPower) / workout.steps.minus(1)
         val durationForEachStep = workout.duration / workout.steps
         for (index in 0 until workout.steps) {
             setSegment(
