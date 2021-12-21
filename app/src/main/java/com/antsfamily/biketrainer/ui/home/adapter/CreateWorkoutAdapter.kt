@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.antsfamily.biketrainer.databinding.CardProgramAddNewBinding
 import javax.inject.Inject
 
-class CreateProgramAdapter @Inject constructor() :
-    RecyclerView.Adapter<CreateProgramAdapter.CreateProgramViewHolder>() {
+class CreateWorkoutAdapter @Inject constructor() :
+    RecyclerView.Adapter<CreateWorkoutAdapter.CreateProgramViewHolder>() {
 
     private var onCreateProgramClickListener: (() -> Unit)? = null
 

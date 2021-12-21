@@ -10,8 +10,8 @@ import com.antsfamily.biketrainer.databinding.FragmentHomeBinding
 import com.antsfamily.biketrainer.presentation.home.HomeViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
-import com.antsfamily.biketrainer.ui.home.adapter.CreateProgramAdapter
-import com.antsfamily.biketrainer.ui.home.adapter.ProgramsAdapter
+import com.antsfamily.biketrainer.ui.home.adapter.CreateWorkoutAdapter
+import com.antsfamily.biketrainer.ui.home.adapter.WorkoutsAdapter
 import com.antsfamily.biketrainer.ui.util.iconId
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.antsfamily.data.model.profile.Profile
@@ -28,10 +28,10 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     lateinit var factory: HomeViewModel.Factory
 
     @Inject
-    lateinit var programsAdapter: ProgramsAdapter
+    lateinit var workoutsAdapter: WorkoutsAdapter
 
     @Inject
-    lateinit var createProgramAdapter: CreateProgramAdapter
+    lateinit var createWorkoutAdapter: CreateWorkoutAdapter
 
     override val viewModel by viewModelsFactory { factory.build(args.profileName) }
 
@@ -52,7 +52,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
             viewModel.mapDistinct { it.isEmptyProgramsVisible }
                 .observe { emptyProgramsCl.isVisible = it }
             viewModel.mapDistinct { it.profile }.observe { setupProfile(it) }
-            viewModel.mapDistinct { it.programs }.observe { programsAdapter.items = it }
+            viewModel.mapDistinct { it.programs }.observe { workoutsAdapter.submitList(it) }
         }
     }
 
@@ -67,13 +67,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
         with(binding) {
             createProgramBtn.setOnClickListener { viewModel.onCreateProgramClick() }
             settingsIb.setOnClickListener { viewModel.onSettingsClick() }
-            createProgramAdapter.apply {
+            createWorkoutAdapter.apply {
                 setOnCreateProgramClickListener { viewModel.onCreateProgramClick() }
             }
-            programsAdapter.apply {
+            workoutsAdapter.apply {
                 setOnItemClickListener { viewModel.onProgramClick(it) }
             }
-            homeProgramsRv.adapter = ConcatAdapter(programsAdapter, createProgramAdapter)
+            homeProgramsRv.adapter = ConcatAdapter(workoutsAdapter, createWorkoutAdapter)
         }
     }
 }

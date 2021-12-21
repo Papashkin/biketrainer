@@ -2,9 +2,10 @@ package com.antsfamily.biketrainer.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.databinding.CardProgramInfoBinding
+import com.antsfamily.biketrainer.databinding.CardWorkoutInfoBinding
 import com.antsfamily.biketrainer.ui.util.hideAllLabels
 import com.antsfamily.biketrainer.ui.util.setHighlightedMode
 import com.antsfamily.biketrainer.util.fullTimeFormat
@@ -16,20 +17,19 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import javax.inject.Inject
 
-class ProgramsAdapter @Inject constructor() :
-    RecyclerView.Adapter<ProgramsAdapter.ProgramViewHolder>() {
+class WorkoutsAdapter @Inject constructor() :
+    ListAdapter<Program, WorkoutsAdapter.ProgramViewHolder>(WorkoutsDiffUtil()) {
 
-    var items: List<Program> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+//    var items: List<Program> = emptyList()
+//        set(value) {
+//            field = value
+//            notifyDataSetChanged()
+//        }
 
     private var onItemClickListener: ((item: Program) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProgramViewHolder {
-        val binding =
-            CardProgramInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = CardWorkoutInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProgramViewHolder(binding)
     }
 
@@ -37,13 +37,13 @@ class ProgramsAdapter @Inject constructor() :
         onItemClickListener = listener
     }
 
-    override fun getItemCount(): Int = items.size
+//    override fun getItemCount(): Int = itemCount items.size
 
     override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(getItem(position))
     }
 
-    inner class ProgramViewHolder(private val binding: CardProgramInfoBinding) :
+    inner class ProgramViewHolder(private val binding: CardWorkoutInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         private val emptyFormatter = object : ValueFormatter() {

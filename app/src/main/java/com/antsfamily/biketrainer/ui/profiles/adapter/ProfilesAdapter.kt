@@ -2,6 +2,7 @@ package com.antsfamily.biketrainer.ui.profiles.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.biketrainer.databinding.CardProfileInfoBinding
@@ -9,9 +10,9 @@ import java.util.*
 import javax.inject.Inject
 
 class ProfilesAdapter @Inject constructor() :
-    RecyclerView.Adapter<ProfilesAdapter.ProfileViewHolder>() {
+    ListAdapter<Profile, ProfilesAdapter.ProfileViewHolder>(ProfilesDiffUtil()) {
 
-    private var profiles: ArrayList<Profile> = arrayListOf()
+//    private var profiles: ArrayList<Profile> = arrayListOf()
     private var deletedPosition: Int = -1
 
     private var onEditClickListener: ((id: Int) -> Unit)? = null
@@ -27,10 +28,10 @@ class ProfilesAdapter @Inject constructor() :
             )
         )
 
-    override fun getItemCount(): Int = profiles.size
+//    override fun getItemCount(): Int = profiles.size
 
     override fun onBindViewHolder(holder: ProfileViewHolder, position: Int) {
-        holder.bind(this.profiles[position])
+        holder.bind(this.getItem(position))
     }
 
     fun setOnEditClickListener(listener: ((id: Int) -> Unit)) {
@@ -46,11 +47,11 @@ class ProfilesAdapter @Inject constructor() :
     }
 
     fun removeItem(position: Int) {
-        deletedItem = profiles[position]
-        deletedPosition = position
-        profiles.removeAt(position)
-        notifyItemRemoved(position)
-        onDeleteClickListener?.invoke(position)
+//        deletedItem = profiles[position]
+//        deletedPosition = position
+//        profiles.removeAt(position)
+//        notifyItemRemoved(position)
+//        onDeleteClickListener?.invoke(position)
     }
 
     fun editItem(position: Int) {
@@ -59,11 +60,11 @@ class ProfilesAdapter @Inject constructor() :
 //        onEditClickListener?.invoke(selectedId)
     }
 
-    fun setProfileList(newProfiles: List<Profile>) {
-        profiles.clear()
-        profiles.addAll(newProfiles)
-        notifyDataSetChanged()
-    }
+//    fun setProfileList(newProfiles: List<Profile>) {
+//        profiles.clear()
+//        profiles.addAll(newProfiles)
+//        notifyDataSetChanged()
+//    }
 
     inner class ProfileViewHolder(private val binding: CardProfileInfoBinding) :
         RecyclerView.ViewHolder(binding.root) {

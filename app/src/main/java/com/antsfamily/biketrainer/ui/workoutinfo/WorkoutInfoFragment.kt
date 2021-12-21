@@ -1,11 +1,11 @@
-package com.antsfamily.biketrainer.ui.programinfo
+package com.antsfamily.biketrainer.ui.workoutinfo
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.databinding.FragmentProgramInfoBinding
+import com.antsfamily.biketrainer.databinding.FragmentWorkoutInfoBinding
 import com.antsfamily.biketrainer.presentation.programinfo.ProgramInfoViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
@@ -21,9 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ProgramInfoFragment : BaseFragment(R.layout.fragment_program_info) {
+class WorkoutInfoFragment : BaseFragment(R.layout.fragment_workout_info) {
 
-    private val args: ProgramInfoFragmentArgs by navArgs()
+    private val args: WorkoutInfoFragmentArgs by navArgs()
 
     @Inject
     lateinit var barChartGestureListener: BarChartGestureListener
@@ -39,34 +39,34 @@ class ProgramInfoFragment : BaseFragment(R.layout.fragment_program_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(FragmentProgramInfoBinding.bind(view)) {
+        with(FragmentWorkoutInfoBinding.bind(view)) {
             observeState(this)
             bindInteractions(this)
         }
     }
 
-    private fun observeState(binding: FragmentProgramInfoBinding) {
+    private fun observeState(binding: FragmentWorkoutInfoBinding) {
         with(binding) {
             viewModel.mapDistinct { it.isLoading }.observe { loadingView.isVisible = it }
             viewModel.mapDistinct { it.program }.observe { setChart(it) }
-            viewModel.mapDistinct { it.programName }.observe { programInfoNameTv.text = it }
-            viewModel.mapDistinct { it.duration }.observe { programDurationTv.text = it }
-            viewModel.mapDistinct { it.maxPower }.observe { programMaxPowerTv.text = it }
-            viewModel.mapDistinct { it.avgPower }.observe { programAvgPowerTv.text = it }
+            viewModel.mapDistinct { it.programName }.observe { workoutInfoNameTv.text = it }
+            viewModel.mapDistinct { it.duration }.observe { workoutDurationTv.text = it }
+            viewModel.mapDistinct { it.maxPower }.observe { workoutMaxPowerTv.text = it }
+            viewModel.mapDistinct { it.avgPower }.observe { workoutAvgPowerTv.text = it }
         }
     }
 
-    private fun bindInteractions(binding: FragmentProgramInfoBinding) {
+    private fun bindInteractions(binding: FragmentWorkoutInfoBinding) {
         with(binding) {
             backBtn.setOnClickListener { viewModel.onBackClick() }
             editBtn.setOnClickListener { viewModel.onEditClick() }
             runWorkoutBtn.setOnClickListener { viewModel.onRunWorkoutClick() }
             deleteBtn.setOnClickListener { viewModel.onDeleteClick() }
-            barChartGestureListener.setBarChart(programChart)
+            barChartGestureListener.setBarChart(workoutChart)
         }
     }
 
-    private fun FragmentProgramInfoBinding.setChart(programData: List<ProgramData>) {
+    private fun FragmentWorkoutInfoBinding.setChart(programData: List<ProgramData>) {
         if (programData.isEmpty()) {
             return
         }
@@ -75,7 +75,7 @@ class ProgramInfoFragment : BaseFragment(R.layout.fragment_program_info) {
         }
         val labels = programData.map { it.duration.timeFormat() }
         barChartGestureListener.setLabels(labels)
-        with(programChart) {
+        with(workoutChart) {
             setDefaultBaseSettings(entries.size)
             data = BarData(
                 BarDataSet(entries, "")

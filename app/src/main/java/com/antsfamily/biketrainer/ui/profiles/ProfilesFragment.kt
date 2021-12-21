@@ -47,7 +47,7 @@ class ProfilesFragment : BaseFragment(R.layout.fragment_profiles) {
             viewModel.mapDistinct { it.isProfilesVisible }.observe { profilesRv.isVisible = it }
             viewModel.mapDistinct { it.isEmptyProfileVisible }
                 .observe { emptyListProfiles.isVisible = it }
-            viewModel.mapDistinct { it.profiles }.observe { profilesAdapter.setProfileList(it) }
+            viewModel.mapDistinct { it.profiles }.observe { profilesAdapter.submitList(it) }
         }
     }
 

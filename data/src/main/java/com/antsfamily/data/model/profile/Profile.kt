@@ -2,7 +2,6 @@ package com.antsfamily.data.model.profile
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import javax.inject.Inject
 
 /**
  * [Profile] - data class with information about user
@@ -13,7 +12,7 @@ import javax.inject.Inject
  * @param height - user height;
  */
 @Entity
-class Profile @Inject constructor(
+data class Profile(
     @PrimaryKey var name: String,
     var age: Int,
     var gender: String,

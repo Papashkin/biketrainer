@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.recyclerview.widget.DiffUtil
 
 class DeviceDiffUtil(
-    private val oldDevices: List<com.antsfamily.data.model.DeviceItem>,
-    private val newDevices: List<com.antsfamily.data.model.DeviceItem>
+    private val oldDevices: List<DeviceItem>,
+    private val newDevices: List<DeviceItem>
 ) : DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldListItemId: Int, newListItemId: Int): Boolean =

@@ -78,7 +78,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/home_programs_tv"
             tools:itemCount="5"
-            tools:listitem="@layout/card_program_info" />
+            tools:listitem="@layout/card_workout_info" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/empty_programs_cl"
