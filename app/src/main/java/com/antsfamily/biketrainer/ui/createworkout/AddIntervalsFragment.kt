@@ -7,7 +7,7 @@ import androidx.fragment.app.setFragmentResult
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentAddIntervalsBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
-import com.antsfamily.biketrainer.presentation.createprogram.AddIntervalsViewModel
+import com.antsfamily.biketrainer.presentation.createworkout.AddIntervalsViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.afterTextChange
@@ -50,21 +50,26 @@ class AddIntervalsFragment : BaseFragment(R.layout.fragment_add_intervals) {
     }
 
     private fun FragmentAddIntervalsBinding.bindInteractions() {
-        addBtn.setOnClickListener {
-            viewModel.onAddClick(
-                peakPower = peakPowerEt.text.toString().toIntOrNull().orZero(),
-                restPower = restPowerEt.text.toString().toIntOrNull().orZero(),
-                peakDuration = peakPowerDurationView.getValue(),
-                restDuration = restPowerDurationView.getValue(),
-                count = timesEt.text.toString().toIntOrNull().orZero()
-            )
+        addBtn.setOnClickListener { proceedAddIntervals() }
+        peakPowerDurationView.setOnCodeChangedListener { viewModel.onPeakDurationChange() }
+        restPowerDurationView.apply {
+            setOnCodeChangedListener { viewModel.onRestDurationChange() }
+            setOnDoneActionListener { proceedAddIntervals() }
         }
-        peakPowerDurationView.setOnDurationChangeListener { viewModel.onPeakDurationChange() }
-        restPowerDurationView.setOnDurationChangeListener { viewModel.onRestDurationChange() }
         peakPowerEt.afterTextChange { viewModel.onPeakPowerTextChange() }
         restPowerEt.afterTextChange { viewModel.onRestPowerTextChange() }
         timesEt.afterTextChange { viewModel.onCountChange() }
         backBtn.setOnClickListener { viewModel.onBackClick() }
+    }
+
+    private fun FragmentAddIntervalsBinding.proceedAddIntervals() {
+        viewModel.onAddClick(
+            peakPower = peakPowerEt.text.toString().toIntOrNull().orZero(),
+            restPower = restPowerEt.text.toString().toIntOrNull().orZero(),
+            peakDuration = peakPowerDurationView.getDurationValue(),
+            restDuration = restPowerDurationView.getDurationValue(),
+            count = timesEt.text.toString().toIntOrNull().orZero()
+        )
     }
 
     companion object {

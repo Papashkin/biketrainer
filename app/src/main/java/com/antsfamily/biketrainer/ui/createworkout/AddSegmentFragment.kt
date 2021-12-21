@@ -7,7 +7,7 @@ import androidx.fragment.app.setFragmentResult
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentAddSegmentBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
-import com.antsfamily.biketrainer.presentation.createprogram.AddSegmentViewModel
+import com.antsfamily.biketrainer.presentation.createworkout.AddSegmentViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.afterTextChange
@@ -47,15 +47,20 @@ class AddSegmentFragment : BaseFragment(R.layout.fragment_add_segment) {
     }
 
     private fun FragmentAddSegmentBinding.bindInteractions() {
-        addBtn.setOnClickListener {
-            viewModel.onAddClick(
-                powerEt.text.toString().toIntOrNull().orZero(),
-                durationView.getValue()
-            )
+        addBtn.setOnClickListener { proceedAddSegment() }
+        durationView.apply {
+            setOnCodeChangedListener { viewModel.onDurationChange() }
+            setOnDoneActionListener { proceedAddSegment() }
         }
-        durationView.setOnDurationChangeListener { viewModel.onDurationChange() }
         powerEt.afterTextChange { viewModel.onPowerTextChange() }
         backBtn.setOnClickListener { viewModel.onBackClick() }
+    }
+
+    private fun FragmentAddSegmentBinding.proceedAddSegment() {
+        viewModel.onAddClick(
+            powerEt.text.toString().toIntOrNull().orZero(),
+            durationView.getDurationValue()
+        )
     }
 
     companion object {

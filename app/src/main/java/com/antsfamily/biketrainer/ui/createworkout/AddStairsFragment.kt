@@ -7,7 +7,7 @@ import androidx.fragment.app.setFragmentResult
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentAddStairsBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
-import com.antsfamily.biketrainer.presentation.createprogram.AddStairsViewModel
+import com.antsfamily.biketrainer.presentation.createworkout.AddStairsViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.util.afterTextChange
@@ -47,19 +47,24 @@ class AddStairsFragment : BaseFragment(R.layout.fragment_add_stairs) {
     }
 
     private fun FragmentAddStairsBinding.bindInteractions() {
-        addBtn.setOnClickListener {
-            viewModel.onAddClick(
-                startPower = startPowerEt.text.toString().toIntOrNull().orZero(),
-                endPower = endPowerEt.text.toString().toIntOrNull().orZero(),
-                stepCount = stepCountEt.text.toString().toIntOrNull().orZero(),
-                duration = durationView.getValue()
-            )
-        }
-        durationView.setOnDurationChangeListener { viewModel.onDurationChange() }
+        addBtn.setOnClickListener { proceedAddStairs() }
         startPowerEt.afterTextChange { viewModel.onStartPowerTextChange() }
         endPowerEt.afterTextChange { viewModel.onEndPowerTextChange() }
         stepCountEt.afterTextChange { viewModel.onStepCountChange() }
         backBtn.setOnClickListener { viewModel.onBackClick() }
+        durationView.apply {
+            setOnCodeChangedListener { viewModel.onDurationChange() }
+            setOnDoneActionListener { proceedAddStairs() }
+        }
+    }
+
+    private fun FragmentAddStairsBinding.proceedAddStairs() {
+        viewModel.onAddClick(
+            startPower = startPowerEt.text.toString().toIntOrNull().orZero(),
+            endPower = endPowerEt.text.toString().toIntOrNull().orZero(),
+            stepCount = stepCountEt.text.toString().toIntOrNull().orZero(),
+            duration = durationView.getDurationValue()
+        )
     }
 
     companion object {

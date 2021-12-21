@@ -1,13 +1,19 @@
 package com.antsfamily.biketrainer.ui.createworkout.view
 
 import android.content.Context
+import android.text.InputFilter
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.ViewDurationBinding
+import com.antsfamily.biketrainer.ui.util.afterTextChange
 import com.antsfamily.biketrainer.ui.util.getStyledAttributes
+import com.antsfamily.biketrainer.ui.util.setOnDoneActionListener
+import com.antsfamily.biketrainer.ui.util.showKeyboard
+import com.antsfamily.domain.antservice.orZero
 
 class DurationView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -16,7 +22,13 @@ class DurationView @JvmOverloads constructor(
     private val binding: ViewDurationBinding =
         ViewDurationBinding.inflate(LayoutInflater.from(context), this, true)
 
-    private var onDurationChangeListener: (() -> Unit)? = null
+    private var onCodeChangedListener: (() -> Unit)? = null
+
+    var text: String = ""
+        set(value) {
+            field = value
+            renderCode()
+        }
 
     var error: String? = null
         set(value) {
@@ -28,41 +40,49 @@ class DurationView @JvmOverloads constructor(
         context.getStyledAttributes(attrs, R.styleable.DurationView) {
             binding.titleTv.text = getString(R.styleable.DurationView_title)
         }
-        setDurationBasedValues()
-        setupListeners()
-    }
 
-    fun setOnDurationChangeListener(listener: () -> Unit) {
-        onDurationChangeListener = listener
-    }
-
-    fun getValue(): Long = with(binding) {
-        secondsNp.value +
-                minutesNp.value.times(MINUTES_TO_SECONDS_MULTIPLIER) +
-                hoursNp.value.times(HOURS_TO_SECONDS_MULTIPLIER)
-    }
-
-    private fun setupListeners() {
         with(binding) {
-            hoursNp.setOnValueChangedListener { _, _, _ -> onDurationChangeListener?.invoke() }
-            minutesNp.setOnValueChangedListener { _, _, _ -> onDurationChangeListener?.invoke() }
-            secondsNp.setOnValueChangedListener { _, _, _ -> onDurationChangeListener?.invoke() }
+            durationEt.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(CODE_LENGTH))
+            durationEt.afterTextChange { this@DurationView.text = it }
+            root.setOnClickListener { setFocus() }
         }
     }
 
-    private fun setDurationBasedValues() {
-        with(binding.hoursNp) {
-            minValue = ZERO
-            maxValue = MAX_HOURS
+    fun getDurationValue(): Long = with(binding) {
+        secondsValueTv.text.toString().toIntOrNull().orZero() +
+                minutesValueTv.text.toString().toIntOrNull().orZero()
+                    .times(MINUTES_TO_SECONDS_MULTIPLIER) +
+                hoursValueTv.text.toString().toIntOrNull().orZero()
+                    .times(HOURS_TO_SECONDS_MULTIPLIER)
+    }
+
+    fun setFocus() {
+        with(binding) {
+            durationEt.requestFocus()
+            durationEt.focusOnLastLetter()
+            // A delay added here as per https://stackoverflow.com/a/43516620
+            durationEt.postDelayed({ durationEt.showKeyboard() }, 250)
         }
-        with(binding.minutesNp) {
-            minValue = ZERO
-            maxValue = MAX_MINUTES
-        }
-        with(binding.secondsNp) {
-            minValue = ZERO
-            maxValue = MAX_SECONDS
-        }
+    }
+
+    private fun renderCode() {
+        val basicDuration = ZEROS.plus(text).takeLast(6)
+
+        binding.hoursValueTv.text = basicDuration.take(2)
+        binding.minutesValueTv.text = basicDuration.take(4).takeLast(2)
+        binding.secondsValueTv.text = basicDuration.takeLast(2)
+
+        onCodeChangedListener?.invoke()
+    }
+
+    private fun EditText.focusOnLastLetter() = setSelection(text.length)
+
+    fun setOnDoneActionListener(function: () -> Unit) {
+        binding.durationEt.setOnDoneActionListener(function)
+    }
+
+    fun setOnCodeChangedListener(function: () -> Unit) {
+        onCodeChangedListener = function
     }
 
     private fun setupErrorView(error: String?) {
@@ -75,10 +95,7 @@ class DurationView @JvmOverloads constructor(
     companion object {
         private const val MINUTES_TO_SECONDS_MULTIPLIER = 60L
         private const val HOURS_TO_SECONDS_MULTIPLIER = 3600L
-
-        private const val ZERO = 0
-        private const val MAX_HOURS = 12
-        private const val MAX_MINUTES = 59
-        private const val MAX_SECONDS = 59
+        private const val CODE_LENGTH = 6
+        private const val ZEROS = "000000"
     }
 }

@@ -1,88 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorOnPrimary">
 
     <TextView
-            android:id="@+id/title_tv"
-            style="@style/Body1.onSurface"
-            android:layout_width="match_parent"
+        android:id="@+id/title_tv"
+        style="@style/Body1.onSurface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/cities" />
+
+    <EditText
+        android:id="@+id/duration_et"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:background="@null"
+        android:cursorVisible="false"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="6"
+        android:outlineProvider="none"
+        android:textSize="0sp"
+        app:layout_constraintBottom_toBottomOf="@id/duration_cv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/duration_cv"
+        tools:ignore="LabelFor" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/duration_cv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/title_tv">
+
+        <TextView
+            android:id="@+id/hours_value_tv"
+            style="@style/Header6.onSurface"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/duration_view_zeros"
+            app:layout_constraintEnd_toStartOf="@id/minutes_value_tv"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <NumberPicker
-            android:id="@+id/hours_np"
+        <TextView
+            android:id="@+id/divider_1"
+            style="@style/Header6.onSurface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small_extra"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            app:layout_constraintEnd_toStartOf="@id/minutes_np"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_tv" />
+            android:text="@string/duration_view_separator"
+            app:layout_constraintBottom_toBottomOf="@id/hours_label_tv"
+            app:layout_constraintEnd_toStartOf="@id/minutes_value_tv"
+            app:layout_constraintStart_toEndOf="@id/hours_label_tv"
+            app:layout_constraintTop_toTopOf="@id/hours_label_tv" />
 
-    <TextView
-            android:id="@+id/hours_tv"
-            style="@style/Body1.onSurface"
+        <TextView
+            android:id="@+id/minutes_value_tv"
+            style="@style/Header6.onSurface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hours"
-            app:layout_constraintEnd_toEndOf="@id/hours_np"
-            app:layout_constraintStart_toStartOf="@id/hours_np"
-            app:layout_constraintTop_toBottomOf="@id/hours_np" />
+            android:text="@string/duration_view_zeros"
+            app:layout_constraintEnd_toStartOf="@id/seconds_value_tv"
+            app:layout_constraintStart_toEndOf="@id/hours_value_tv"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <NumberPicker
-            android:id="@+id/minutes_np"
+        <TextView
+            android:id="@+id/divider_2"
+            style="@style/Header6.onSurface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small_extra"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            app:layout_constraintEnd_toStartOf="@id/seconds_np"
-            app:layout_constraintStart_toEndOf="@id/hours_np"
-            app:layout_constraintTop_toBottomOf="@id/title_tv" />
+            android:text="@string/duration_view_separator"
+            app:layout_constraintBottom_toBottomOf="@id/minutes_label_tv"
+            app:layout_constraintEnd_toStartOf="@id/seconds_value_tv"
+            app:layout_constraintStart_toEndOf="@id/minutes_label_tv"
+            app:layout_constraintTop_toTopOf="@id/minutes_label_tv" />
 
-    <TextView
-            android:id="@+id/minutes_tv"
-            style="@style/Body1.onSurface"
+        <TextView
+            android:id="@+id/seconds_value_tv"
+            style="@style/Header6.onSurface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minutes"
-            app:layout_constraintEnd_toEndOf="@id/minutes_np"
-            app:layout_constraintStart_toStartOf="@id/minutes_np"
-            app:layout_constraintTop_toBottomOf="@id/minutes_np" />
-
-    <NumberPicker
-            android:id="@+id/seconds_np"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small_extra"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+            android:text="@string/duration_view_zeros"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/minutes_np"
-            app:layout_constraintTop_toBottomOf="@id/title_tv" />
+            app:layout_constraintStart_toEndOf="@id/minutes_value_tv"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-            android:id="@+id/seconds_tv"
-            style="@style/Body1.onSurface"
+        <TextView
+            android:id="@+id/hours_label_tv"
+            style="@style/Title2.onSurface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Seconds"
-            app:layout_constraintEnd_toEndOf="@id/seconds_np"
-            app:layout_constraintStart_toStartOf="@id/seconds_np"
-            app:layout_constraintTop_toBottomOf="@id/seconds_np" />
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:text="@string/duration_view_label_hours"
+            app:layout_constraintBottom_toBottomOf="@id/hours_value_tv"
+            app:layout_constraintStart_toEndOf="@id/hours_value_tv" />
+
+        <TextView
+            android:id="@+id/minutes_label_tv"
+            style="@style/Title2.onSurface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:text="@string/duration_view_label_minutes"
+            app:layout_constraintBottom_toBottomOf="@id/minutes_value_tv"
+            app:layout_constraintStart_toEndOf="@id/minutes_value_tv" />
+
+        <TextView
+            android:id="@+id/seconds_label_tv"
+            style="@style/Title2.onSurface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:text="@string/duration_view_label_seconds"
+            app:layout_constraintBottom_toBottomOf="@id/seconds_value_tv"
+            app:layout_constraintStart_toEndOf="@id/seconds_value_tv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-            android:id="@+id/error_tv"
-            style="@style/Body2.onError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/hours_tv"
-            tools:text="There is a just error field"
-            tools:visibility="visible" />
+        android:id="@+id/error_tv"
+        style="@style/Body2.onError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/duration_cv"
+        tools:text="There is a just error field"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

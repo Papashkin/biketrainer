@@ -153,4 +153,11 @@
     <string name="workout_stop">Stop</string>
     <string name="workout_continue">Continue</string>
     <string name="workout_slash">/</string>
+
+    <!-- ====== Duration View ====== -->
+    <string name="duration_view_zeros">00</string>
+    <string name="duration_view_label_hours">h</string>
+    <string name="duration_view_label_minutes">m</string>
+    <string name="duration_view_label_seconds">s</string>
+    <string name="duration_view_separator">:</string>
 </resources>

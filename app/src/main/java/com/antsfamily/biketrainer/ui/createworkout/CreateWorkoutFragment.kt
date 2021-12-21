@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentCreateWorkoutBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
-import com.antsfamily.biketrainer.presentation.createprogram.CreateProgramViewModel
+import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
 import com.antsfamily.biketrainer.ui.createworkout.AddIntervalsFragment.Companion.KEY_ADD_INTERVAL
@@ -27,9 +27,9 @@ import javax.inject.Inject
 class CreateWorkoutFragment : BaseFragment(R.layout.fragment_create_workout) {
 
     @Inject
-    lateinit var factory: CreateProgramViewModel.Factory
+    lateinit var factory: CreateWorkoutViewModel.Factory
 
-    override val viewModel: CreateProgramViewModel by viewModelsFactory { factory.build() }
+    override val viewModel: CreateWorkoutViewModel by viewModelsFactory { factory.build() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
