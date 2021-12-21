@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.biketrainer.databinding.CardProfileInfoBinding
-import java.util.*
+import com.antsfamily.data.model.profile.Profile
 import javax.inject.Inject
 
 class ProfilesAdapter @Inject constructor() :
