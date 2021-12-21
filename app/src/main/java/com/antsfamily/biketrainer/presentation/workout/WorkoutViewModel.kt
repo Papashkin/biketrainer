@@ -11,7 +11,7 @@ import com.antsfamily.data.model.program.ProgramData
 import com.antsfamily.domain.Result
 import com.antsfamily.domain.antservice.device.*
 import com.antsfamily.domain.antservice.orZero
-import com.antsfamily.domain.usecase.GetProgramUseCase
+import com.antsfamily.domain.usecase.workout.GetWorkoutUseCase
 import com.antsfamily.domain.usecase.WorkoutTimerFlow
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceType
 import com.dsi.ant.plugins.antplus.pcc.defines.RequestStatus
@@ -24,7 +24,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class WorkoutViewModel @AssistedInject constructor(
-    private val getProgramUseCase: GetProgramUseCase,
+    private val getWorkoutUseCase: GetWorkoutUseCase,
     private val heartRateDevice: HeartRateDevice,
     private val cadenceDevice: BikeCadenceDevice,
     private val powerDevice: BikePowerDevice,
@@ -128,7 +128,7 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     fun onCreate(devices: List<MultiDeviceSearchResult>, programName: String) {
-        getProgramUseCase(programName) {
+        getWorkoutUseCase(programName) {
             handleProgramResult(it, devices)
         }
     }

@@ -8,7 +8,7 @@ import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.domain.Result
 import com.antsfamily.domain.antservice.orZero
-import com.antsfamily.domain.usecase.CreateProfileUseCase
+import com.antsfamily.domain.usecase.profile.CreateProfileUseCase
 import com.garmin.fit.Gender
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

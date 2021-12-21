@@ -14,7 +14,7 @@ import com.antsfamily.data.model.workouts.WorkoutIntervalParams
 import com.antsfamily.data.model.workouts.WorkoutSegmentParams
 import com.antsfamily.data.model.workouts.WorkoutStairsParams
 import com.antsfamily.domain.Result
-import com.antsfamily.domain.usecase.SaveProgramUseCase
+import com.antsfamily.domain.usecase.workout.SaveWorkoutUseCase
 import com.github.mikephil.charting.data.BarEntry
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class CreateProgramViewModel @AssistedInject constructor(
-    private val saveProgramUseCase: SaveProgramUseCase
+    private val saveWorkoutUseCase: SaveWorkoutUseCase
 ) : StatefulViewModel<CreateProgramViewModel.State>(State()) {
 
     @AssistedFactory
@@ -150,8 +150,8 @@ class CreateProgramViewModel @AssistedInject constructor(
 
     private fun saveProgram(name: String) = viewModelScope.launch {
         showLoading()
-        saveProgramUseCase(
-            SaveProgramUseCase.Params(Random().nextInt(), name, dataSet),
+        saveWorkoutUseCase(
+            SaveWorkoutUseCase.Params(Random().nextInt(), name, dataSet),
             ::handleSaveProgramResult
         )
     }

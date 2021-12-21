@@ -1,4 +1,4 @@
-package com.antsfamily.domain.usecase
+package com.antsfamily.domain.usecase.profile
 
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.data.model.profile.Profile

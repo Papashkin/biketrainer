@@ -1,9 +1,9 @@
 package com.antsfamily.domain
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.antsfamily.data.local.repositories.ProgramsRepository
+import com.antsfamily.data.local.repositories.WorkoutRepository
 import com.antsfamily.data.model.program.Program
-import com.antsfamily.domain.usecase.GetProgramUseCase
+import com.antsfamily.domain.usecase.workout.GetWorkoutUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
@@ -14,15 +14,15 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class GetProgramUseCaseTest {
+class GetWorkoutUseCaseTest {
 
     @Rule
     @JvmField
     val rule = InstantTaskExecutorRule()
 
-    private val repository: ProgramsRepository = Mockito.mock(ProgramsRepository::class.java)
+    private val repository: WorkoutRepository = Mockito.mock(WorkoutRepository::class.java)
 
-    private val getProgramUseCase = GetProgramUseCase(repository)
+    private val getProgramUseCase = GetWorkoutUseCase(repository)
 
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()

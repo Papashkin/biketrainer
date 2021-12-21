@@ -1,7 +1,7 @@
-package com.antsfamily.domain.usecase
+package com.antsfamily.domain.usecase.workout
 
 import com.antsfamily.data.local.repositories.ProfilesRepository
-import com.antsfamily.data.local.repositories.ProgramsRepository
+import com.antsfamily.data.local.repositories.WorkoutRepository
 import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.data.model.program.Program
 import com.antsfamily.data.model.program.ProgramData
@@ -9,10 +9,10 @@ import com.antsfamily.domain.BaseUseCase
 import com.antsfamily.domain.Result
 import javax.inject.Inject
 
-class SaveProgramUseCase @Inject constructor(
+class SaveWorkoutUseCase @Inject constructor(
     private val profilesRepository: ProfilesRepository,
-    private val programsRepository: ProgramsRepository
-) : BaseUseCase<SaveProgramUseCase.Params, Result<Unit, Error>>() {
+    private val workoutRepository: WorkoutRepository
+) : BaseUseCase<SaveWorkoutUseCase.Params, Result<Unit, Error>>() {
 
     override suspend fun run(params: Params): Result<Unit, Error> = try {
         val profile: Profile? = profilesRepository.getSelectedProfileName()?.let {
@@ -25,7 +25,7 @@ class SaveProgramUseCase @Inject constructor(
                 data = params.data,
                 username = it.name
             )
-            Result.Success(programsRepository.insertProgram(program))
+            Result.Success(workoutRepository.insertProgram(program))
         } ?: Result.Failure(Error("Selected profile is absent"))
     } catch (e: Exception) {
         Result.Failure(Error("Epic fail :("))

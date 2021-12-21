@@ -3,7 +3,7 @@ package com.antsfamily.domain
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.data.model.profile.Profile
-import com.antsfamily.domain.usecase.GetProfileUseCase
+import com.antsfamily.domain.usecase.profile.GetProfileUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
