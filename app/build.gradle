@@ -14,14 +14,25 @@ android {
         applicationId "com.antsfamily.biketrainer"
         minSdkVersion 26
         targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        def majorVersion = '0'
+        def minorVersion = '1'
+        def versionCode = {
+            if(System.getenv("GITHUB_ACTIONS") == "true") {
+                System.getenv("GITHUB_RUN_NUMBER").toInteger()
+            } else {
+                1
+            }
+        }
+        versionName "$majorVersion.$minorVersion.$versionCode"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
         }
     }
     buildFeatures {
