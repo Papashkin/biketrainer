@@ -1,10 +1,9 @@
 package com.antsfamily.biketrainer.presentation.programinfo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.antsfamily.biketrainer.navigation.ProgramInfoToScan
-import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import com.antsfamily.biketrainer.presentation.createprofile.model.LoadingState
+import com.antsfamily.biketrainer.ui.util.StaticFields.LOTTIE_ANIMATION_DELETE
 import com.antsfamily.biketrainer.util.fullTimeFormat
 import com.antsfamily.data.model.program.Program
 import com.antsfamily.data.model.program.ProgramData
@@ -27,17 +26,13 @@ class WorkoutInfoViewModel @AssistedInject constructor(
     }
 
     data class State(
-        val isLoading: Boolean = true,
+        val loadingState: LoadingState = LoadingState.Nothing,
         val program: List<ProgramData> = emptyList(),
         val programName: String? = null,
         val duration: String? = null,
         val maxPower: String? = null,
         val avgPower: String? = null
     )
-
-    private val _showRemoveWorkoutAnimationEvent = MutableLiveData<Event<Unit>>()
-    val showRemoveWorkoutAnimationEvent: LiveData<Event<Unit>>
-        get() = _showRemoveWorkoutAnimationEvent
 
     init {
         getWorkout(workoutName)
@@ -107,14 +102,14 @@ class WorkoutInfoViewModel @AssistedInject constructor(
     }
 
     private fun handleRemoveWorkoutSuccess() {
-        _showRemoveWorkoutAnimationEvent.postValue(Event(Unit))
+        changeState { it.copy(loadingState = LoadingState.Success(LOTTIE_ANIMATION_DELETE)) }
     }
 
     private fun showLoading() {
-        changeState { it.copy(isLoading = true) }
+        changeState { it.copy(loadingState = LoadingState.Loading) }
     }
 
     private fun hideLoading() {
-        changeState { it.copy(isLoading = false) }
+        changeState { it.copy(loadingState = LoadingState.Nothing) }
     }
 }

@@ -1,10 +1,9 @@
 package com.antsfamily.biketrainer.presentation.createprofile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.antsfamily.biketrainer.navigation.CreateProfileToHome
-import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import com.antsfamily.biketrainer.presentation.createprofile.model.LoadingState
+import com.antsfamily.biketrainer.ui.util.StaticFields.LOTTIE_ANIMATION_SUCCESS
 import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.domain.Result
 import com.antsfamily.domain.antservice.orZero
@@ -24,22 +23,14 @@ class CreateProfileViewModel @AssistedInject constructor(
     }
 
     data class State(
-        val isLoading: Boolean = false,
+        val loadingState: LoadingState = LoadingState.Nothing,
         val genders: List<Gender> = Gender.values().toList(),
         val usernameError: String? = null,
         val ageError: String? = null,
         val weightError: String? = null,
         val heightError: String? = null,
-        val genderError: String? = null
+        val genderError: String? = null,
     )
-
-    private val _clearFieldsEvent = MutableLiveData<Event<Unit>>()
-    val clearFieldsEvent: LiveData<Event<Unit>>
-        get() = _clearFieldsEvent
-
-    private val _showSuccessAnimationEvent = MutableLiveData<Event<Unit>>()
-    val showSuccessAnimationEvent: LiveData<Event<Unit>>
-        get() = _showSuccessAnimationEvent
 
     private var userName: String? = null
     private var gender: Gender = Gender.INVALID
@@ -93,15 +84,11 @@ class CreateProfileViewModel @AssistedInject constructor(
         }
     }
 
-//    fun navigateForward(profileName: String) {
-//        navigateTo(CreateProfileToHome(profileName))
-//    }
-
     private fun isValid(
         username: String?, age: Int, weight: BigDecimal?, height: BigDecimal?
     ): Boolean {
         val isUsernameValid = !username.isNullOrBlank()
-        val isAgeValid = age in 1..109
+        val isAgeValid = age in 5..90
         val isWeightValid = weight.orZero() > BigDecimal.ZERO
         val isHeightValid = height.orZero() > BigDecimal.ZERO
         val isGenderValid = gender != Gender.INVALID
@@ -131,15 +118,19 @@ class CreateProfileViewModel @AssistedInject constructor(
 
     private fun handleResult(result: Result<String, Error>) {
         when (result) {
-            is Result.Success -> {
-                userName = result.successData
-                _showSuccessAnimationEvent.postValue(Event(Unit))
-            }
-            is Result.Failure -> {
-                hideLoading()
-                showErrorSnackbar(result.errorData.message ?: "Something went wrong :(")
-            }
+            is Result.Success -> handleSuccessResult(result.successData)
+            is Result.Failure -> handleErrorResult(result.errorData)
         }
+    }
+
+    private fun handleSuccessResult(data: String) {
+        userName = data
+        changeState { it.copy(loadingState = LoadingState.Success(LOTTIE_ANIMATION_SUCCESS)) }
+    }
+
+    private fun handleErrorResult(error: Error) {
+        hideLoading()
+        showErrorSnackbar(error.message ?: "Something went wrong :(")
     }
 
     private fun onGenderChange() {
@@ -147,10 +138,10 @@ class CreateProfileViewModel @AssistedInject constructor(
     }
 
     private fun showLoading() {
-        changeState { it.copy(isLoading = true) }
+        changeState { it.copy(loadingState = LoadingState.Loading) }
     }
 
     private fun hideLoading() {
-        changeState { it.copy(isLoading = false) }
+        changeState { it.copy(loadingState = LoadingState.Nothing) }
     }
 }
