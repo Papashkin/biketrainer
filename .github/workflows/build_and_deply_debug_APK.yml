@@ -1,8 +1,8 @@
-name: Test and build
+name: Build and deploy debug APK
 
 on:
-  pull_request:
-    types: [ opened, synchronize, reopened ]
+  push:
+    branches: [ develop ]
 
 jobs:
   build:
@@ -15,7 +15,5 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
-      - name: Run Tests
-        run: ./gradlew test
       - name: Build with Gradle
-        run: ./gradlew build --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
