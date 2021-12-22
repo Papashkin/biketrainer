@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.antsfamily.domain" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.antsfamily.domain">
+
+    <queries>
+        <package android:name="com.dsi.ant.plugins.antplus" />
+        <package android:name="com.dsi.ant.service.socket" />
+        <package android:name="com.dsi.ant.bind.AntService" />
+        <package android:name="com.dsi.ant.service.AntRadioService" />
+    </queries>
+</manifest>
