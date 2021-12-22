@@ -18,7 +18,7 @@ android {
         def minorVersion = '1'
         def versionCode = {
             if(System.getenv("GITHUB_ACTIONS") == "true") {
-                System.getenv("GITHUB_RUN_NUMBER").toInt()
+                System.getenv("GITHUB_RUN_NUMBER").toInteger()
             } else {
                 1
             }
@@ -30,6 +30,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
         }
     }
     buildFeatures {
