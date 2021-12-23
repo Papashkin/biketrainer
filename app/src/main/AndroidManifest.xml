@@ -3,9 +3,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         package="com.antsfamily.biketrainer">
 
-    <queries>
-        <package android:name="com.dsi.ant.plugins.antplus"/>
-    </queries>
     <application
             android:name="com.antsfamily.biketrainer.MainApplication"
             android:allowBackup="true"
