@@ -1,12 +1,14 @@
 package com.antsfamily.biketrainer.ui.workout
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
-import com.antsfamily.data.model.program.ProgramData
 import com.antsfamily.biketrainer.databinding.FragmentWorkoutBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
@@ -17,6 +19,7 @@ import com.antsfamily.biketrainer.ui.util.setHighlightedMode
 import com.antsfamily.biketrainer.util.fullTimeFormat
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.antsfamily.biketrainer.util.toStringOrEmpty
+import com.antsfamily.data.model.program.ProgramData
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -33,14 +36,21 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
     @Inject
     lateinit var factory: WorkoutViewModel.Factory
 
-    override val viewModel: WorkoutViewModel by viewModelsFactory { factory.build() }
+    override val viewModel: WorkoutViewModel by viewModelsFactory {
+        factory.build(args.devices.toList(), args.program)
+    }
 
     private val chartHighlights = mutableListOf<Highlight>()
+
+    private var documentCreationResultLauncher: ActivityResultLauncher<String>? = null
+//        registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri: Uri? ->
+//            uri?.let { viewModel.onFileUriReceived(it) }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        viewModel.onCreate(args.devices.toList(), args.program)
+        setupActivityResultListener()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +67,13 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
         viewModel.onStop()
     }
 
+    private fun setupActivityResultListener() {
+        documentCreationResultLauncher =
+            registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri: Uri? ->
+                uri?.let { viewModel.onFileUriReceived(it) }
+            }
+    }
+
     private fun bindInteractions(binding: FragmentWorkoutBinding) {
         with(binding) {
             backBtn.setOnClickListener { viewModel.onBackClick() }
@@ -71,6 +88,9 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
         viewModel.resetChartHighlightsEvent.observe(viewLifecycleOwner, EventObserver {
             chartHighlights.clear()
             binding.programChart.highlightValues(arrayOf())
+        })
+        viewModel.createDocumentEvent.observe(viewLifecycleOwner, EventObserver {
+            openFileFolder(it)
         })
     }
 
@@ -132,13 +152,13 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
         workoutRemainingTimeTv.text = remainingTime.fullTimeFormat()
     }
 
-    private fun FragmentWorkoutBinding.setNextStep(data: com.antsfamily.data.model.program.ProgramData?) {
+    private fun FragmentWorkoutBinding.setNextStep(data: ProgramData?) {
         workoutNextStepValueTv.text = data?.let {
             getString(R.string.workout_next_round_value, it.power, it.duration.fullTimeFormat())
         } ?: EMPTY_DATA
     }
 
-    private fun FragmentWorkoutBinding.setProgramBarChart(data: List<com.antsfamily.data.model.program.ProgramData>?) {
+    private fun FragmentWorkoutBinding.setProgramBarChart(data: List<ProgramData>?) {
         val entities = data?.mapIndexed { index, _data ->
             BarEntry(index.toFloat(), _data.power.toFloat())
         }
@@ -166,6 +186,10 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
                 invalidate()
             }
         }
+    }
+
+    private fun openFileFolder(fileName: String) {
+        documentCreationResultLauncher?.launch(fileName)
     }
 
     companion object {
