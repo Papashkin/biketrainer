@@ -1,7 +1,11 @@
 package com.antsfamily.biketrainer.presentation.workout
 
+import android.content.Context
 import android.net.Uri
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.Log
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -22,6 +26,7 @@ import com.garmin.fit.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -29,7 +34,9 @@ import java.math.RoundingMode
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+
 class WorkoutViewModel @AssistedInject constructor(
+    @ApplicationContext private val context: Context,
     private val getWorkoutUseCase: GetWorkoutUseCase,
     private val heartRateDevice: HeartRateDevice,
     private val cadenceDevice: BikeCadenceDevice,
@@ -80,7 +87,8 @@ class WorkoutViewModel @AssistedInject constructor(
     private var isWorkoutPaused: Boolean = false
     private var isTargetPowerSetSuccessfully: Boolean = false
     private var currentStepNumber: Int = 0
-//    private var programName: String? = null
+
+    //    private var programName: String? = null
 //    private var activityFile: File? = null
     private val workoutMessage: MutableList<Mesg> = mutableListOf()
 
@@ -148,19 +156,40 @@ class WorkoutViewModel @AssistedInject constructor(
 
     fun onFileUriReceived(uri: Uri) {
         try {
-            uri.path?.let { path ->
-                val encoder = FileEncoder(java.io.File(path), Fit.ProtocolVersion.getHighestVersion())
-//                    .let {
-//                    it.write(workoutMessage)
-//                    it.close()
-//                }
+//            uri.path?.let { path ->
+//                val file = uri.toFile()
+//                val encoder = FileEncoder(file, Fit.ProtocolVersion.getHighestVersion())
+//                encoder.write(workoutMessage)
+//                encoder.close()
+
+            var fileName: String?
+            val projection = arrayOf(MediaStore.Files.FileColumns.DATA)
+            val isFile = DocumentsContract.isDocumentUri(context, uri)
+            val documentFile: DocumentFile = DocumentFile.fromFile(java.io.File(uri.path.orEmpty()))
+            val cursor = contentResolver.query(uri, projection, null, null, null)
+            cursor?.close()
+
+            contentResolver.query(uri, projection, null, null, null).use {
+                val columnIndex =
+                    it?.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA).orZero()
+                it?.moveToFirst()
+                fileName = it?.getString(columnIndex).orEmpty()
+            }
+            if (fileName != null) {
+                val encoder = FileEncoder(
+                    java.io.File(fileName.orEmpty()),
+                    Fit.ProtocolVersion.getHighestVersion()
+                )
                 encoder.write(workoutMessage)
                 encoder.close()
             }
+//            }
         } catch (e: Exception) {
             Log.e(this::class.java.canonicalName, "Error occurred: $e")
+            showErrorSnackbar("Something went wrong :(")
+//        } finally {
+//            hideLoading()
         }
-        hideLoading()
     }
 
     private fun getWorkout() {
@@ -383,11 +412,15 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     private fun createFitFile() {
-//        val folder = File(Environment.getExternalStorageState() + "/activities")
-//        if (!folder.exists()) {
-//            folder.mkdir()
+//        val folder =
+//            Environment.getExternalStorageDirectory().path.toString() + "/biketrainer_app_activities"
+//        Log.d(this::class.java.canonicalName, "Path : $folder")
+//        val file = java.io.File(folder)
+//        if (!file.exists()) {
+//            if (!file.mkdir()) {
+//                Log.d(this::class.java.canonicalName, "***Problem creating Image folder $folder")
+//            }
 //        }
-//        activityFile = File(folder, "${programName.orEmpty()}.fit")
         _createDocumentEvent.postValue(Event("${programName}_${getTimestamp()}.fit"))
     }
 
@@ -421,7 +454,10 @@ class WorkoutViewModel @AssistedInject constructor(
         workoutMessage.add(
             SessionMesg().apply {
                 this.timestamp = DateTime(this@WorkoutViewModel.getTimestamp())
-                startTime = DateTime(this@WorkoutViewModel.getTimestamp().minus(state.value?.program?.sumOf { it.duration }?.times(1000).orZero()))
+                startTime = DateTime(
+                    this@WorkoutViewModel.getTimestamp()
+                        .minus(state.value?.program?.sumOf { it.duration }?.times(1000).orZero())
+                )
                 totalElapsedTime = state.value?.program?.sumOf { it.duration }.orZero().toFloat()
                 totalTimerTime = state.value?.program?.sumOf { it.duration }.orZero().toFloat()
                 totalDistance = getDistanceValue().toFloat()

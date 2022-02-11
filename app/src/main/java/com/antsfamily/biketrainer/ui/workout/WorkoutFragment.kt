@@ -4,11 +4,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
-import com.antsfamily.data.model.program.ProgramData
 import com.antsfamily.biketrainer.databinding.FragmentWorkoutBinding
 import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
@@ -19,6 +19,7 @@ import com.antsfamily.biketrainer.ui.util.setHighlightedMode
 import com.antsfamily.biketrainer.util.fullTimeFormat
 import com.antsfamily.biketrainer.util.mapDistinct
 import com.antsfamily.biketrainer.util.toStringOrEmpty
+import com.antsfamily.data.model.program.ProgramData
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -41,14 +42,15 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
 
     private val chartHighlights = mutableListOf<Highlight>()
 
-    private val documentCreationResultLauncher =
-        registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri: Uri? ->
-            uri?.let { viewModel.onFileUriReceived(it) }
-        }
+    private var documentCreationResultLauncher: ActivityResultLauncher<String>? = null
+//        registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri: Uri? ->
+//            uri?.let { viewModel.onFileUriReceived(it) }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        setupActivityResultListener()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,6 +65,13 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
     override fun onStop() {
         super.onStop()
         viewModel.onStop()
+    }
+
+    private fun setupActivityResultListener() {
+        documentCreationResultLauncher =
+            registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri: Uri? ->
+                uri?.let { viewModel.onFileUriReceived(it) }
+            }
     }
 
     private fun bindInteractions(binding: FragmentWorkoutBinding) {
@@ -180,7 +189,7 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
     }
 
     private fun openFileFolder(fileName: String) {
-        documentCreationResultLauncher.launch(fileName)
+        documentCreationResultLauncher?.launch(fileName)
     }
 
     companion object {
