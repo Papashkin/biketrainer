@@ -2,6 +2,7 @@ package com.antsfamily.biketrainer.presentation.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.antsfamily.biketrainer.BuildConfig
 import com.antsfamily.biketrainer.navigation.HomeToCreateProgram
 import com.antsfamily.biketrainer.navigation.HomeToProgramInfo
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
@@ -31,6 +32,7 @@ class HomeViewModel @AssistedInject constructor(
 
     data class State(
         val dateTime: String? = null,
+        val appVersion: String? = null,
         val isProgramsLoading: Boolean = true,
         val isProgramsVisible: Boolean = false,
         val isEmptyProgramsVisible: Boolean = false,
@@ -40,7 +42,7 @@ class HomeViewModel @AssistedInject constructor(
 
     init {
         getProfileWithPrograms()
-        getDateTime()
+        getDateTimeAndAppVersion()
     }
 
     fun onSettingsClick() {
@@ -62,9 +64,14 @@ class HomeViewModel @AssistedInject constructor(
             .collect { handleProfileWithPrograms(it) }
     }
 
-    private fun getDateTime() {
+    private fun getDateTimeAndAppVersion() {
         val date = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMAT_FULL))
-        changeState { it.copy(dateTime = date) }
+        changeState {
+            it.copy(
+                dateTime = date,
+                appVersion = BuildConfig.VERSION_NAME
+            )
+        }
     }
 
     private fun showLoading() {

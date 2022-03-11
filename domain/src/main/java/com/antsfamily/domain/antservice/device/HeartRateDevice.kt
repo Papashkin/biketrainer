@@ -1,6 +1,7 @@
 package com.antsfamily.domain.antservice.device
 
 import android.content.Context
+import com.antsfamily.domain.antservice.StaticFields.SEARCH_PROXIMITY_THRESHOLD
 import com.dsi.ant.plugins.antplus.pcc.AntPlusHeartRatePcc
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceState
 import com.dsi.ant.plugins.antplus.pcc.defines.RequestAccessResult
@@ -54,9 +55,5 @@ class HeartRateDevice @Inject constructor(@ApplicationContext private val contex
     fun clear() {
         _heartRateMonitor?.releaseAccess()
         _heartRateMonitor = null
-    }
-
-    companion object {
-        private const val SEARCH_PROXIMITY_THRESHOLD = 0
     }
 }

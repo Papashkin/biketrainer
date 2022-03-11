@@ -1,6 +1,7 @@
 package com.antsfamily.domain.antservice.device
 
 import android.content.Context
+import com.antsfamily.domain.antservice.StaticFields.SEARCH_PROXIMITY_THRESHOLD
 import com.dsi.ant.plugins.antplus.pcc.AntPlusBikePowerPcc
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceState
 import com.dsi.ant.plugins.antplus.pcc.defines.RequestAccessResult
@@ -55,9 +56,5 @@ class BikePowerDevice @Inject constructor(@ApplicationContext private val contex
     fun clear() {
         _powerMeter?.releaseAccess()
         _powerMeter = null
-    }
-
-    companion object {
-        private const val SEARCH_PROXIMITY_THRESHOLD = 0
     }
 }

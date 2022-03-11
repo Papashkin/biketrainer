@@ -1,6 +1,8 @@
 package com.antsfamily.domain.antservice.device
 
 import android.content.Context
+import com.antsfamily.domain.antservice.StaticFields.SEARCH_PROXIMITY_THRESHOLD
+import com.antsfamily.domain.antservice.StaticFields.WHEEL_CIRCUMFERENCE
 import com.antsfamily.domain.antservice.orZero
 import com.dsi.ant.plugins.antplus.pcc.AntPlusBikeCadencePcc
 import com.dsi.ant.plugins.antplus.pcc.AntPlusBikeSpeedDistancePcc
@@ -81,10 +83,8 @@ class BikeSpeedDistanceDevice @Inject constructor(@ApplicationContext private va
                 })
 
 //            it.subscribeRawSpeedAndDistanceDataEvent { _, _, speed, distance ->
-//                Handler(Looper.getMainLooper()).post {
-//                    onSpeedReceiveListener?.invoke(speed)
-//                    onDistanceReceiveListener?.invoke(distance.toBigDecimal())
-//                }
+//                _speed = speed
+//                _distance = distance.toBigDecimal()
 //            }
         }
 
@@ -151,10 +151,5 @@ class BikeSpeedDistanceDevice @Inject constructor(@ApplicationContext private va
             _cadenceSensor = result
         }
         resultReceivedCallback.invoke(resultCode)
-    }
-
-    companion object {
-        private const val SEARCH_PROXIMITY_THRESHOLD = 0
-        private val WHEEL_CIRCUMFERENCE = BigDecimal(2.095) // an average 700cx23mm road tire (in meters)
     }
 }

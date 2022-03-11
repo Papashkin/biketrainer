@@ -20,24 +20,17 @@ import javax.inject.Inject
 class WorkoutsAdapter @Inject constructor() :
     ListAdapter<Program, WorkoutsAdapter.ProgramViewHolder>(WorkoutsDiffUtil()) {
 
-//    var items: List<Program> = emptyList()
-//        set(value) {
-//            field = value
-//            notifyDataSetChanged()
-//        }
-
     private var onItemClickListener: ((item: Program) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProgramViewHolder {
-        val binding = CardWorkoutInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            CardWorkoutInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProgramViewHolder(binding)
     }
 
     fun setOnItemClickListener(listener: (item: Program) -> Unit) {
         onItemClickListener = listener
     }
-
-//    override fun getItemCount(): Int = itemCount items.size
 
     override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -64,13 +57,13 @@ class WorkoutsAdapter @Inject constructor() :
         }
 
         private fun getAveragePower(data: List<ProgramData>): String =
-            data.map { it.power }.sum().div(data.size).toString()
+            data.sumOf { it.power }.div(data.size).toString()
 
         private fun getMaxPower(data: List<ProgramData>): String =
             data.maxOf { it.power }.toString()
 
         private fun getTotalTime(data: List<ProgramData>): String =
-            data.map { it.duration }.sum().fullTimeFormat()
+            data.sumOf { it.duration }.fullTimeFormat()
 
         private fun createChart(data: List<ProgramData>) {
             val entries = data.mapIndexed { index, _data ->

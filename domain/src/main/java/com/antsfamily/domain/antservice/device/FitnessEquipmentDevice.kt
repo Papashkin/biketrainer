@@ -1,6 +1,8 @@
 package com.antsfamily.domain.antservice.device
 
 import android.content.Context
+import com.antsfamily.domain.antservice.StaticFields.SEARCH_PROXIMITY_THRESHOLD
+import com.antsfamily.domain.antservice.StaticFields.WHEEL_CIRCUMFERENCE
 import com.antsfamily.domain.antservice.orFalse
 import com.antsfamily.domain.antservice.orZero
 import com.dsi.ant.plugins.antplus.pcc.AntPlusFitnessEquipmentPcc
@@ -80,7 +82,7 @@ class FitnessEquipmentDevice @Inject constructor(@ApplicationContext private val
 
                         it.subscribeCalculatedTrainerSpeedEvent(object :
                             AntPlusFitnessEquipmentPcc.CalculatedTrainerSpeedReceiver(
-                                WHEEL_DIAMETER
+                                WHEEL_CIRCUMFERENCE
                             ) {
                             override fun onNewCalculatedTrainerSpeed(
                                 timestamp: Long,
@@ -94,7 +96,7 @@ class FitnessEquipmentDevice @Inject constructor(@ApplicationContext private val
 
                         it.subscribeCalculatedTrainerDistanceEvent(object :
                             AntPlusFitnessEquipmentPcc.CalculatedTrainerDistanceReceiver(
-                                WHEEL_DIAMETER
+                                WHEEL_CIRCUMFERENCE
                             ) {
                             override fun onNewCalculatedTrainerDistance(
                                 timestamp: Long,
@@ -131,11 +133,6 @@ class FitnessEquipmentDevice @Inject constructor(@ApplicationContext private val
         _fitnessEquipment?.trainerMethods?.requestSetTargetPower(BigDecimal.ZERO) {}
         _fitnessEquipment?.releaseAccess()
         _fitnessEquipment = null
-    }
-
-    companion object {
-        private const val SEARCH_PROXIMITY_THRESHOLD = 0
-        private val WHEEL_DIAMETER = BigDecimal("0.70") //0.70m wheel diameter
     }
 
 //    private var settings: Settings
