@@ -3,6 +3,7 @@ package com.antsfamily.biketrainer.ui.workout
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import com.antsfamily.biketrainer.R
@@ -91,12 +92,16 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
                         ?: EMPTY_DATA
             }
             viewModel.mapDistinct { it.nextStep }.observe { setNextStep(it) }
-            viewModel.mapDistinct { it.startButtonVisible }.observe { startWorkoutBtn.isVisible = it }
-            viewModel.mapDistinct { it.pauseButtonVisible }.observe { pauseWorkoutBtn.isVisible = it }
+            viewModel.mapDistinct { it.startButtonVisible }
+                .observe { startWorkoutBtn.isVisible = it }
+            viewModel.mapDistinct { it.pauseButtonVisible }
+                .observe { pauseWorkoutBtn.isVisible = it }
             viewModel.mapDistinct { it.stopButtonVisible }.observe { stopWorkoutBtn.isVisible = it }
-            viewModel.mapDistinct { it.continueButtonVisible }.observe { continueWorkoutBtn.isVisible = it }
+            viewModel.mapDistinct { it.continueButtonVisible }
+                .observe { continueWorkoutBtn.isVisible = it }
             viewModel.mapDistinct { it.progress }.observe { stepCountdownRb.progress = it }
-            viewModel.mapDistinct { it.remainingTime }.observe { setRemainingTime(it) }
+            viewModel.mapDistinct { it.stepRemainingTime }
+                .observe { setTimeToView(workoutStepRemainingTimeTv, it) }
             viewModel.mapDistinct { it.heartRate }.observe {
                 workoutHeartRateTv.text =
                     getString(R.string.workout_heart_rate, it.toStringOrEmpty(EMPTY_DATA))
@@ -118,6 +123,10 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
                     power?.let { getString(R.string.workout_power, it.toString()) } ?: EMPTY_DATA
             }
             viewModel.mapDistinct { it.program }.observe { setProgramBarChart(it) }
+            viewModel.mapDistinct { it.workoutRemainingTime }
+                .observe { setTimeToView(workoutTimeRemainTv, it) }
+            viewModel.mapDistinct { it.workoutPassedTime }
+                .observe { setTimeToView(workoutTimePassTv, it) }
         }
     }
 
@@ -128,17 +137,17 @@ class WorkoutFragment : BaseFragment(R.layout.fragment_workout) {
         programChart.highlightValues(chartHighlights.toTypedArray())
     }
 
-    private fun FragmentWorkoutBinding.setRemainingTime(remainingTime: Long) {
-        workoutRemainingTimeTv.text = remainingTime.fullTimeFormat()
+    private fun setTimeToView(view: TextView, time: Long) {
+        view.text = time.fullTimeFormat()
     }
 
-    private fun FragmentWorkoutBinding.setNextStep(data: com.antsfamily.data.model.program.ProgramData?) {
+    private fun FragmentWorkoutBinding.setNextStep(data: ProgramData?) {
         workoutNextStepValueTv.text = data?.let {
             getString(R.string.workout_next_round_value, it.power, it.duration.fullTimeFormat())
         } ?: EMPTY_DATA
     }
 
-    private fun FragmentWorkoutBinding.setProgramBarChart(data: List<com.antsfamily.data.model.program.ProgramData>?) {
+    private fun FragmentWorkoutBinding.setProgramBarChart(data: List<ProgramData>?) {
         val entities = data?.mapIndexed { index, _data ->
             BarEntry(index.toFloat(), _data.power.toFloat())
         }

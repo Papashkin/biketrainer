@@ -112,9 +112,11 @@
     <string name="card_program_power_max">Max power</string>
 
     <!-- ====== Home screen ====== -->
-    <string name="home_empty_programs_title">You don\'t have any programs yet.</string>
-    <string name="home_empty_programs_create_btn_text">Do you want to create program?</string>
-    <string name="home_your_programs">Your programs:</string>
+    <string name="home_empty_programs_title">You don\'t have any workouts yet.</string>
+    <string name="home_empty_programs_create_btn_text">Do you want to create a workout?</string>
+    <string name="home_your_programs">Your workouts:</string>
+    <string name="home_add_new_workout">Add new workout</string>
+    <string name="home_app_version">ver. %1$s</string>
 
     <!-- ====== Sensors ====== -->
     <string name="sensor_heart_rate">Heart Rate Monitor</string>

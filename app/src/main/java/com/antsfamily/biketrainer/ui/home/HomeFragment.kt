@@ -1,10 +1,11 @@
 package com.antsfamily.biketrainer.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.ConcatAdapter
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentHomeBinding
 import com.antsfamily.biketrainer.presentation.home.HomeViewModel
@@ -46,13 +47,21 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
     private fun observeState(binding: FragmentHomeBinding) {
         with(binding) {
             viewModel.mapDistinct { it.dateTime }.observe { homeDateTimeTv.text = it }
+            viewModel.mapDistinct { it.appVersion }.observe { ver ->
+                ver?.let { appVersionTv.text = getString(R.string.home_app_version, it) }
+            }
             viewModel.mapDistinct { it.isProgramsLoading }
                 .observe { homeProgramsLoadingFl.isVisible = it }
-            viewModel.mapDistinct { it.isProgramsVisible }.observe { homeProgramsRv.isVisible = it }
+            viewModel.mapDistinct { it.isProgramsVisible }.observe { homeWorkoutsRv.isVisible = it }
             viewModel.mapDistinct { it.isEmptyProgramsVisible }
                 .observe { emptyProgramsCl.isVisible = it }
             viewModel.mapDistinct { it.profile }.observe { setupProfile(it) }
-            viewModel.mapDistinct { it.programs }.observe { workoutsAdapter.submitList(it) }
+            viewModel.mapDistinct { it.programs }.observe {
+                workoutsAdapter.submitList(it)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    addWorkoutBtn.isVisible = it.isNotEmpty()
+                }, 400)
+            }
         }
     }
 
@@ -65,15 +74,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home) {
 
     private fun bindInteractions(binding: FragmentHomeBinding) {
         with(binding) {
-            createProgramBtn.setOnClickListener { viewModel.onCreateProgramClick() }
+            createWorkoutBtn.setOnClickListener { viewModel.onCreateProgramClick() }
+            addWorkoutBtn.setOnClickListener { viewModel.onCreateProgramClick() }
             settingsIb.setOnClickListener { viewModel.onSettingsClick() }
             createWorkoutAdapter.apply {
                 setOnCreateProgramClickListener { viewModel.onCreateProgramClick() }
             }
-            workoutsAdapter.apply {
+            homeWorkoutsRv.adapter = workoutsAdapter.apply {
                 setOnItemClickListener { viewModel.onProgramClick(it) }
             }
-            homeProgramsRv.adapter = ConcatAdapter(workoutsAdapter, createWorkoutAdapter)
         }
     }
 }

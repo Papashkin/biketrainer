@@ -1,131 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
 
     <TextView
-            android:id="@+id/home_date_time_tv"
-            style="@style/Caption.onBackground"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Sunday, 14 January, 2021" />
+        android:id="@+id/home_date_time_tv"
+        style="@style/Caption.onBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Sunday, 14 January, 2021" />
+
+    <TextView
+        android:id="@+id/app_version_tv"
+        style="@style/Caption.onBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_app_version"
+        app:layout_constraintStart_toStartOf="@id/home_date_time_tv"
+        app:layout_constraintTop_toBottomOf="@id/home_date_time_tv"
+        tools:text="ver. 0.2.123" />
 
     <ImageButton
-            android:id="@+id/settings_ib"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_pre_regular"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_settings"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+        android:id="@+id/settings_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_pre_regular"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/ic_settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <ImageView
-            android:id="@+id/home_profile_icon_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginTop="100dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_profile_man" />
+        android:id="@+id/home_profile_icon_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_profile_man" />
 
     <TextView
-            android:id="@+id/home_profile_name_tv"
-            style="@style/Title2.onSurface"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_large"
-            android:ellipsize="end"
-            android:maxLines="1"
-            app:layout_constraintBottom_toBottomOf="@id/home_profile_icon_iv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home_profile_icon_iv"
-            app:layout_constraintTop_toTopOf="@id/home_profile_icon_iv"
-            tools:text="LongUserName2021" />
+        android:id="@+id/home_profile_name_tv"
+        style="@style/Title2.onSurface"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@id/home_profile_icon_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/home_profile_icon_iv"
+        app:layout_constraintTop_toTopOf="@id/home_profile_icon_iv"
+        tools:text="LongUserName2021" />
 
     <TextView
-            android:id="@+id/home_programs_tv"
-            style="@style/Body1.onSurface"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_large"
-            android:layout_marginTop="@dimen/margin_huge"
-            android:text="@string/home_your_programs"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_profile_icon_iv" />
+        android:id="@+id/home_workouts_tv"
+        style="@style/Body1.onSurface"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_huge"
+        android:text="@string/home_your_programs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_profile_icon_iv" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_programs_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_regular"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/margin_regular"
-            android:paddingEnd="@dimen/margin_regular"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/home_programs_tv"
-            tools:itemCount="5"
-            tools:listitem="@layout/card_workout_info" />
+        android:id="@+id/home_workouts_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_regular"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/margin_regular"
+        android:paddingEnd="@dimen/margin_regular"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/home_workouts_tv"
+        tools:itemCount="5"
+        tools:listitem="@layout/card_workout_info" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_workout_btn"
+        style="@style/Widget.AntTrainer.Button.OnPrimary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_small"
+        android:visibility="gone"
+        android:drawableEnd="@drawable/ic_arrow_forward"
+        android:text="@string/home_add_new_workout"
+        app:layout_constraintEnd_toEndOf="@id/home_workouts_rv"
+        app:layout_constraintStart_toStartOf="@id/home_workouts_rv"
+        app:layout_constraintTop_toBottomOf="@id/home_workouts_rv" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/empty_programs_cl"
-            android:layout_width="match_parent"
-            android:layout_height="256dp"
-            android:layout_marginTop="@dimen/margin_regular"
-            app:layout_constraintTop_toBottomOf="@id/home_programs_tv">
+        android:id="@+id/empty_programs_cl"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_marginTop="@dimen/margin_regular"
+        app:layout_constraintTop_toBottomOf="@id/home_workouts_tv">
 
         <TextView
-                android:id="@+id/dont_have_program_tv"
-                style="@style/Body2.onSurface"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_large"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:text="@string/home_empty_programs_title"
-                app:layout_constraintBottom_toTopOf="@id/create_program_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+            android:id="@+id/dont_have_program_tv"
+            style="@style/Body2.onSurface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_large"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:text="@string/home_empty_programs_title"
+            app:layout_constraintBottom_toTopOf="@id/create_workout_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <Button
-                android:id="@+id/create_program_btn"
-                style="@style/Widget.AntTrainer.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/home_empty_programs_create_btn_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dont_have_program_tv" />
+            android:id="@+id/create_workout_btn"
+            style="@style/Widget.AntTrainer.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_empty_programs_create_btn_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dont_have_program_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-            android:id="@+id/home_programs_loading_fl"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.8"
-            android:background="@color/pure_white"
-            app:layout_constraintTop_toBottomOf="@id/home_programs_tv">
+        android:id="@+id/home_programs_loading_fl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:background="@color/pure_white"
+        app:layout_constraintTop_toBottomOf="@id/home_workouts_tv">
 
         <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
     </FrameLayout>
 

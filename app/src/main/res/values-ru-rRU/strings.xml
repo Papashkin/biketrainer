@@ -113,6 +113,8 @@
     <string name="home_empty_programs_title">You don\'t have any programs yet.</string>
     <string name="home_empty_programs_create_btn_text">Do you want to create program?</string>
     <string name="home_your_programs">Your programs:</string>
+    <string name="home_add_new_workout">Add workout</string>
+    <string name="home_app_version">ver. %1$s</string>
 
     <!-- ====== Sensors ====== -->
     <string name="sensor_heart_rate">Heart Rate Monitor</string>
