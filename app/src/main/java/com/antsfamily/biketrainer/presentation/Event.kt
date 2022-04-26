@@ -1,5 +1,7 @@
 package com.antsfamily.biketrainer.presentation
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.antsfamily.biketrainer.navigation.Route
 
@@ -47,6 +49,11 @@ class EventObserver<T>(private val onEventUnhandledContent: (T) -> Unit) : Obser
         }
     }
 }
+
+fun <T> MutableLiveData<Event<T>>.postEvent(content: T) =
+    postValue(Event(content))
+
+fun MutableLiveData<Event<Unit>>.postEvent() = postEvent(Unit)
 
 sealed class SingleEvent {
     data class NavigationEvent(val route: Route): SingleEvent()

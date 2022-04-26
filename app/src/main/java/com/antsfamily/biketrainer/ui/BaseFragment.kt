@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.antsfamily.biketrainer.navigation.Route
 import com.antsfamily.biketrainer.navigation.mapToDirection
 import com.antsfamily.biketrainer.presentation.BaseViewModel
+import com.antsfamily.biketrainer.presentation.Event
+import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.SingleEvent
 import com.antsfamily.biketrainer.ui.util.addDismissListener
 import com.google.android.material.snackbar.Snackbar
@@ -47,7 +49,7 @@ abstract class BaseFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
         )
     }
 
-    protected fun showSnackBar(
+    private fun showSnackBar(
         message: String,
         @StringRes actionLabelRes: Int? = null,
         actionClickListener: ((View) -> Unit)? = null,
@@ -65,6 +67,9 @@ abstract class BaseFragment(@LayoutRes layoutId: Int) : Fragment(layoutId) {
 
     protected fun <X> LiveData<X>.observe(observer: Observer<X>) =
         observe(viewLifecycleOwner, observer)
+
+    protected fun <T> LiveData<Event<T>>.observeEvent(onEventUnhandledContent: (T) -> Unit) =
+        observe(EventObserver(onEventUnhandledContent))
 
     fun hideSnackBar() {
         snackbar?.dismiss()

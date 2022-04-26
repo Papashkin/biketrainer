@@ -8,14 +8,15 @@ import com.antsfamily.biketrainer.navigation.CreateProgramToAddSegment
 import com.antsfamily.biketrainer.navigation.CreateProgramToAddStairs
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutItem
+import com.antsfamily.biketrainer.presentation.createprofile.model.LoadingState
+import com.antsfamily.biketrainer.presentation.postEvent
+import com.antsfamily.biketrainer.ui.util.StaticFields.LOTTIE_ANIMATION_SUCCESS
 import com.antsfamily.data.model.program.ProgramData
 import com.antsfamily.data.model.workouts.WorkoutIntervalParams
 import com.antsfamily.data.model.workouts.WorkoutSegmentParams
 import com.antsfamily.data.model.workouts.WorkoutStairsParams
 import com.antsfamily.domain.Result
 import com.antsfamily.domain.usecase.workout.SaveWorkoutUseCase
-import com.github.mikephil.charting.data.BarEntry
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
@@ -27,16 +28,16 @@ class CreateWorkoutViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun build() : CreateWorkoutViewModel
+        fun build(): CreateWorkoutViewModel
     }
 
     data class State(
-        val isLoading: Boolean = false,
+        val loadingState: LoadingState = LoadingState.Nothing,
         val isEmptyBarChartVisible: Boolean = true,
         val isBarChartVisible: Boolean = false,
         val programName: String? = null,
         val programNameError: String? = null,
-        val barItem: WorkoutItem? = null,
+        val workoutData: List<ProgramData> = emptyList(),
         val workoutError: String? = null
     )
 
@@ -72,6 +73,11 @@ class CreateWorkoutViewModel @AssistedInject constructor(
         }
     }
 
+    fun onWorkoutSuccessAnimationEnd() {
+        refreshState()
+        _clearInputFieldsEvent.postEvent()
+    }
+
     fun onSegmentAdd(segment: WorkoutSegmentParams?) {
         segment?.let {
             setSegment(it)
@@ -95,6 +101,11 @@ class CreateWorkoutViewModel @AssistedInject constructor(
 
     private fun setSegment(workout: WorkoutSegmentParams) {
         dataSet.add(ProgramData(workout.power, workout.duration))
+        changeState { state ->
+            state.copy(
+                workoutData = state.workoutData.plus(ProgramData(workout.power, workout.duration)),
+            )
+        }
     }
 
     private fun setInterval(workout: WorkoutIntervalParams) {
@@ -118,15 +129,9 @@ class CreateWorkoutViewModel @AssistedInject constructor(
     }
 
     private fun updateChart() {
-        val workoutItem = WorkoutItem(
-            entries = dataSet.mapIndexed { index, programData ->
-                BarEntry(index.toFloat(), programData.power.toFloat())
-            },
-            labels = dataSet.map { it.duration }
-        )
         changeState {
             it.copy(
-                barItem = workoutItem,
+                workoutData = dataSet,
                 isEmptyBarChartVisible = dataSet.isEmpty(),
                 isBarChartVisible = dataSet.isNotEmpty(),
                 workoutError = null
@@ -158,27 +163,39 @@ class CreateWorkoutViewModel @AssistedInject constructor(
 
     private fun handleSaveProgramResult(result: Result<Unit, Error>) {
         when (result) {
-            is Result.Success -> {
-                showSuccessSnackbar("Program was successfully saved")
-                refreshState()
-            }
-            is Result.Failure -> {
-                showErrorSnackbar("Something went wrong. Please try it again later or change the name of the program")
-            }
+            is Result.Success -> handleSaveWorkoutSuccessResult()
+            is Result.Failure -> handleSaveWorkoutErrorResult()
         }
         hideLoading()
     }
 
+    private fun handleSaveWorkoutErrorResult() {
+        hideLoading()
+        showErrorSnackbar("Something went wrong. Please try it again later or change the name of the program")
+    }
+    private fun handleSaveWorkoutSuccessResult() {
+        changeState { it.copy(loadingState = LoadingState.Success(LOTTIE_ANIMATION_SUCCESS)) }
+    }
+
     private fun refreshState() {
-        changeState { State() }
-        _clearInputFieldsEvent.postValue(Event(Unit))
+        changeState {
+            it.copy(
+                loadingState = LoadingState.Nothing,
+                isEmptyBarChartVisible = true,
+                isBarChartVisible = false,
+                programName = null,
+                programNameError = null,
+                workoutData = emptyList(),
+                workoutError = null
+            )
+        }
     }
 
     private fun showLoading() {
-        changeState { it.copy(isLoading = true) }
+        changeState { it.copy(loadingState = LoadingState.Loading) }
     }
 
     private fun hideLoading() {
-        changeState { it.copy(isLoading = false) }
+        changeState { it.copy(loadingState = LoadingState.Nothing) }
     }
 }

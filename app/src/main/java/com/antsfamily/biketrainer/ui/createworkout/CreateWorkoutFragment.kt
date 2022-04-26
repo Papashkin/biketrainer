@@ -2,10 +2,8 @@ package com.antsfamily.biketrainer.ui.createworkout
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.databinding.FragmentCreateWorkoutBinding
-import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutViewModel
 import com.antsfamily.biketrainer.presentation.viewModelsFactory
 import com.antsfamily.biketrainer.ui.BaseFragment
@@ -42,20 +40,18 @@ class CreateWorkoutFragment : BaseFragment(R.layout.fragment_create_workout) {
     }
 
     private fun FragmentCreateWorkoutBinding.observeState() {
-        viewModel.mapDistinct { it.isLoading }.observe { loadingView.isVisible = it }
+        viewModel.mapDistinct { it.loadingState }.observe { loadingView.state = it }
         viewModel.mapDistinct { it.programNameError }.observe { programNameTil.error = it }
-        viewModel.mapDistinct { it.barItem }.observe { workoutChart.item = it }
+        viewModel.mapDistinct { it.workoutData }.observe { workoutChart.item = it }
         viewModel.mapDistinct { it.isEmptyBarChartVisible }
             .observe { workoutChart.isEmptyDataVisible = it }
         viewModel.mapDistinct { it.isBarChartVisible }
-            .observe { workoutChart.isBarChartVisible = it }
+            .observe { workoutChart.isChartVisible = it }
         viewModel.mapDistinct { it.workoutError }.observe { workoutChart.error = it }
     }
 
     private fun FragmentCreateWorkoutBinding.observeEvents() {
-        viewModel.clearInputFieldsEvent.observe(viewLifecycleOwner, EventObserver {
-            programNameEt.text = null
-        })
+        viewModel.clearInputFieldsEvent.observeEvent { programNameEt.text = null }
     }
 
     private fun FragmentCreateWorkoutBinding.bindInteractions() {
@@ -65,6 +61,9 @@ class CreateWorkoutFragment : BaseFragment(R.layout.fragment_create_workout) {
         addSegmentBtn.setOnClickListener { viewModel.onSegmentClick() }
         addStairsBtn.setOnClickListener { viewModel.onStairsClick() }
         createBtn.setOnClickListener { viewModel.onCreateClick(programNameEt.text.toString()) }
+        loadingView.setOnAnimationFinishedListener {
+            viewModel.onWorkoutSuccessAnimationEnd()
+        }
     }
 
     private fun setupFragmentResultListener() {
