@@ -1,14 +1,18 @@
 package com.antsfamily.biketrainer.ui.splash
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.data.local.repositories.ProfilesRepository
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashViewModel2 @AssistedInject constructor(
+@HiltViewModel
+class SplashViewModel2 @Inject constructor(
     private val profilesRepository: ProfilesRepository,
 ) : ViewModel() {
 
@@ -16,7 +20,8 @@ class SplashViewModel2 @AssistedInject constructor(
     val uiState: StateFlow<SplashScreenState> = _uiState
 
     init {
-        getSelectedProfile()
+        _uiState.value = SplashScreenState.Loading
+        Handler(Looper.getMainLooper()).postDelayed(::getSelectedProfile, START_DELAY)
     }
 
     private fun getSelectedProfile() = viewModelScope.launch {
@@ -26,5 +31,9 @@ class SplashViewModel2 @AssistedInject constructor(
         } ?: run {
             SplashScreenState.NavigateToCreateProfile
         }
+    }
+
+    companion object {
+        private const val START_DELAY = 500L
     }
 }

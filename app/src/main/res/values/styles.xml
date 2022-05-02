@@ -2,14 +2,14 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/color_central</item>
-        <item name="colorOnPrimary">@color/pure_white</item>
-        <item name="colorSurface">@color/color_deeper</item>
-        <item name="colorOnSurface">@color/full_black</item>
-        <item name="colorAccent">@color/color_lighter</item>
-        <item name="colorOnBackground">@color/color_cooler</item>
-        <item name="android:colorBackground">@color/pure_white</item>
-        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+<!--        <item name="colorPrimary">@color/color_central</item>-->
+<!--        <item name="colorOnPrimary">@color/pure_white</item>-->
+<!--        <item name="colorSurface">@color/color_deeper</item>-->
+<!--        <item name="colorOnSurface">@color/full_black</item>-->
+<!--        <item name="colorAccent">@color/color_lighter</item>-->
+<!--        <item name="colorOnBackground">@color/color_cooler</item>-->
+<!--        <item name="android:colorBackground">@color/pure_white</item>-->
+<!--        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>-->
     </style>
 
     <style name="MainToolbar" parent="Base.Theme.AppCompat.Light.DarkActionBar">

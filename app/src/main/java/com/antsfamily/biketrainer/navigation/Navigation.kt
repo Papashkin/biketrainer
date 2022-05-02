@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.antsfamily.biketrainer.ui.createprofile.CreateProfileScreen
 import com.antsfamily.biketrainer.ui.splash.SplashScreen
 
 @Composable
@@ -24,7 +25,7 @@ fun Navigation() {
             )
         }
         composable(Screen.CreateProfile.route) {
-//            TODO finish it
+            CreateProfileScreen.Content()
         }
         composable(
             Screen.Main.route,
