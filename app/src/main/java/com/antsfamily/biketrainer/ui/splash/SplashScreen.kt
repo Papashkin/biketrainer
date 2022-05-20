@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.antsfamily.biketrainer.R
+import com.antsfamily.biketrainer.presentation.splash.SplashViewModel2
 
 interface SplashScreen {
     companion object {

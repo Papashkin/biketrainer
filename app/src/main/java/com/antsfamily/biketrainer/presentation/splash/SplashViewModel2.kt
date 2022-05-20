@@ -1,9 +1,10 @@
-package com.antsfamily.biketrainer.ui.splash
+package com.antsfamily.biketrainer.presentation.splash
 
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.antsfamily.biketrainer.ui.splash.SplashScreenState
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

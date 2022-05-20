@@ -17,15 +17,25 @@ fun Navigation() {
         composable(Screen.Splash.route) {
             SplashScreen.Content(
                 navigateToMain = { profileName ->
-                    navController.navigate("main/$profileName") { popUpWithoutSplash() }
+                    navController.navigate("main/$profileName") {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
                 },
                 navigateToCreateAccount = {
-                    navController.navigate(Screen.CreateProfile.route) { popUpWithoutSplash() }
+                    navController.navigate(Screen.CreateProfile.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
                 },
             )
         }
         composable(Screen.CreateProfile.route) {
-            CreateProfileScreen.Content()
+            CreateProfileScreen.Content(
+                navigateToMain = { profileName ->
+                    navController.navigate("main/$profileName") {
+                        popUpTo(Screen.CreateProfile.route) { inclusive = true }
+                    }
+                },
+            )
         }
         composable(
             Screen.Main.route,
@@ -35,9 +45,6 @@ fun Navigation() {
         }
     }
 }
-
-private fun NavOptionsBuilder.popUpWithoutSplash() =
-    popUpTo(Screen.Splash.route) { inclusive = true }
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")

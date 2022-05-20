@@ -18,7 +18,7 @@ object DataModule {
     @Singleton
     @Provides
     fun provideBikeTrainerDatabase(@ApplicationContext appContext: Context): AntsBikeTrainerDatabase =
-        Room.databaseBuilder(appContext, AntsBikeTrainerDatabase::class.java, "AntBikeTrainer")
+        Room.databaseBuilder(appContext, AntsBikeTrainerDatabase::class.java, DATABASE_NAME)
             .build()
 
     @Singleton
@@ -33,4 +33,6 @@ object DataModule {
     @Provides
     fun provideKeyValueStorage(@ApplicationContext appContext: Context): SharedPrefs =
         SharedPrefs(appContext)
+
+    private const val DATABASE_NAME = "AntBikeTrainer"
 }
