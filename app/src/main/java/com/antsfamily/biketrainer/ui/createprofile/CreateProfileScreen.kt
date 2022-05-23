@@ -1,9 +1,6 @@
 package com.antsfamily.biketrainer.ui.createprofile
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.antsfamily.biketrainer.presentation.createprofile.CreateProfileViewModel2
+import com.antsfamily.biketrainer.ui.common.LoadingButton
 import com.antsfamily.biketrainer.ui.util.textColor
 import com.antsfamily.domain.antservice.orZero
 
@@ -35,9 +33,7 @@ fun CreateProfileScreen(
     navigateToMain: (profile: String) -> Unit,
     viewModel: CreateProfileViewModel2 = hiltViewModel()
 ) {
-    val uiState = viewModel.uiState.collectAsState(
-        CreateProfileState.TextFieldsState(null, null, null, null)
-    )
+    val uiState = viewModel.uiState.collectAsState(CreateProfileState.Initial)
 
     if (uiState.value is CreateProfileState.NavigateToMain) {
         navigateToMain((uiState.value as CreateProfileState.NavigateToMain).profileName)
@@ -52,12 +48,10 @@ fun CreateProfileScreen(
     var age by rememberSaveable { mutableStateOf(0) }
     var isAgeError by rememberSaveable { mutableStateOf(false) }
 
-    (uiState.value as? CreateProfileState.TextFieldsState)?.let {
-        isUsernameError = it.nameError != null
-        isHeightError = it.heightError != null
-        isWeightError = it.weightError != null
-        isAgeError = it.ageError != null
-    }
+    isUsernameError = (uiState.value as? CreateProfileState.TextFieldsState)?.nameError != null
+    isHeightError = (uiState.value as? CreateProfileState.TextFieldsState)?.heightError != null
+    isWeightError = (uiState.value as? CreateProfileState.TextFieldsState)?.weightError != null
+    isAgeError = (uiState.value as? CreateProfileState.TextFieldsState)?.ageError != null
 
     Row(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -88,7 +82,9 @@ fun CreateProfileScreen(
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = MaterialTheme.colors.surface
                 ),
-                modifier = Modifier.padding(top = 24.dp).fillMaxSize()
+                modifier = Modifier
+                    .padding(top = 24.dp)
+                    .fillMaxSize()
             )
             if (isUsernameError) {
                 Text(
@@ -114,7 +110,9 @@ fun CreateProfileScreen(
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = MaterialTheme.colors.surface
                 ),
-                modifier = Modifier.padding(top = 20.dp).fillMaxSize()
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .fillMaxSize()
             )
             if (isHeightError) {
                 Text(
@@ -140,7 +138,9 @@ fun CreateProfileScreen(
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = MaterialTheme.colors.surface
                 ),
-                modifier = Modifier.padding(top = 20.dp).fillMaxSize()
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .fillMaxSize()
             )
             if (isWeightError) {
                 Text(
@@ -166,7 +166,9 @@ fun CreateProfileScreen(
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = MaterialTheme.colors.surface
                 ),
-                modifier = Modifier.padding(top = 20.dp).fillMaxSize()
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .fillMaxSize()
             )
             if (isAgeError) {
                 Text(
@@ -176,58 +178,13 @@ fun CreateProfileScreen(
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
-            Button(
+            LoadingButton(
                 onClick = { viewModel.createProfile(username, height, weight, age) },
-                modifier = Modifier.padding(top = 64.dp, bottom = 16.dp).fillMaxSize()
+                loading = uiState.value == CreateProfileState.Loading,
+                modifier = Modifier.padding(top = 16.dp)
             ) {
-                Text(text = "Confirm", modifier = Modifier.padding(4.dp))
+                Text(text = "Confirm")
             }
         }
     }
 }
-
-fun Number?.orZero() = this ?: ZERO
-
-private val ZERO = 0 as Number
-
-//
-//@Composable
-//fun Title(
-//    text: String,
-//    onBackButtonClickListener: (() -> Unit)? = null,
-//    onCloseButtonClickListener: (() -> Unit)? = null,
-//) {
-//    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
-//        val (backButton, title, closeButton) = createRefs()
-//        if (onBackButtonClickListener != null) {
-//            IconButton(
-//                onClick = { onBackButtonClickListener.invoke() },
-//                modifier = Modifier.constrainAs(backButton) {
-//                    top.linkTo(parent.top)
-//                    start.linkTo(parent.start)
-//                }) {
-//                Icon(Icons.Default.ArrowBack, contentDescription = null)
-//            }
-//        }
-//        Text(
-//            text = text,
-//            fontSize = 18.sp,
-//            style = TextStyle(color = textColor),
-//            modifier = Modifier.constrainAs(title) {
-//                top.linkTo(parent.top, 12.dp)
-//                start.linkTo(parent.start)
-//                end.linkTo(parent.end)
-//            }
-//        )
-//        if (onCloseButtonClickListener != null) {
-//            IconButton(
-//                onClick = { onCloseButtonClickListener.invoke() },
-//                modifier = Modifier.constrainAs(closeButton) {
-//                    top.linkTo(parent.top)
-//                    end.linkTo(parent.end)
-//                }) {
-//                Icon(Icons.Default.Close, contentDescription = null)
-//            }
-//        }
-//    }
-//}
