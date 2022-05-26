@@ -28,7 +28,7 @@ class SplashViewModel2 @Inject constructor(
     private fun getSelectedProfile() = viewModelScope.launch {
         val profileName = profilesRepository.getSelectedProfileName()
         _uiState.value = profileName?.let {
-            SplashScreenState.NavigateToMain(it)
+            SplashScreenState.NavigateToMain
         } ?: run {
             SplashScreenState.NavigateToCreateProfile
         }

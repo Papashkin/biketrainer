@@ -25,9 +25,7 @@ class MainActivity : AppCompatActivity() {
             val systemUiController = rememberSystemUiController()
             systemUiController.setSystemBarsColor(color = colors.surface)
             MaterialTheme(colors = getThemeColors()) {
-                Scaffold {
-                    Navigation()
-                }
+                Navigation()
             }
         }
     }

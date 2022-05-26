@@ -18,7 +18,7 @@ interface SplashScreen {
     companion object {
         @Composable
         fun Content(
-            navigateToMain: (profile: String) -> Unit,
+            navigateToMain: () -> Unit,
             navigateToCreateAccount: () -> Unit
         ) {
             SplashScreen(navigateToMain, navigateToCreateAccount)
@@ -28,14 +28,14 @@ interface SplashScreen {
 
 @Composable
 fun SplashScreen(
-    navigateToMain: (profile: String) -> Unit,
+    navigateToMain: () -> Unit,
     navigateToCreateAccount: () -> Unit,
     viewModel: SplashViewModel2 = hiltViewModel(),
 ) {
-    val uiState = viewModel.uiState.collectAsState(SplashScreenState.Loading)
-    when (val state = uiState.value) {
+    val uiState = viewModel.uiState.collectAsState()
+    when (uiState.value) {
         SplashScreenState.Loading -> SplashViewWithIconAndSpinner()
-        is SplashScreenState.NavigateToMain -> navigateToMain(state.profileName)
+        SplashScreenState.NavigateToMain -> navigateToMain()
         SplashScreenState.NavigateToCreateProfile -> navigateToCreateAccount()
     }
 }

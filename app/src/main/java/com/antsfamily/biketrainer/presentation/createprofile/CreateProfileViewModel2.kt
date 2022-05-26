@@ -1,12 +1,11 @@
 package com.antsfamily.biketrainer.presentation.createprofile
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileState
 import com.antsfamily.data.local.repositories.ProfilesRepository
+import com.antsfamily.domain.antservice.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,12 +14,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateProfileViewModel2 @Inject constructor(
-    private val profilesRepository: ProfilesRepository,
+    private val repository: ProfilesRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<CreateProfileState>(
-        CreateProfileState.TextFieldsState(null, null, null, null)
-    )
+    private val _uiState = MutableStateFlow<CreateProfileState>(CreateProfileState.Initial)
     val uiState: StateFlow<CreateProfileState> = _uiState
 
     fun onNameChanged() {
@@ -47,18 +44,18 @@ class CreateProfileViewModel2 @Inject constructor(
         }
     }
 
-    fun createProfile(name: String?, height: Long?, weight: Long?, age: Int?) {
+    fun onProfileCreate(name: String?, height: Int?, weight: Int?, age: Int?) {
         if (isValid(name, height, weight, age)) {
             _uiState.value = CreateProfileState.Loading
             saveProfile(name!!)
         }
     }
 
-    private fun isValid(name: String?, height: Long?, weight: Long?, age: Int?): Boolean {
+    private fun isValid(name: String?, height: Int?, weight: Int?, age: Int?): Boolean {
         val isAgeValid = age in 10..90
         val isNameValid = name.isNullOrBlank().not()
-        val isHeightValid = (height ?: 0L) > 100L
-        val isWeightValid = (weight ?: 0L) > 20L
+        val isHeightValid = (height.orZero()) > 100
+        val isWeightValid = (weight.orZero()) > 20
 
         _uiState.value = CreateProfileState.TextFieldsState(
             nameError = if (isNameValid) null else "Username is invalid",
@@ -72,16 +69,11 @@ class CreateProfileViewModel2 @Inject constructor(
 
     private fun saveProfile(name: String) = viewModelScope.launch {
         try {
-            profilesRepository.setSelectedProfileName(name)
-            Handler(Looper.getMainLooper())
-                .postDelayed({ _uiState.value = CreateProfileState.NavigateToMain(name) }, DELAY)
+            repository.setSelectedProfileName(name)
+            _uiState.value = CreateProfileState.NavigateToMain
         } catch (e: Exception) {
             Log.e(this::class.java.name, e.message.orEmpty())
             //TODO add error handling stuff
         }
-    }
-
-    companion object {
-        private const val DELAY = 500L
     }
 }

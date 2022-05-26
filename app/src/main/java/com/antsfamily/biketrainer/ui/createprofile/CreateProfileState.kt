@@ -9,5 +9,5 @@ sealed class CreateProfileState {
         val weightError: String?,
         val ageError: String?,
         ) : CreateProfileState()
-    class NavigateToMain(val profileName: String) : CreateProfileState()
+    object NavigateToMain : CreateProfileState()
 }
