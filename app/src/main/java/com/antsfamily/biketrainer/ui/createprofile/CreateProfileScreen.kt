@@ -20,13 +20,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.antsfamily.biketrainer.presentation.createprofile.CreateProfileViewModel2
 import com.antsfamily.biketrainer.ui.common.LoadingButton
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileScreen.Companion.STRING_EMPTY
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileScreen.Companion.ZERO
+import com.antsfamily.biketrainer.ui.util.FontSize
+import com.antsfamily.biketrainer.ui.util.Padding
 import com.antsfamily.biketrainer.ui.util.textColor
 import com.antsfamily.domain.antservice.orZero
 
@@ -72,13 +72,13 @@ private fun CreateProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = Padding.large)
         ) {
             Text(
                 "Create profile",
-                fontSize = 32.sp,
+                fontSize = FontSize.H4,
                 style = TextStyle(color = textColor),
-                modifier = Modifier.padding(top = 64.dp)
+                modifier = Modifier.padding(top = Padding.huge)
             )
             OutlinedTextField(
                 label = { Text("Enter your username") },
@@ -97,7 +97,7 @@ private fun CreateProfileScreen(
                     backgroundColor = MaterialTheme.colors.surface
                 ),
                 modifier = Modifier
-                    .padding(top = 24.dp)
+                    .padding(top = Padding.x_large)
                     .fillMaxSize()
             )
             if (isUsernameError) {
@@ -105,7 +105,7 @@ private fun CreateProfileScreen(
                     text = (uiState.value as? CreateProfileState.TextFieldsState)?.nameError.orEmpty(),
                     color = MaterialTheme.colors.error,
                     style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.padding(start = Padding.medium)
                 )
             }
             OutlinedTextField(
@@ -125,7 +125,7 @@ private fun CreateProfileScreen(
                     backgroundColor = MaterialTheme.colors.surface
                 ),
                 modifier = Modifier
-                    .padding(top = 20.dp)
+                    .padding(top = Padding.large)
                     .fillMaxSize()
             )
             if (isHeightError) {
@@ -133,7 +133,7 @@ private fun CreateProfileScreen(
                     text = (uiState.value as? CreateProfileState.TextFieldsState)?.heightError.orEmpty(),
                     color = MaterialTheme.colors.error,
                     style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.padding(start = Padding.medium)
                 )
             }
             OutlinedTextField(
@@ -153,7 +153,7 @@ private fun CreateProfileScreen(
                     backgroundColor = MaterialTheme.colors.surface
                 ),
                 modifier = Modifier
-                    .padding(top = 20.dp)
+                    .padding(top = Padding.large)
                     .fillMaxSize()
             )
             if (isWeightError) {
@@ -161,7 +161,7 @@ private fun CreateProfileScreen(
                     text = (uiState.value as? CreateProfileState.TextFieldsState)?.weightError.orEmpty(),
                     color = MaterialTheme.colors.error,
                     style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.padding(start = Padding.medium)
                 )
             }
             OutlinedTextField(
@@ -187,7 +187,7 @@ private fun CreateProfileScreen(
                     backgroundColor = MaterialTheme.colors.surface
                 ),
                 modifier = Modifier
-                    .padding(top = 20.dp)
+                    .padding(top = Padding.large)
                     .fillMaxSize()
             )
             if (isAgeError) {
@@ -195,7 +195,7 @@ private fun CreateProfileScreen(
                     text = (uiState.value as? CreateProfileState.TextFieldsState)?.ageError.orEmpty(),
                     color = MaterialTheme.colors.error,
                     style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.padding(start = Padding.medium)
                 )
             }
             LoadingButton(
@@ -204,7 +204,7 @@ private fun CreateProfileScreen(
                     viewModel.onProfileCreate(username, height, weight, age)
                 },
                 loading = isLoading,
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier.padding(top = Padding.medium)
             ) {
                 Text(text = "Confirm")
             }

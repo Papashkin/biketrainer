@@ -6,8 +6,8 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -127,7 +127,7 @@ sealed class Screen(val route: String) {
 
 sealed class MainBottomItem(val route: String, val label: String, val icon: ImageVector) {
     object Home : MainBottomItem(Screen.Home.route, "Home", Icons.Rounded.Home)
-    object History : MainBottomItem(Screen.History.route, "History", Icons.Rounded.List)
+    object History : MainBottomItem(Screen.History.route, "History", Icons.Rounded.History)
     object Settings : MainBottomItem(Screen.Settings.route, "Settings", Icons.Rounded.Settings)
 
     companion object {

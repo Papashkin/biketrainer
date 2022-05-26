@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.antsfamily.biketrainer.ui.util.Padding
 
 @Composable
 fun LoadingButton(
@@ -31,7 +32,7 @@ fun LoadingButton(
             if (loading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    strokeWidth = 4.dp,
+                    strokeWidth = Padding.x_small,
                     color = MaterialTheme.colors.onPrimary
                 )
             } else {
