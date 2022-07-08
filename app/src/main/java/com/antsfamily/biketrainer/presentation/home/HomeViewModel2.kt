@@ -1,7 +1,8 @@
 package com.antsfamily.biketrainer.presentation.home
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.antsfamily.biketrainer.BaseViewModel2
+import com.antsfamily.biketrainer.navigation.Screen
 import com.antsfamily.biketrainer.ui.home.HomeState
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.data.local.repositories.WorkoutRepository
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class HomeViewModel2 @Inject constructor(
     private val profilesRepository: ProfilesRepository,
     private val workoutRepository: WorkoutRepository,
-) : ViewModel() {
+) : BaseViewModel2() {
 
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState: StateFlow<HomeState> = _uiState
@@ -26,7 +27,7 @@ class HomeViewModel2 @Inject constructor(
     }
 
     fun onCreateWorkoutClick() {
-        //TODO add navigation to Workout creation screen
+        navigateTo(Screen.CreateWorkout)
     }
 
     fun onWorkoutClick(workout: Program) {

@@ -3,17 +3,12 @@ package com.antsfamily.data.local.repositories
 import com.antsfamily.data.local.ProfileStore
 import com.antsfamily.data.local.database.ProfileDao
 import com.antsfamily.data.model.profile.Profile
-import com.antsfamily.data.model.profile.ProfileWithPrograms
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ProfilesRepositoryImpl @Inject constructor(
     private val dao: ProfileDao,
     private val profileStore: ProfileStore
 ) : ProfilesRepository {
-    override fun getProfileWithPrograms(profileName: String): Flow<ProfileWithPrograms> =
-        dao.getProfileFlow(profileName)
-
     override fun getSelectedProfileName(): String? = profileStore.getSelectedProfile()
     override fun setSelectedProfileName(profileName: String) {
         profileStore.saveSelectedProfile(profileName)

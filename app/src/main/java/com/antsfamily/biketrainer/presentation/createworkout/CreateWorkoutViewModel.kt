@@ -19,7 +19,6 @@ import com.github.mikephil.charting.data.BarEntry
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
-import java.util.*
 
 class CreateWorkoutViewModel @AssistedInject constructor(
     private val saveWorkoutUseCase: SaveWorkoutUseCase
@@ -151,7 +150,7 @@ class CreateWorkoutViewModel @AssistedInject constructor(
     private fun saveProgram(name: String) = viewModelScope.launch {
         showLoading()
         saveWorkoutUseCase(
-            SaveWorkoutUseCase.Params(Random().nextInt(), name, dataSet),
+            SaveWorkoutUseCase.Params(name = name, data = dataSet),
             ::handleSaveProgramResult
         )
     }

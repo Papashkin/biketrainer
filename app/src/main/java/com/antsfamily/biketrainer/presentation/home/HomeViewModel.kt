@@ -6,14 +6,12 @@ import com.antsfamily.biketrainer.BuildConfig
 import com.antsfamily.biketrainer.navigation.HomeToCreateProgram
 import com.antsfamily.biketrainer.navigation.HomeToProgramInfo
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
+import com.antsfamily.data.local.repositories.WorkoutRepository
 import com.antsfamily.data.model.profile.Profile
-import com.antsfamily.data.model.profile.ProfileWithPrograms
 import com.antsfamily.data.model.program.Program
-import com.antsfamily.domain.usecase.SubscribeToProfileWithProgramsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -21,7 +19,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class HomeViewModel @AssistedInject constructor(
-    private val subscribeToProfileWithProgramsUseCase: SubscribeToProfileWithProgramsUseCase,
+    private val workoutRepository: WorkoutRepository,
     @Assisted private val profileName: String,
 ) : StatefulViewModel<HomeViewModel.State>(State()) {
 
@@ -58,7 +56,7 @@ class HomeViewModel @AssistedInject constructor(
     }
 
     private fun getProfileWithPrograms() = viewModelScope.launch {
-        subscribeToProfileWithProgramsUseCase(profileName)
+        workoutRepository.programs
             .onStart { showLoading() }
             .onCompletion { Log.e("ProgramsRepo", "!!!! COMPLETE !!!!") }
             .collect { handleProfileWithPrograms(it) }
@@ -84,14 +82,13 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handleProfileWithPrograms(profileWithPrograms: ProfileWithPrograms) {
+    private fun handleProfileWithPrograms(programs: List<Program>) {
         changeState {
             it.copy(
                 isProgramsLoading = false,
-                isProgramsVisible = profileWithPrograms.programs.isNotEmpty(),
-                isEmptyProgramsVisible = profileWithPrograms.programs.isEmpty(),
-                programs = profileWithPrograms.programs,
-                profile = profileWithPrograms.profile
+                isProgramsVisible = programs.isNotEmpty(),
+                isEmptyProgramsVisible = programs.isEmpty(),
+                programs = programs,
             )
         }
     }

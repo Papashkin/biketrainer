@@ -1,8 +1,9 @@
 package com.antsfamily.biketrainer.presentation.createprofile
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.antsfamily.biketrainer.BaseViewModel2
+import com.antsfamily.biketrainer.navigation.MainBottomItem
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileState
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.domain.antservice.orZero
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateProfileViewModel2 @Inject constructor(
     private val repository: ProfilesRepository,
-) : ViewModel() {
+) : BaseViewModel2() {
 
     private val _uiState = MutableStateFlow<CreateProfileState>(CreateProfileState.Initial)
     val uiState: StateFlow<CreateProfileState> = _uiState
@@ -70,7 +71,7 @@ class CreateProfileViewModel2 @Inject constructor(
     private fun saveProfile(name: String) = viewModelScope.launch {
         try {
             repository.setSelectedProfileName(name)
-            _uiState.value = CreateProfileState.NavigateToMain
+            navigateTo(MainBottomItem.Home)
         } catch (e: Exception) {
             Log.e(this::class.java.name, e.message.orEmpty())
             //TODO add error handling stuff

@@ -9,8 +9,6 @@ class WorkoutRepositoryImpl @Inject constructor(private val dao: ProgramDao) : W
     override suspend fun getAllPrograms(): List<Program> = dao.getAll()
     override val programs: Flow<List<Program>> = dao.getPrograms()
     override suspend fun getProgram(name: String): Program? = dao.getProgram(name)
-    override suspend fun getProgramsByUsername(username: String): List<Program> =
-        dao.getProgramsByUsername(username)
 
     override suspend fun insertProgram(program: Program) = dao.insertProgram(program)
     override suspend fun updateProgram(program: Program) = dao.updateProgram(program)

@@ -23,7 +23,6 @@ class SaveWorkoutUseCase @Inject constructor(
             val program = Program(
                 title = params.name,
                 data = params.data,
-                username = it.name
             )
             Result.Success(workoutRepository.insertProgram(program))
         } ?: Result.Failure(Error("Selected profile is absent"))
@@ -32,7 +31,6 @@ class SaveWorkoutUseCase @Inject constructor(
     }
 
     data class Params(
-        val id: Int,
         val name: String,
         val data: List<ProgramData>
     )

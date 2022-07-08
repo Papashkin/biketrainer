@@ -15,9 +15,6 @@ abstract class ProgramDao {
     @Query("Select * from program where title = :title")
     abstract suspend fun getProgram(title: String): Program?
 
-    @Query("Select * from program where username = :username")
-    abstract suspend fun getProgramsByUsername(username: String): List<Program>
-
     @Insert(onConflict = OnConflictStrategy.ABORT)
     abstract suspend fun insertProgram(profile: Program)
 

@@ -3,7 +3,6 @@ package com.antsfamily.biketrainer.navigation
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.History
@@ -14,7 +13,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -24,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileScreen
+import com.antsfamily.biketrainer.ui.createworkout.CreateWorkoutScreen
 import com.antsfamily.biketrainer.ui.history.HistoryScreen
 import com.antsfamily.biketrainer.ui.home.HomeScreen
 import com.antsfamily.biketrainer.ui.settings.SettingsScreen
@@ -44,32 +43,25 @@ fun Navigation() {
         content = {
             NavHost(
                 navController = navController,
-                startDestination = Screen.Splash.route,
-                modifier = Modifier.padding(it)
+                startDestination = Screen.Splash.route
             ) {
                 composable(Screen.Splash.route) {
-                    SplashScreen.Content(
-                        navigateToMain = {
-                            navController.navigate(MainBottomItem.Home.route) { popUpToTop(navController) }
-                        },
-                        navigateToCreateAccount = {
-                            navController.navigate(Screen.CreateProfile.route) { popUpToTop(navController) }
-                        },
-                    )
+                    SplashScreen.Content(navController)
                 }
                 composable(Screen.CreateProfile.route) {
-                    CreateProfileScreen.Content {
-                        navController.navigate(MainBottomItem.Home.route) { popUpToTop(navController) }
-                    }
+                    CreateProfileScreen.Content(navController)
                 }
                 composable(MainBottomItem.Home.route) {
-                    HomeScreen.Content()
+                    HomeScreen.Content(navController)
                 }
                 composable(MainBottomItem.History.route) {
                     HistoryScreen.Content()
                 }
                 composable(MainBottomItem.Settings.route) {
                     SettingsScreen.Content()
+                }
+                composable(Screen.CreateWorkout.route) {
+                    CreateWorkoutScreen.Content(navController)
                 }
             }
         }
@@ -119,7 +111,8 @@ fun NavOptionsBuilder.popUpToTop(navController: NavController) {
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
-    object CreateProfile : Screen("createProfile")
+    object CreateProfile : Screen("create_profile")
+    object CreateWorkout : Screen("create_workout")
     object Home : Screen("home")
     object History : Screen("history")
     object Settings : Screen("settings")

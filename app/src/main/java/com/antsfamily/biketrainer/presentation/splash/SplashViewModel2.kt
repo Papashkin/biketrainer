@@ -2,8 +2,10 @@ package com.antsfamily.biketrainer.presentation.splash
 
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.antsfamily.biketrainer.BaseViewModel2
+import com.antsfamily.biketrainer.navigation.MainBottomItem
+import com.antsfamily.biketrainer.navigation.Screen
 import com.antsfamily.biketrainer.ui.splash.SplashScreenState
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel2 @Inject constructor(
     private val profilesRepository: ProfilesRepository,
-) : ViewModel() {
+) : BaseViewModel2() {
 
     private val _uiState = MutableStateFlow<SplashScreenState>(SplashScreenState.Loading)
     val uiState: StateFlow<SplashScreenState> = _uiState
@@ -27,10 +29,10 @@ class SplashViewModel2 @Inject constructor(
 
     private fun getSelectedProfile() = viewModelScope.launch {
         val profileName = profilesRepository.getSelectedProfileName()
-        _uiState.value = profileName?.let {
-            SplashScreenState.NavigateToMain
+        profileName?.let {
+            navigateTo(MainBottomItem.Home)
         } ?: run {
-            SplashScreenState.NavigateToCreateProfile
+            navigateTo(Screen.CreateProfile)
         }
     }
 

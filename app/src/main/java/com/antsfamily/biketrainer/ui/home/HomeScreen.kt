@@ -12,6 +12,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.antsfamily.biketrainer.presentation.home.HomeViewModel2
 import com.antsfamily.biketrainer.ui.util.FontSize
 import com.antsfamily.biketrainer.ui.util.Padding
@@ -30,14 +32,17 @@ import com.antsfamily.data.model.program.Program
 interface HomeScreen {
     companion object {
         @Composable
-        fun Content() {
-            HomeScreen()
+        fun Content(navController: NavController) {
+            HomeScreen(navController)
         }
     }
 }
 
 @Composable
-private fun HomeScreen(viewModel: HomeViewModel2 = hiltViewModel()) {
+private fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel2 = hiltViewModel()
+) {
     val uiState = viewModel.uiState.collectAsState()
 
     when (val state = uiState.value) {
@@ -48,6 +53,12 @@ private fun HomeScreen(viewModel: HomeViewModel2 = hiltViewModel()) {
             state.workouts,
             viewModel
         )
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.navigationFlow.collect {
+            navController.navigate(it)
+        }
     }
 }
 
