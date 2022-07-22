@@ -16,16 +16,30 @@ import com.antsfamily.data.model.program.ProgramData
 @Composable
 fun WorkoutChart(
     modifier: Modifier = Modifier,
+    width: Float? = null,
+    height: Float? = null,
     workoutSteps: List<ProgramData>
 ) {
     if (workoutSteps.isEmpty()) return
     var startXaxis = 0.0f
-    Card(
-        modifier = modifier
+    val viewHeight = height ?: workoutSteps.maxOf { it.power }.toFloat()
+    val updatedModifier = if (width != null) {
+        modifier.size(
+            height = viewHeight.dp,
+            width = width.dp
+        )
+    } else {
+        modifier
             .fillMaxWidth()
-            .height(
-                workoutSteps.maxOf { it.power }.dp
-            )
+            .height(viewHeight.dp)
+    }
+    Card(
+        modifier = updatedModifier
+//        modifier = modifier
+//            .fillMaxWidth()
+//            .height(
+//                workoutSteps.maxOf { it.power }.dp
+//            )
     ) {
         Column(
             modifier = Modifier

@@ -49,12 +49,12 @@ private fun CreateProfileScreen(
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
-    var keyboardController = LocalSoftwareKeyboardController.current
+//    var keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(Unit) {
         viewModel.navigationFlow.collect {
-            keyboardController?.hide()
-            keyboardController = null
+//            keyboardController?.hide()
+//            keyboardController = null
             navController.navigate(it) { popUpToTop(navController) }
         }
     }
