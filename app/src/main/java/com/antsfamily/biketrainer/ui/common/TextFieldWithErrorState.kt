@@ -5,13 +5,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.antsfamily.biketrainer.ui.util.Padding
@@ -25,6 +21,9 @@ fun TextFieldWithErrorState(
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
+        backgroundColor = MaterialTheme.colors.surface,
+    ),
     errorMessage: String? = null,
     onDoneClickListener: (() -> Unit)? = null
 ) {
@@ -40,13 +39,7 @@ fun TextFieldWithErrorState(
             keyboardActions = KeyboardActions(
                 onDone = { onDoneClickListener?.invoke() }
             ),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface,
-                disabledTextColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-            ),
+            colors = colors,
             modifier = Modifier
                 .padding(top = Padding.large)
                 .fillMaxSize()

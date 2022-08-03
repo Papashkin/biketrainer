@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +26,7 @@ fun LoadingButton(
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp),
+        shape = RoundedCornerShape(12.dp),
         enabled = enabled,
         colors = colors,
     ) {
