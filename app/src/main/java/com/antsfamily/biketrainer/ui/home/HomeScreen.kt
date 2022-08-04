@@ -1,33 +1,34 @@
 package com.antsfamily.biketrainer.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.PlusOne
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.antsfamily.biketrainer.presentation.home.HomeViewModel2
 import com.antsfamily.biketrainer.ui.common.FullScreenLoading
 import com.antsfamily.biketrainer.ui.common.WorkoutChart
-import com.antsfamily.biketrainer.ui.util.FontSize
-import com.antsfamily.biketrainer.ui.util.Padding
-import com.antsfamily.biketrainer.ui.util.primaryColor
-import com.antsfamily.biketrainer.ui.util.textColor
+import com.antsfamily.biketrainer.ui.util.*
 import com.antsfamily.data.model.program.Program
 
 interface HomeScreen {
@@ -72,13 +73,7 @@ fun HomeScreenEmptyContent(profileName: String, viewModel: HomeViewModel2) {
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = Padding.large)
         ) {
-            Text(
-                "Hello, $profileName!",
-                fontSize = FontSize.H4,
-                style = TextStyle(color = textColor),
-                modifier = Modifier.padding(top = Padding.huge)
-            )
-
+            HomeGreetingsView(profileName)
             Box(modifier = Modifier.padding(top = Padding.gigantic)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(
@@ -116,116 +111,117 @@ fun HomeScreenContentWithData(
     viewModel: HomeViewModel2
 ) {
     val scrollState = rememberLazyListState()
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { viewModel.onCreateWorkoutClick() },
-                modifier = Modifier.padding(bottom = Padding.huge)
-            ) {
-                Icon(imageVector = Icons.Rounded.PlusOne, contentDescription = null)
-            }
-        },
-        content = {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        HomeGreetingsView(
+            profileName,
+            Modifier.background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(surfaceColor, surfaceColor, backgroundColor),
+                ),
+            )
+        )
+        Column(
+            modifier = Modifier
+                .padding(top = Padding.x_small)
+                .fillMaxWidth()
+                .background(backgroundColor)
+        ) {
             Column {
                 Text(
-                    "Hello, $profileName!",
-                    fontSize = FontSize.H4,
-                    style = TextStyle(color = textColor),
-                    modifier = Modifier.padding(top = Padding.huge, start = Padding.large)
-                )
-                Text(
-                    "Here are your workouts:",
+                    "Workouts",
                     fontSize = FontSize.H6,
-                    style = TextStyle(color = textColor),
-                    modifier = Modifier.padding(top = Padding.large, start = Padding.large)
+                    style = TextStyle(color = textColor, fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(top = Padding.x_large, start = Padding.large)
                 )
-                LazyColumn(
-                    contentPadding = PaddingValues(Padding.medium),
-                    verticalArrangement = Arrangement.spacedBy(Padding.regular),
-                    state = scrollState
+                LazyRow(
+                    contentPadding = PaddingValues(
+                        vertical = Padding.small,
+                        horizontal = Padding.large
+                    ),
+                    state = scrollState,
                 ) {
                     items(workouts) { workout ->
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = { viewModel.onWorkoutClick(workout) }
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                WorkoutChart(
-                                    width = 120f,
-                                    height = 120f,
-                                    modifier = Modifier.padding(Padding.medium),
-                                    workoutSteps = workout.data
-                                )
-                                Column(modifier = Modifier.padding(Padding.regular)) {
-                                    Text(
-                                        text = workout.title,
-                                        fontSize = FontSize.H6,
-                                        modifier = Modifier.padding(Padding.tiny)
-                                    )
-                                    Text(
-                                        text = workout.title,
-                                        fontSize = FontSize.Body1,
-                                        modifier = Modifier.padding(Padding.tiny)
-                                    )
-                                }
-                            }
+                        WorkoutCard(workout) {
+                            viewModel.onWorkoutClick(workout)
                         }
                     }
                 }
             }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = Padding.large, top = Padding.gigantic),
+            ) {
+                Text(
+                    text = "Don't have right workout?",
+                    modifier = Modifier.padding(horizontal = Padding.tiny),
+                    fontSize = FontSize.Body1,
+                    style = TextStyle(color = textColor, fontWeight = FontWeight.Normal),
+                )
+                ClickableText(
+                    text = AnnotatedString(
+                        "Create new one",
+                        spanStyle = SpanStyle(
+                            fontSize = FontSize.Body1,
+                            color = primaryVariantColor,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    ),
+                    onClick = { viewModel.onCreateWorkoutClick() },
+                    modifier = Modifier.padding(horizontal = Padding.tiny),
+                )
+            }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun WorkoutCard(
+    workout: Program,
+    onWorkoutClick: (Program) -> Unit
+) {
+    Card(
+        modifier = Modifier.padding(start = Padding.tiny, end = Padding.small),
+        backgroundColor = backgroundColor,
+        elevation = 0.dp,
+        onClick = { onWorkoutClick(workout) }
+    ) {
+        Column(verticalArrangement = Arrangement.Center) {
+            WorkoutChart(
+                width = 200f,
+                height = 200f,
+                shape = RoundedCornerShape(4.dp),
+                workoutSteps = workout.data
+            )
+            Column {
+                Text(
+                    text = workout.title,
+                    fontSize = FontSize.H5,
+                    style = TextStyle(fontWeight = FontWeight.Medium),
+                    modifier = Modifier.padding(Padding.tiny)
+                )
+                Text(
+                    text = workout.getAveragePower().toString().plus(" W avg."),
+                    fontSize = FontSize.Body1,
+                    modifier = Modifier.padding(start = Padding.tiny, top = Padding.small)
+                )
+                Text(
+                    text = workout.getDuration(),
+                    fontSize = FontSize.Caption,
+                    modifier = Modifier.padding(Padding.tiny)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun HomeGreetingsView(username: String, modifier: Modifier = Modifier) {
+    Text(
+        "Hello, $username",
+        fontSize = FontSize.H4,
+        modifier = modifier
+            .padding(vertical = Padding.huge, horizontal = Padding.large)
+            .fillMaxWidth()
     )
-//    Column {
-//        Text(
-//            "Hello, $profileName!",
-//            fontSize = FontSize.H4,
-//            style = TextStyle(color = textColor),
-//            modifier = Modifier.padding(top = Padding.huge, start = Padding.large)
-//        )
-//        LazyColumn(
-//            contentPadding = PaddingValues(Padding.medium),
-//            verticalArrangement = Arrangement.spacedBy(Padding.regular),
-//            state = scrollState
-//        ) {
-//            items(workouts) { workout ->
-//                Card(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    onClick = { viewModel.onWorkoutClick(workout) }
-//                ) {
-//                    Row(
-//                        verticalAlignment = Alignment.CenterVertically,
-//                        horizontalArrangement = Arrangement.Start
-//                    ) {
-//                        WorkoutChart(
-//                            width = 120f,
-//                            height = 120f,
-//                            modifier = Modifier.padding(Padding.medium),
-//                            workoutSteps = workout.data
-//                        )
-//                        Column(modifier = Modifier.padding(Padding.regular)) {
-//                            Text(
-//                                text = workout.title,
-//                                fontSize = FontSize.H6,
-//                                modifier = Modifier.padding(Padding.tiny)
-//                            )
-//                            Text(
-//                                text = workout.title,
-//                                fontSize = FontSize.Body1,
-//                                modifier = Modifier.padding(Padding.tiny)
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    FloatingActionButton(
-//        onClick = { viewModel.onCreateWorkoutClick() },
-//        modifier = Modifier.padding(top = Padding.medium)
-//    ) {
-//        Icon(imageVector = Icons.Rounded.PlusOne, contentDescription = null)
-//    }
 }

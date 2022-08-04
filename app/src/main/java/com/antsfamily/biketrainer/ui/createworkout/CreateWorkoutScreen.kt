@@ -117,7 +117,7 @@ fun CreateWorkoutScreen(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next,
                 modifier = Modifier
-                    .padding(top = Padding.x_large)
+                    .padding(top = Padding.regular)
                     .fillMaxSize()
             )
 

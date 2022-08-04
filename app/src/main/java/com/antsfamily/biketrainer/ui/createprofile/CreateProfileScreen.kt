@@ -52,16 +52,12 @@ private fun CreateProfileScreen(
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
-    var keyboardController = LocalSoftwareKeyboardController.current
-
     LaunchedEffect(Unit) {
         viewModel.navigationFlow.collect {
-            keyboardController?.hide()
-            keyboardController = null
             navController.navigate(it) { popUpToTop(navController) }
         }
     }
-    ScreenContent(uiState.value, viewModel, keyboardController)
+    ScreenContent(uiState.value, viewModel)
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -69,8 +65,9 @@ private fun CreateProfileScreen(
 fun ScreenContent(
     uiState: CreateProfileState,
     viewModel: CreateProfileViewModel2,
-    keyboardController: SoftwareKeyboardController?
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val isLoading = uiState is CreateProfileState.Loading
 
     var username by rememberSaveable { mutableStateOf(STRING_EMPTY) }
@@ -161,7 +158,7 @@ fun ScreenContent(
                     errorMessage = (uiState as? CreateProfileState.TextFieldsState)?.ageError,
                     onDoneClickListener = {
                         keyboardController?.hide()
-                        viewModel.onProfileCreate(username, height, weight, age)
+                        viewModel.onProfileCreateClick(username, height, weight, age)
                     }
                 )
             }
@@ -176,7 +173,7 @@ fun ScreenContent(
                     )
             ) {
                 LoadingButton(
-                    onClick = { viewModel.onProfileCreate(username, height, weight, age) },
+                    onClick = { viewModel.onProfileCreateClick(username, height, weight, age) },
                     loading = isLoading,
                     enabled = username.isNotBlank() && height > 0 && weight > 0 && age > 0,
                 ) {

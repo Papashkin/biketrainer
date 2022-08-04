@@ -67,8 +67,9 @@ fun OutlinedTextFieldWithErrorState(
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
+    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         backgroundColor = MaterialTheme.colors.surface,
+        unfocusedBorderColor = MaterialTheme.colors.surface
     ),
     errorMessage: String? = null,
     onDoneClickListener: (() -> Unit)? = null
@@ -87,7 +88,6 @@ fun OutlinedTextFieldWithErrorState(
             ),
             colors = colors,
             modifier = Modifier
-                .padding(top = Padding.large)
                 .fillMaxSize()
         )
         if (isError) {
@@ -95,7 +95,7 @@ fun OutlinedTextFieldWithErrorState(
                 text = errorMessage.orEmpty(),
                 color = MaterialTheme.colors.error,
                 style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(start = Padding.medium)
+                modifier = Modifier.padding(start = Padding.regular)
             )
         }
     }
@@ -109,8 +109,9 @@ fun DurationOutlinedTextField(
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
+    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
         backgroundColor = MaterialTheme.colors.surface,
+        unfocusedBorderColor = MaterialTheme.colors.surface,
         cursorColor = Color.Transparent,
     ),
     errorMessage: String? = null,
@@ -139,7 +140,6 @@ fun DurationOutlinedTextField(
             ),
             colors = colors,
             modifier = Modifier
-                .padding(top = Padding.large)
                 .fillMaxSize()
         )
         if (isError) {

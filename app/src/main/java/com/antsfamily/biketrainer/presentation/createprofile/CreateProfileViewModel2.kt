@@ -45,10 +45,10 @@ class CreateProfileViewModel2 @Inject constructor(
         }
     }
 
-    fun onProfileCreate(name: String?, height: Int?, weight: Int?, age: Int?) {
+    fun onProfileCreateClick(name: String?, height: Int?, weight: Int?, age: Int?) {
         if (isValid(name, height, weight, age)) {
             _uiState.value = CreateProfileState.Loading
-            saveProfile(name!!)
+            saveProfile(name!!.trim())
         }
     }
 

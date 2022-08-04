@@ -2,14 +2,18 @@ package com.antsfamily.biketrainer.ui.common
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.antsfamily.biketrainer.ui.util.Padding
+import com.antsfamily.biketrainer.ui.util.primaryColor
+import com.antsfamily.biketrainer.ui.util.primaryVariantColor
 import com.antsfamily.biketrainer.ui.util.secondaryColor
 import com.antsfamily.data.model.program.ProgramData
 
@@ -21,7 +25,8 @@ fun WorkoutChart(
     modifier: Modifier = Modifier,
     width: Float? = null,
     height: Float = WORKOUT_VIEW_HEIGHT,
-    workoutSteps: List<ProgramData>
+    workoutSteps: List<ProgramData>,
+    shape: Shape = RoundedCornerShape(12.dp),
 ) {
     var startXaxis = WORKOUT_VIEW_START_X_AXIS
     val updatedModifier = if (width != null) {
@@ -35,7 +40,8 @@ fun WorkoutChart(
             .height(height.dp)
     }
     Card(
-        modifier = updatedModifier
+        modifier = updatedModifier,
+        shape = shape
     ) {
         Column(
             modifier = Modifier
@@ -48,7 +54,7 @@ fun WorkoutChart(
                 workoutSteps.forEach { step ->
                     val durationWithCoef = stepWidthCoefficient * step.duration.toFloat()
                     drawRect(
-                        secondaryColor,
+                        primaryVariantColor,
                         topLeft = Offset(startXaxis, 0.0f),
                         size = Size(durationWithCoef, -step.power.toFloat())
                     )
