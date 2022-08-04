@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.antsfamily.biketrainer.presentation.home.HomeViewModel2
+import com.antsfamily.biketrainer.ui.common.FullScreenLoading
 import com.antsfamily.biketrainer.ui.common.WorkoutChart
 import com.antsfamily.biketrainer.ui.util.FontSize
 import com.antsfamily.biketrainer.ui.util.Padding
@@ -227,16 +228,4 @@ fun HomeScreenContentWithData(
 //    ) {
 //        Icon(imageVector = Icons.Rounded.PlusOne, contentDescription = null)
 //    }
-}
-
-@Composable
-fun FullScreenLoading() {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            CircularProgressIndicator()
-        }
-    }
 }

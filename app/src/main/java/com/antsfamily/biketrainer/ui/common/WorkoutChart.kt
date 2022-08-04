@@ -13,33 +13,29 @@ import com.antsfamily.biketrainer.ui.util.Padding
 import com.antsfamily.biketrainer.ui.util.secondaryColor
 import com.antsfamily.data.model.program.ProgramData
 
+private const val WORKOUT_VIEW_HEIGHT = 200f
+private const val WORKOUT_VIEW_START_X_AXIS = 0f
+
 @Composable
 fun WorkoutChart(
     modifier: Modifier = Modifier,
     width: Float? = null,
-    height: Float? = null,
+    height: Float = WORKOUT_VIEW_HEIGHT,
     workoutSteps: List<ProgramData>
 ) {
-    if (workoutSteps.isEmpty()) return
-    var startXaxis = 0.0f
-    val viewHeight = height ?: workoutSteps.maxOf { it.power }.toFloat()
+    var startXaxis = WORKOUT_VIEW_START_X_AXIS
     val updatedModifier = if (width != null) {
         modifier.size(
-            height = viewHeight.dp,
+            height = height.dp,
             width = width.dp
         )
     } else {
         modifier
             .fillMaxWidth()
-            .height(viewHeight.dp)
+            .height(height.dp)
     }
     Card(
         modifier = updatedModifier
-//        modifier = modifier
-//            .fillMaxWidth()
-//            .height(
-//                workoutSteps.maxOf { it.power }.dp
-//            )
     ) {
         Column(
             modifier = Modifier

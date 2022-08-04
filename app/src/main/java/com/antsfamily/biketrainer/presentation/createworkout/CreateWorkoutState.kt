@@ -7,6 +7,7 @@ sealed class CreateWorkoutState {
     data class TextFieldsState(
         val workoutNameError: String? = null,
         val workoutStepError: String? = null,
+        val workoutDurationError: String? = null,
     ) : CreateWorkoutState()
 
     class Workouts(val steps: List<ProgramData>) : CreateWorkoutState()
