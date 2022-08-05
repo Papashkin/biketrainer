@@ -14,8 +14,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -93,7 +93,7 @@ fun ScreenContent(
                     .padding(horizontal = Padding.large)
             ) {
                 Text(
-                    "Create profile",
+                    stringResource(id = R.string.compose_create_profile_title),
                     fontSize = FontSize.H4,
                     style = TextStyle(color = textColor),
                     modifier = Modifier.padding(top = Padding.huge)
@@ -102,7 +102,7 @@ fun ScreenContent(
                     modifier = Modifier
                         .padding(top = Padding.large)
                         .fillMaxSize(),
-                    label = "Username",
+                    label = stringResource(id = R.string.compose_create_profile_username),
                     value = username,
                     onValueChange = {
                         username = it
@@ -116,7 +116,7 @@ fun ScreenContent(
                     modifier = Modifier
                         .padding(top = Padding.regular)
                         .fillMaxSize(),
-                    label = "Height, cm",
+                    label = stringResource(id = R.string.compose_create_profile_height),
                     value = if (height > ZERO) height.toString() else STRING_EMPTY,
                     onValueChange = {
                         height = it.toIntOrNull().orZero()
@@ -131,7 +131,7 @@ fun ScreenContent(
                     modifier = Modifier
                         .padding(top = Padding.regular)
                         .fillMaxSize(),
-                    label = "Weight, kg",
+                    label = stringResource(id = R.string.compose_create_profile_weight),
                     value = if (weight > ZERO) weight.toString() else STRING_EMPTY,
                     onValueChange = {
                         weight = it.toIntOrNull().orZero()
@@ -146,7 +146,7 @@ fun ScreenContent(
                     modifier = Modifier
                         .padding(top = Padding.regular)
                         .fillMaxSize(),
-                    label = "Age",
+                    label = stringResource(id = R.string.compose_create_profile_age),
                     value = if (age > ZERO) age.toString() else STRING_EMPTY,
                     onValueChange = {
                         age = it.toIntOrNull().orZero()
@@ -177,7 +177,10 @@ fun ScreenContent(
                     loading = isLoading,
                     enabled = username.isNotBlank() && height > 0 && weight > 0 && age > 0,
                 ) {
-                    Text(text = "Create", fontSize = FontSize.H6)
+                    Text(
+                        text = stringResource(id = R.string.compose_create_profile_create),
+                        fontSize = FontSize.H6
+                    )
                 }
             }
         }

@@ -7,15 +7,6 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-//val primaryColor = Color(0xFF265C4B)
-//val onPrimaryColor = Color(0xFFFFFFFF)
-//val secondaryColor = Color(0xFF8B635C)
-//val errorColor = Color(0xFFF44336)
-//val onErrorColor = Color(0xFFFFFFFF)
-//val backgroundColor = Color(0xFFF0EBE2)
-//val surfaceColor = Color(0xFFF7F5ED)
-//val textColor = Color(0xFF000000)
-
 val primaryColor = Color(0xFF38BDFF)
 val primaryVariantColor = Color(0xFF6371FF)
 val onPrimaryColor = Color(0xFFFFFFFF)
@@ -25,6 +16,16 @@ val onErrorColor = Color(0xFFFFFFFF)
 val backgroundColor = Color(0xFFF4F4FB)
 val surfaceColor = Color(0xFFFFFFFF)
 val textColor = Color(0xFF000000)
+
+val darkPrimaryColor = Color(0xFF38BDFF)
+val darkPrimaryVariantColor = Color(0xFF6371FF)
+val darkOnPrimaryColor = Color(0xFFFFFFFF)
+val darkSecondaryColor = Color(0xFF1C1D25)
+val darkErrorColor = Color(0xFFF44336)
+val darkOnErrorColor = Color(0xFFFFFFFF)
+val darkBackgroundColor = Color(0xFF1C1D25)
+val darkSurfaceColor = Color(0xFF000000)
+val darkTextColor = Color(0xFFFFFFFF)
 
 val LightColors = lightColors(
     primary = primaryColor,
@@ -41,16 +42,17 @@ val LightColors = lightColors(
 )
 
 val DarkColors = darkColors(
-    primary = primaryColor,
-    onPrimary = onPrimaryColor,
-    secondary = secondaryColor,
-    onSecondary = textColor,
-    background = backgroundColor,
-    onBackground = textColor,
-    surface = surfaceColor,
-    onSurface = textColor,
-    onError = onErrorColor,
-    error = errorColor
+    primary = darkPrimaryColor,
+    primaryVariant = darkPrimaryVariantColor,
+    onPrimary = darkOnPrimaryColor,
+    secondary = darkSecondaryColor,
+    onSecondary = darkTextColor,
+    background = darkBackgroundColor,
+    onBackground = darkTextColor,
+    surface = darkSurfaceColor,
+    onSurface = darkTextColor,
+    onError = darkOnErrorColor,
+    error = darkErrorColor
 )
 
 @Composable

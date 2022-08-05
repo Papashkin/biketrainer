@@ -162,4 +162,36 @@
     <string name="duration_view_label_minutes">m</string>
     <string name="duration_view_label_seconds">s</string>
     <string name="duration_view_separator">:</string>
+
+    <!-- ====================================================== -->
+    <!-- ====== Compose part ====== -->
+    <!-- ====== Create profile screen ====== -->
+    <string name="compose_create_profile_title">Create profile</string>
+    <string name="compose_create_profile_username">Username</string>
+    <string name="compose_create_profile_height">Height, cm</string>
+    <string name="compose_create_profile_weight">Weight, kg</string>
+    <string name="compose_create_profile_age">Age</string>
+    <string name="compose_create_profile_create">Create</string>
+
+    <!-- ====== Home screen ====== -->
+    <string name="compose_home_title">Hello, %1$s</string>
+    <string name="compose_home_workouts">Workouts</string>
+    <string name="compose_home_no_workouts">There is no workouts available</string>
+    <string name="compose_home_create_workout_1">Create a workout</string>
+    <string name="compose_home_not_right_workout">Don\'t have right workout?</string>
+    <string name="compose_home_create_workout_2">Create another one</string>
+
+    <!-- ====== Home screen - Workout card ====== -->
+    <string name="compose_home_workout_power">%1$d W avg.</string>
+
+    <!-- ====== Create workout screen ====== -->
+    <string name="compose_create_workout_title">New workout</string>
+    <string name="compose_create_workout_empty_chart">There is nothing to show yet</string>
+    <string name="compose_create_workout_power">Power, W</string>
+    <string name="compose_create_workout_duration">Duration</string>
+    <string name="compose_create_workout_name">Workout name</string>
+    <string name="compose_create_workout_add_step">Add step</string>
+    <string name="compose_create_workout_remove_last_step">Remove last step</string>
+    <string name="compose_create_workout_save">Save workout</string>
+
 </resources>
