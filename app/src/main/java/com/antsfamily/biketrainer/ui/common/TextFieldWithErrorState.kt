@@ -91,16 +91,10 @@ fun OutlinedTextFieldWithErrorState(
                 .fillMaxSize()
         )
         if (isError) {
-            Text(
-                text = errorMessage.orEmpty(),
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(start = Padding.regular)
-            )
+            TextFieldErrorView(errorMessage)
         }
     }
 }
-
 
 @Composable
 fun DurationOutlinedTextField(
@@ -143,12 +137,7 @@ fun DurationOutlinedTextField(
                 .fillMaxSize()
         )
         if (isError) {
-            Text(
-                text = errorMessage.orEmpty(),
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(start = Padding.medium)
-            )
+            TextFieldErrorView(errorMessage)
         }
     }
 }
