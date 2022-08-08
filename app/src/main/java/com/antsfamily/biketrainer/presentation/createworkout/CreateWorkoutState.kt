@@ -11,4 +11,7 @@ data class CreateWorkoutState(
     val stepError: String? = null,
     val powerError: String? = null,
     val durationError: String? = null,
+    val powerRestError: String? = null,
+    val durationRestError: String? = null,
+    val repeatsError: String? = null,
 )

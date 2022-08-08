@@ -16,7 +16,9 @@ import androidx.navigation.NavController
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutState
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutViewModel2
+import com.antsfamily.biketrainer.presentation.createworkout.WorkoutItem
 import com.antsfamily.biketrainer.ui.common.*
+import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutType
 import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutTypeSwitcher
 import com.antsfamily.biketrainer.ui.util.FontSize
 import com.antsfamily.biketrainer.ui.util.Padding
@@ -40,15 +42,20 @@ fun CreateWorkoutScreen(
 
     val uiState = viewModel.uiState.collectAsState()
 
+    var workoutItem by rememberSaveable {
+        mutableStateOf(WorkoutItem())
+    }
     var name by rememberSaveable { mutableStateOf("") }
-    var power by rememberSaveable { mutableStateOf(0) }
-    var duration by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.clearFieldsEvent.collect {
             name = ""
-            power = 0
-            duration = ""
+            workoutItem = WorkoutItem()
+//            power = 0
+//            powerRest = 0
+//            duration = ""
+//            durationRest = ""
+//            repeats = 0
         }
     }
 
@@ -78,11 +85,13 @@ fun CreateWorkoutScreen(
                     uiState.value,
                     viewModel,
                     name,
-                    duration,
-                    power,
+                    workoutItem,
                     onNameChanged = { name = it },
-                    onDurationChanged = { duration = it },
-                    onPowerChanged = { power = it }
+                    onPowerChanged = { workoutItem = workoutItem.copy(power = it) },
+                    onDurationChanged = { workoutItem = workoutItem.copy(duration = it) },
+                    onPowerRestChanged = { workoutItem = workoutItem.copy(powerRest = it) },
+                    onDurationRestChanged = { workoutItem = workoutItem.copy(durationRest = it) },
+                    onRepeatsChanged = { workoutItem = workoutItem.copy(repeats = it) },
                 )
             }
         }
@@ -94,52 +103,18 @@ fun WorkoutContentView(
     state: CreateWorkoutState,
     viewModel: CreateWorkoutViewModel2,
     name: String,
-    duration: String,
-    power: Int,
+    workoutItem: WorkoutItem,
     onNameChanged: (String) -> Unit,
     onDurationChanged: (String) -> Unit,
     onPowerChanged: (Int) -> Unit,
+    onDurationRestChanged: (String) -> Unit,
+    onPowerRestChanged: (Int) -> Unit,
+    onRepeatsChanged: (Int) -> Unit,
 ) {
 
     WorkoutChart(
         modifier = Modifier.padding(top = Padding.large),
         workoutSteps = state.steps
-    )
-
-    WorkoutTypeSwitcher(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = Padding.small)
-    ) {
-        viewModel.onWorkoutTypeChanged(it)
-    }
-
-    OutlinedTextFieldWithErrorState(
-        label = stringResource(id = R.string.compose_create_workout_power),
-        value = if (power != 0) power.toString() else STRING_EMPTY,
-        onValueChange = {
-            onPowerChanged(it.toIntOrNull().orZero())
-            viewModel.onPowerChanged()
-        },
-        keyboardType = KeyboardType.Number,
-        imeAction = ImeAction.Next,
-        modifier = Modifier
-            .padding(top = Padding.regular)
-            .fillMaxSize()
-    )
-
-    DurationOutlinedTextField(
-        label = stringResource(id = R.string.compose_create_workout_duration),
-        onValueChange = {
-            onDurationChanged(it)
-            viewModel.onDurationChanged()
-        },
-        keyboardType = KeyboardType.Number,
-        errorMessage = state.durationError,
-        imeAction = ImeAction.Next,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = Padding.regular)
     )
 
     OutlinedTextFieldWithErrorState(
@@ -153,15 +128,51 @@ fun WorkoutContentView(
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Done,
         modifier = Modifier
-            .padding(top = Padding.regular)
+            .padding(top = Padding.small)
             .fillMaxSize()
     )
 
-    LoadingButton(
-        onClick = { viewModel.onAddStepClick(power, duration) },
-        modifier = Modifier.padding(top = Padding.large, bottom = Padding.x_small)
+    WorkoutTypeSwitcher(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = Padding.regular)
     ) {
-        Text(text = stringResource(id = R.string.compose_create_workout_add_step))
+        viewModel.onWorkoutTypeChanged(it)
+    }
+
+    when (state.workoutType) {
+        WorkoutType.STEP -> StepContentView(
+            viewModel,
+            state,
+            workoutItem,
+            onDurationChanged,
+            onPowerChanged
+        )
+        WorkoutType.INTERVAL -> IntervalContentView(
+            viewModel,
+            state,
+            workoutItem,
+            onDurationChanged,
+            onPowerChanged,
+            onDurationRestChanged,
+            onPowerRestChanged,
+            onRepeatsChanged
+        )
+    }
+
+    when (state.workoutType) {
+        WorkoutType.STEP -> LoadingButton(
+            onClick = { viewModel.onAddStepClick(workoutItem) },
+            modifier = Modifier.padding(top = Padding.regular, bottom = Padding.x_small)
+        ) {
+            Text(text = stringResource(id = R.string.compose_create_workout_add_step))
+        }
+        WorkoutType.INTERVAL -> LoadingButton(
+            onClick = { viewModel.onAddIntervalClick(workoutItem) },
+            modifier = Modifier.padding(top = Padding.regular, bottom = Padding.x_small)
+        ) {
+            Text(text = stringResource(id = R.string.compose_create_workout_add_interval))
+        }
     }
 
     LoadingButton(
@@ -179,4 +190,116 @@ fun WorkoutContentView(
     ) {
         Text(text = stringResource(id = R.string.compose_create_workout_save))
     }
+}
+
+@Composable
+fun StepContentView(
+    viewModel: CreateWorkoutViewModel2,
+    state: CreateWorkoutState,
+    workoutItem: WorkoutItem,
+    onDurationChanged: (String) -> Unit,
+    onPowerChanged: (Int) -> Unit,
+) {
+    OutlinedTextFieldWithErrorState(
+        label = stringResource(id = R.string.compose_create_workout_power),
+        value = if (workoutItem.power != 0) workoutItem.power.toString() else STRING_EMPTY,
+        onValueChange = {
+            onPowerChanged(it.toIntOrNull().orZero())
+            viewModel.onPowerChanged()
+        },
+        keyboardType = KeyboardType.Number,
+        errorMessage = state.powerError,
+        imeAction = ImeAction.Next,
+        modifier = Modifier.padding(top = Padding.small)
+    )
+
+    DurationOutlinedTextField(
+        label = stringResource(id = R.string.compose_create_workout_duration),
+        onValueChange = {
+            onDurationChanged(it)
+            viewModel.onDurationChanged()
+        },
+        keyboardType = KeyboardType.Number,
+        errorMessage = state.durationError,
+        imeAction = ImeAction.Next,
+        modifier = Modifier.padding(top = Padding.small)
+    )
+}
+
+@Composable
+fun IntervalContentView(
+    viewModel: CreateWorkoutViewModel2,
+    state: CreateWorkoutState,
+    workoutItem: WorkoutItem,
+    onDurationChanged: (String) -> Unit,
+    onPowerChanged: (Int) -> Unit,
+    onDurationRestChanged: (String) -> Unit,
+    onPowerRestChanged: (Int) -> Unit,
+    onRepeatsChanged: (Int) -> Unit,
+) {
+    Row {
+        Column(modifier = Modifier.weight(1f)) {
+            OutlinedTextFieldWithErrorState(
+                label = stringResource(id = R.string.compose_create_workout_power),
+                value = if (workoutItem.power != 0) workoutItem.power.toString() else STRING_EMPTY,
+                onValueChange = {
+                    onPowerChanged(it.toIntOrNull().orZero())
+                    viewModel.onPowerChanged()
+                },
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+                errorMessage = state.powerError,
+                modifier = Modifier.padding(top = Padding.small)
+            )
+            DurationOutlinedTextField(
+                label = stringResource(id = R.string.compose_create_workout_duration),
+                onValueChange = {
+                    onDurationChanged(it)
+                    viewModel.onDurationChanged()
+                },
+                keyboardType = KeyboardType.Number,
+                errorMessage = state.durationError,
+                imeAction = ImeAction.Next,
+                modifier = Modifier.padding(top = Padding.small)
+            )
+        }
+        Spacer(modifier = Modifier.width(Padding.small))
+        Column(modifier = Modifier.weight(1f)) {
+            OutlinedTextFieldWithErrorState(
+                label = stringResource(id = R.string.compose_create_workout_power_rest),
+                value = if (workoutItem.powerRest != 0) workoutItem.powerRest.toString() else STRING_EMPTY,
+                onValueChange = {
+                    onPowerRestChanged(it.toIntOrNull().orZero())
+                    viewModel.onPowerRestChanged()
+                },
+                keyboardType = KeyboardType.Number,
+                errorMessage = state.powerRestError,
+                imeAction = ImeAction.Next,
+                modifier = Modifier.padding(top = Padding.small)
+            )
+            DurationOutlinedTextField(
+                label = stringResource(id = R.string.compose_create_workout_duration_rest),
+                onValueChange = {
+                    onDurationRestChanged(it)
+                    viewModel.onDurationRestChanged()
+                },
+                keyboardType = KeyboardType.Number,
+                errorMessage = state.durationRestError,
+                imeAction = ImeAction.Next,
+                modifier = Modifier.padding(top = Padding.small)
+            )
+        }
+    }
+    OutlinedTextFieldWithErrorState(
+        label = stringResource(id = R.string.compose_create_workout_repeats),
+        value = if (workoutItem.repeats != 0) workoutItem.repeats.toString() else STRING_EMPTY,
+        onValueChange = {
+            onRepeatsChanged(it.toIntOrNull().orZero())
+            viewModel.onRepeatsChanged()
+        },
+        keyboardType = KeyboardType.Number,
+        errorMessage = state.repeatsError,
+        imeAction = ImeAction.Done,
+        modifier = Modifier.padding(top = Padding.small)
+    )
 }

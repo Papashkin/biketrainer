@@ -26,63 +26,79 @@ class CreateWorkoutViewModel2 @Inject constructor(
     private val _clearFieldsEvent = MutableSharedFlow<Unit>()
     val clearFieldsEvent: SharedFlow<Unit> = _clearFieldsEvent.asSharedFlow()
 
+    fun onWorkoutNameChanged() {
+        _uiState.update { it.copy(nameError = null) }
+    }
+
     fun onPowerChanged() {
-        _uiState.update {
-            it.copy(powerError = null)
-        }
+        _uiState.update { it.copy(powerError = null) }
     }
 
     fun onDurationChanged() {
-        _uiState.update {
-            it.copy(durationError = null)
-        }
+        _uiState.update { it.copy(durationError = null) }
     }
 
-    fun onWorkoutNameChanged() {
-        _uiState.update {
-            it.copy(nameError = null)
-        }
+    fun onPowerRestChanged() {
+        _uiState.update { it.copy(powerRestError = null) }
+    }
+
+    fun onDurationRestChanged() {
+        _uiState.update { it.copy(durationRestError = null) }
+    }
+
+    fun onRepeatsChanged() {
+        _uiState.update { it.copy(repeatsError = null) }
     }
 
     fun onWorkoutTypeChanged(type: WorkoutType) {
         _uiState.update {
-            it.copy(workoutType = type)
+            it.copy(
+                workoutType = type,
+                nameError = null,
+                stepError = null,
+                powerError = null,
+                durationError = null,
+                powerRestError = null,
+                durationRestError = null,
+                repeatsError = null,
+            )
         }
     }
 
-    fun onAddStepClick(power: Int, duration: String) {
-        if (isDurationValid(duration)) {
-            val convertedDuration = getDurationValue(duration)
-            if (power <= 0 || convertedDuration <= 0L) {
-                _uiState.update {
-                    it.copy(stepError = "Workout shouldn't be empty")
-                }
-            } else {
-                val step = ProgramData(power, convertedDuration)
-                _uiState.update {
-                    it.copy(steps = workoutSteps.plus(step))
-                }
+    fun onAddStepClick(workoutItem: WorkoutItem) {
+        with(workoutItem) {
+            if (isStepValid(power, duration)) {
+                val step = ProgramData(power, getDurationValue(duration))
+                _uiState.update { it.copy(steps = workoutSteps.plus(step)) }
                 workoutSteps.add(step)
             }
-        } else {
-            _uiState.update {
-                it.copy(durationError = "Duration should be in time format: 23:59:59")
+        }
+    }
+
+    fun onAddIntervalClick(workoutItem: WorkoutItem) {
+        with(workoutItem) {
+            if (isIntervalValid(power, duration, powerRest, durationRest, repeats)) {
+                var count = 0
+                val intervalSteps = mutableListOf<ProgramData>()
+                while (count < repeats) {
+                    intervalSteps.add(ProgramData(power, getDurationValue(duration)))
+                    intervalSteps.add(ProgramData(powerRest, getDurationValue(durationRest)))
+                    count++
+                }
+                _uiState.update { it.copy(steps = workoutSteps.plus(intervalSteps)) }
+                workoutSteps.addAll(intervalSteps)
             }
         }
     }
 
     fun onRemoveLastStepClick() {
-        _uiState.update {
-            it.copy(steps = workoutSteps.dropLast(1))
-        }
+        _uiState.update { it.copy(steps = workoutSteps.dropLast(1)) }
         workoutSteps.removeLast()
     }
 
     fun onSaveClick(workoutName: String) {
         if (workoutName.isEmpty()) {
-            _uiState.update {
-                it.copy(nameError = "Workout name shouldn't be empty")
-            }
+            _uiState.update { it.copy(nameError = "Workout name shouldn't be empty") }
         } else {
             proceedSave(workoutName)
         }
@@ -93,15 +109,54 @@ class CreateWorkoutViewModel2 @Inject constructor(
         try {
             workoutRepository.insertProgram(Program(workoutName, workoutSteps))
             workoutSteps.clear()
-            _uiState.update {
-                it.copy(steps = emptyList())
-            }
+            _uiState.update { it.copy(steps = emptyList()) }
             _clearFieldsEvent.emit(Unit)
         } catch (e: Exception) {
             Log.e(this::class.java.name, e.message.orEmpty())
         } finally {
             hideLoading()
         }
+    }
+
+    private fun isIntervalValid(
+        power: Int,
+        duration: String,
+        powerRest: Int,
+        durationRest: String,
+        repeats: Int
+    ): Boolean {
+        val isPowerRestValid = powerRest > 0
+        val isDurationRestValid = isDurationValid(durationRest)
+        val isRepeatsValid = repeats > 1
+        if (!isPowerRestValid) {
+            _uiState.update { it.copy(powerRestError = "Power should be bigger than 0") }
+        }
+        if (!isDurationRestValid) {
+            _uiState.update {
+                it.copy(durationRestError = "Duration should be in time format: 23:59:59")
+            }
+        }
+        if (!isRepeatsValid) {
+            _uiState.update { it.copy(repeatsError = "Interval should contain more than 1 step") }
+        }
+        return isStepValid(
+            power,
+            duration
+        ) && isPowerRestValid && isDurationRestValid && isRepeatsValid
+    }
+
+    private fun isStepValid(power: Int, duration: String): Boolean {
+        val isPowerValid = power > 0
+        val isDurationValid = isDurationValid(duration)
+        if (!isPowerValid) {
+            _uiState.update { it.copy(powerError = "Power should be bigger than 0") }
+        }
+        if (!isDurationValid) {
+            _uiState.update {
+                it.copy(durationError = "Duration should be in time format: 23:59:59")
+            }
+        }
+        return isPowerValid && isDurationValid
     }
 
     private fun getDurationValue(duration: String): Long {

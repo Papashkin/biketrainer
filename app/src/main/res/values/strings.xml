@@ -189,8 +189,12 @@
     <string name="compose_create_workout_empty_chart">There is nothing to show yet</string>
     <string name="compose_create_workout_power">Power, W</string>
     <string name="compose_create_workout_duration">Duration</string>
+    <string name="compose_create_workout_power_rest">Rest power, W</string>
+    <string name="compose_create_workout_duration_rest">Rest duration</string>
+    <string name="compose_create_workout_repeats">Repeats</string>
     <string name="compose_create_workout_name">Workout name</string>
     <string name="compose_create_workout_add_step">Add step</string>
+    <string name="compose_create_workout_add_interval">Add interval</string>
     <string name="compose_create_workout_remove_last_step">Remove last step</string>
     <string name="compose_create_workout_save">Save workout</string>
 
