@@ -18,6 +18,7 @@ import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutState
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutViewModel2
 import com.antsfamily.biketrainer.presentation.createworkout.WorkoutItem
 import com.antsfamily.biketrainer.ui.common.*
+import com.antsfamily.biketrainer.ui.common.workoutchart.WorkoutChart
 import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutType
 import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutTypeSwitcher
 import com.antsfamily.biketrainer.ui.util.FontSize
@@ -51,11 +52,6 @@ fun CreateWorkoutScreen(
         viewModel.clearFieldsEvent.collect {
             name = ""
             workoutItem = WorkoutItem()
-//            power = 0
-//            powerRest = 0
-//            duration = ""
-//            durationRest = ""
-//            repeats = 0
         }
     }
 
@@ -111,12 +107,10 @@ fun WorkoutContentView(
     onPowerRestChanged: (Int) -> Unit,
     onRepeatsChanged: (Int) -> Unit,
 ) {
-
     WorkoutChart(
-        modifier = Modifier.padding(top = Padding.large),
-        workoutSteps = state.steps
+        workoutSteps = state.steps,
+        isTextVisible = true
     )
-
     OutlinedTextFieldWithErrorState(
         label = stringResource(id = R.string.compose_create_workout_name),
         value = name,
@@ -131,7 +125,6 @@ fun WorkoutContentView(
             .padding(top = Padding.small)
             .fillMaxSize()
     )
-
     WorkoutTypeSwitcher(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,39 +132,39 @@ fun WorkoutContentView(
     ) {
         viewModel.onWorkoutTypeChanged(it)
     }
-
     when (state.workoutType) {
-        WorkoutType.STEP -> StepContentView(
-            viewModel,
-            state,
-            workoutItem,
-            onDurationChanged,
-            onPowerChanged
-        )
-        WorkoutType.INTERVAL -> IntervalContentView(
-            viewModel,
-            state,
-            workoutItem,
-            onDurationChanged,
-            onPowerChanged,
-            onDurationRestChanged,
-            onPowerRestChanged,
-            onRepeatsChanged
-        )
-    }
-
-    when (state.workoutType) {
-        WorkoutType.STEP -> LoadingButton(
-            onClick = { viewModel.onAddStepClick(workoutItem) },
-            modifier = Modifier.padding(top = Padding.regular, bottom = Padding.x_small)
-        ) {
-            Text(text = stringResource(id = R.string.compose_create_workout_add_step))
+        WorkoutType.STEP -> {
+            StepContentView(
+                viewModel,
+                state,
+                workoutItem,
+                onDurationChanged,
+                onPowerChanged
+            )
+            LoadingButton(
+                onClick = { viewModel.onAddStepClick(workoutItem) },
+                modifier = Modifier.padding(top = Padding.regular, bottom = Padding.x_small)
+            ) {
+                Text(text = stringResource(id = R.string.compose_create_workout_add_step))
+            }
         }
-        WorkoutType.INTERVAL -> LoadingButton(
-            onClick = { viewModel.onAddIntervalClick(workoutItem) },
-            modifier = Modifier.padding(top = Padding.regular, bottom = Padding.x_small)
-        ) {
-            Text(text = stringResource(id = R.string.compose_create_workout_add_interval))
+        WorkoutType.INTERVAL -> {
+            IntervalContentView(
+                viewModel,
+                state,
+                workoutItem,
+                onDurationChanged,
+                onPowerChanged,
+                onDurationRestChanged,
+                onPowerRestChanged,
+                onRepeatsChanged
+            )
+            LoadingButton(
+                onClick = { viewModel.onAddIntervalClick(workoutItem) },
+                modifier = Modifier.padding(top = Padding.regular, bottom = Padding.x_small)
+            ) {
+                Text(text = stringResource(id = R.string.compose_create_workout_add_interval))
+            }
         }
     }
 
@@ -182,7 +175,6 @@ fun WorkoutContentView(
     ) {
         Text(text = stringResource(id = R.string.compose_create_workout_remove_last_step))
     }
-
     LoadingButton(
         onClick = { viewModel.onSaveClick(name) },
         modifier = Modifier.padding(vertical = Padding.x_small),

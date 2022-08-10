@@ -8,7 +8,7 @@ object FontSize {
     val Body1 = 16.sp
     val H6 = 20.sp
     val H5 = 24.sp
-    val H4 = 34.sp
+    val H4 = 32.sp
     val H3 = 48.sp
     val H2 = 60.sp
     val H1 = 96.sp
