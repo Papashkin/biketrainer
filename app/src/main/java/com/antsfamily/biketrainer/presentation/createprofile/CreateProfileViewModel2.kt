@@ -10,6 +10,7 @@ import com.antsfamily.domain.antservice.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,36 +19,38 @@ class CreateProfileViewModel2 @Inject constructor(
     private val repository: ProfilesRepository,
 ) : BaseViewModel2() {
 
-    private val _uiState = MutableStateFlow<CreateProfileState>(CreateProfileState.Initial)
+    private val _uiState = MutableStateFlow(CreateProfileState())
     val uiState: StateFlow<CreateProfileState> = _uiState
 
     fun onNameChanged() {
-        (_uiState.value as? CreateProfileState.TextFieldsState)?.let {
-            _uiState.value = it.copy(nameError = null)
+        _uiState.update {
+            it.copy(nameError = null)
         }
     }
 
     fun onHeightChanged() {
-        (_uiState.value as? CreateProfileState.TextFieldsState)?.let {
-            _uiState.value = it.copy(heightError = null)
+        _uiState.update {
+            it.copy(heightError = null)
         }
     }
 
     fun onWeightChanged() {
-        (_uiState.value as? CreateProfileState.TextFieldsState)?.let {
-            _uiState.value = it.copy(weightError = null)
+        _uiState.update {
+            it.copy(weightError = null)
         }
     }
 
     fun onAgeChanged() {
-        (_uiState.value as? CreateProfileState.TextFieldsState)?.let {
-            _uiState.value = it.copy(ageError = null)
+        _uiState.update {
+            it.copy(ageError = null)
         }
     }
 
     fun onProfileCreateClick(name: String?, height: Int?, weight: Int?, age: Int?) {
         if (isValid(name, height, weight, age)) {
-            _uiState.value = CreateProfileState.Loading
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
             saveProfile(name!!.trim())
         }
     }
@@ -58,12 +61,14 @@ class CreateProfileViewModel2 @Inject constructor(
         val isHeightValid = (height.orZero()) > 100
         val isWeightValid = (weight.orZero()) > 20
 
-        _uiState.value = CreateProfileState.TextFieldsState(
-            nameError = if (isNameValid) null else "Username is invalid",
-            heightError = if (isHeightValid) null else "Height is invalid",
-            weightError = if (isWeightValid) null else "Weight is invalid",
-            ageError = if (isAgeValid) null else "Age is invalid",
-        )
+        _uiState.update {
+            it.copy(
+                nameError = if (isNameValid) null else "Username is invalid",
+                heightError = if (isHeightValid) null else "Height is invalid",
+                weightError = if (isWeightValid) null else "Weight is invalid",
+                ageError = if (isAgeValid) null else "Age is invalid",
+            )
+        }
 
         return isAgeValid && isNameValid && isHeightValid && isWeightValid
     }
