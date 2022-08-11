@@ -68,8 +68,6 @@ fun ScreenContent(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val isLoading = uiState is CreateProfileState.Loading
-
     var username by rememberSaveable { mutableStateOf(STRING_EMPTY) }
     var height by rememberSaveable { mutableStateOf(ZERO) }
     var weight by rememberSaveable { mutableStateOf(ZERO) }
@@ -109,7 +107,7 @@ fun ScreenContent(
                         viewModel.onNameChanged()
                     },
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-                    errorMessage = (uiState as? CreateProfileState.TextFieldsState)?.nameError
+                    errorMessage = uiState.nameError
                 )
 
                 TextFieldWithErrorState(
@@ -124,7 +122,7 @@ fun ScreenContent(
                     },
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                     keyboardType = KeyboardType.Number,
-                    errorMessage = (uiState as? CreateProfileState.TextFieldsState)?.heightError
+                    errorMessage = uiState.heightError
                 )
 
                 TextFieldWithErrorState(
@@ -139,7 +137,7 @@ fun ScreenContent(
                     },
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                     keyboardType = KeyboardType.Number,
-                    errorMessage = (uiState as? CreateProfileState.TextFieldsState)?.weightError
+                    errorMessage = uiState.weightError
                 )
 
                 TextFieldWithErrorState(
@@ -155,7 +153,7 @@ fun ScreenContent(
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done,
-                    errorMessage = (uiState as? CreateProfileState.TextFieldsState)?.ageError,
+                    errorMessage = uiState.ageError,
                     onDoneClickListener = {
                         keyboardController?.hide()
                         viewModel.onProfileCreateClick(username, height, weight, age)
@@ -174,7 +172,7 @@ fun ScreenContent(
             ) {
                 LoadingButton(
                     onClick = { viewModel.onProfileCreateClick(username, height, weight, age) },
-                    loading = isLoading,
+                    loading = uiState.isLoading,
                     enabled = username.isNotBlank() && height > 0 && weight > 0 && age > 0,
                 ) {
                     Text(
