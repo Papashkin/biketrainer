@@ -198,4 +198,13 @@
     <string name="compose_create_workout_remove_last_step">Remove last step</string>
     <string name="compose_create_workout_save">Save workout</string>
 
+    <!-- ====== Settings screen ====== -->
+    <string name="compose_settings_title">Settings</string>
+    <string name="compose_settings">Settings</string>
+    <string name="compose_settings_username_label">Username</string>
+    <string name="compose_settings_age_label">Age</string>
+    <string name="compose_settings_circumference_label">Wheel circumference</string>
+    <string name="compose_settings_dark_mode">Dark mode</string>
+    <string name="compose_settings_profile">Profile</string>
+
 </resources>

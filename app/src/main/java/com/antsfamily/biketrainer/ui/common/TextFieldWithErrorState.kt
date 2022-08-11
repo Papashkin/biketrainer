@@ -72,6 +72,7 @@ fun OutlinedTextFieldWithErrorState(
         unfocusedBorderColor = MaterialTheme.colors.surface
     ),
     errorMessage: String? = null,
+    enabled: Boolean = true,
     onDoneClickListener: (() -> Unit)? = null
 ) {
     val isError = errorMessage.isNullOrBlank().not()
@@ -80,6 +81,7 @@ fun OutlinedTextFieldWithErrorState(
             label = { Text(label) },
             value = value,
             onValueChange = onValueChange::invoke,
+            enabled = enabled,
             isError = isError,
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
