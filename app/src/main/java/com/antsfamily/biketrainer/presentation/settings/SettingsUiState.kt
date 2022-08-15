@@ -7,9 +7,7 @@ data class SettingsUiState(
     val username: String,
     val age: Int,
     val wheelCircumference: Circumference = Circumference.UNKNOWN,
-    val ftp: Float? = 0f,
-    val wheelCircumferenceError: String? = null,
-    val ftpError: String? = null,
+    val isDarkModeEnabled: Boolean = false,
 ) {
     companion object {
         fun empty() = SettingsUiState(false, "", 0)

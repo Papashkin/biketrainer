@@ -1,7 +1,7 @@
 package com.antsfamily.biketrainer.ui.util
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Colors
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
@@ -20,10 +20,10 @@ val textColor = Color(0xFF000000)
 val darkPrimaryColor = Color(0xFF38BDFF)
 val darkPrimaryVariantColor = Color(0xFF6371FF)
 val darkOnPrimaryColor = Color(0xFFFFFFFF)
-val darkSecondaryColor = Color(0xFF1C1D25)
+val darkSecondaryColor = Color(0xFF43444D)
 val darkErrorColor = Color(0xFFF44336)
 val darkOnErrorColor = Color(0xFFFFFFFF)
-val darkBackgroundColor = Color(0xFF1C1D25)
+val darkBackgroundColor = Color(0xFF43444D)
 val darkSurfaceColor = Color(0xFF000000)
 val darkTextColor = Color(0xFFFFFFFF)
 
@@ -56,4 +56,12 @@ val DarkColors = darkColors(
 )
 
 @Composable
-fun getThemeColors(): Colors = if (isSystemInDarkTheme()) DarkColors else LightColors
+fun AppTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    MaterialTheme(
+        colors = if (darkTheme) DarkColors else LightColors,
+        content = content
+    )
+}

@@ -10,4 +10,7 @@ interface ProfilesRepository {
     suspend fun insertProfile(profile: Profile)
     suspend fun updateProfile(profile: Profile)
     suspend fun removeProfile(profile: Profile)
+
+    fun setDarkModeEnabled(isEnabled: Boolean)
+    fun getDarkModeEnabled(): Boolean
 }
