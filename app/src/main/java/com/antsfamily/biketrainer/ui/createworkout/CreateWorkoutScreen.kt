@@ -108,6 +108,7 @@ fun WorkoutContentView(
     onRepeatsChanged: (Int) -> Unit,
 ) {
     WorkoutChart(
+        modifier = Modifier.padding(top = Padding.small),
         workoutSteps = state.steps,
         isTextVisible = true
     )

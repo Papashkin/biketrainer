@@ -46,7 +46,6 @@ fun WorkoutChart(
 
     BoxWithConstraints(
         modifier = updatedModifier
-            .padding(top = Padding.small)
             .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(2.dp))
             .wrapContentSize(align = Alignment.BottomStart)
     ) {

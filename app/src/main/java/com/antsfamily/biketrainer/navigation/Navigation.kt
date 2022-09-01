@@ -8,15 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -27,11 +22,13 @@ import com.antsfamily.biketrainer.ui.history.HistoryScreen
 import com.antsfamily.biketrainer.ui.home.HomeScreen
 import com.antsfamily.biketrainer.ui.settings.SettingsScreen
 import com.antsfamily.biketrainer.ui.splash.SplashScreen
+import com.antsfamily.biketrainer.ui.workoutinfo.WorkoutInfoScreen
 
 @Composable
 fun Navigation() {
     val bottomBarState = rememberSaveable { (mutableStateOf(false)) }
     val navController = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     bottomBarState.value = when (currentRoute) {
         MainBottomItem.Home.route, MainBottomItem.History.route, MainBottomItem.Settings.route -> true
@@ -40,6 +37,7 @@ fun Navigation() {
 
     Scaffold(
         bottomBar = { HomeBottomNavigation(navController = navController, bottomBarState) },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = {
             NavHost(
                 navController = navController,
@@ -62,6 +60,16 @@ fun Navigation() {
                 }
                 composable(Screen.CreateWorkout.route) {
                     CreateWorkoutScreen.Content(navController)
+                }
+                composable(
+                    Screen.WorkoutInfo.route,
+                    arguments = listOf(navArgument("workoutName") { type = NavType.StringType })
+                ) {
+                    WorkoutInfoScreen(
+                        navController = navController,
+                        snackbarHostState = snackbarHostState,
+                        workoutName = it.arguments?.getString("workoutName").orEmpty()
+                    )
                 }
             }
         }
@@ -113,6 +121,7 @@ sealed class Screen(val route: String) {
     object Splash : Screen("splash")
     object CreateProfile : Screen("create_profile")
     object CreateWorkout : Screen("create_workout")
+    object WorkoutInfo : Screen("workout_info/{workoutName}")
     object Home : Screen("home")
     object History : Screen("history")
     object Settings : Screen("settings")
