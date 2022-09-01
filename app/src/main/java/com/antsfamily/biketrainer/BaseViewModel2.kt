@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel2: ViewModel() {
+abstract class BaseViewModel2 : ViewModel() {
 
     private val _navigationFlow = MutableSharedFlow<String>()
     val navigationFlow: SharedFlow<String> = _navigationFlow.asSharedFlow()
@@ -17,8 +17,15 @@ abstract class BaseViewModel2: ViewModel() {
     private val _navigateBackEvent = MutableSharedFlow<Unit>()
     val navigateBackEvent: SharedFlow<Unit> = _navigateBackEvent.asSharedFlow()
 
+    private val _showSnackbarBackEvent = MutableSharedFlow<String>()
+    val showSnackbarBackEvent: SharedFlow<String> = _showSnackbarBackEvent.asSharedFlow()
+
     protected fun navigateTo(screen: Screen) = viewModelScope.launch {
         _navigationFlow.emit(screen.route)
+    }
+
+    protected fun navigateTo(screen: Screen, argument: String) = viewModelScope.launch {
+        _navigationFlow.emit("${screen.route.substringBefore("/")}/$argument")
     }
 
     protected fun navigateTo(screenItem: MainBottomItem) = viewModelScope.launch {
@@ -27,5 +34,9 @@ abstract class BaseViewModel2: ViewModel() {
 
     protected fun navigateBack() = viewModelScope.launch {
         _navigateBackEvent.emit(Unit)
+    }
+
+    protected fun showSnackbar(message: String) = viewModelScope.launch {
+        _showSnackbarBackEvent.emit(message)
     }
 }

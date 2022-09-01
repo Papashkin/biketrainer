@@ -36,7 +36,7 @@ class HomeViewModel2 @Inject constructor(
     }
 
     fun onWorkoutClick(workout: Program) {
-        //TODO add navigation to Workout info screen
+        navigateTo(Screen.WorkoutInfo, workout.title)
     }
 
     private fun getContent() = viewModelScope.launch {

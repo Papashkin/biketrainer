@@ -207,4 +207,12 @@
     <string name="compose_settings_dark_mode">Dark mode</string>
     <string name="compose_settings_profile">Profile</string>
 
+    <!-- ====== Workout info screen ====== -->
+    <string name="compose_workout_info_time">Time: %1$s</string>
+    <string name="compose_workout_info_average_power">Average power: %1$s W</string>
+    <string name="compose_workout_info_max_power">Max power: %1$s W</string>
+    <string name="compose_workout_info_search_sensors">Search sensors</string>
+    <string name="compose_workout_info_delete">Delete</string>
+    <string name="compose_workout_info_run">Run</string>
+
 </resources>
