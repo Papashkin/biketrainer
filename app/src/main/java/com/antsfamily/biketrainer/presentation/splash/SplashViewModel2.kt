@@ -7,6 +7,7 @@ import com.antsfamily.biketrainer.BaseViewModel2
 import com.antsfamily.biketrainer.navigation.MainBottomItem
 import com.antsfamily.biketrainer.navigation.Screen
 import com.antsfamily.biketrainer.ui.splash.SplashScreenState
+import com.antsfamily.biketrainer.ui.util.AppThemeSwitcher
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel2 @Inject constructor(
     private val profilesRepository: ProfilesRepository,
+    private val themeSwitcher: AppThemeSwitcher
 ) : BaseViewModel2() {
 
     private val _uiState = MutableStateFlow<SplashScreenState>(SplashScreenState.Loading)
@@ -24,6 +26,12 @@ class SplashViewModel2 @Inject constructor(
 
     init {
         _uiState.value = SplashScreenState.Loading
+        setAppTheme()
+    }
+
+    private fun setAppTheme() = viewModelScope.launch {
+        val isDarkMode = profilesRepository.getDarkModeEnabled()
+        themeSwitcher.setAppTheme(isDarkMode)
         Handler(Looper.getMainLooper()).postDelayed(::getSelectedProfile, START_DELAY)
     }
 

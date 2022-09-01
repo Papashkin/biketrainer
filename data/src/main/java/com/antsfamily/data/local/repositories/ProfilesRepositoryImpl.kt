@@ -11,7 +11,14 @@ class ProfilesRepositoryImpl @Inject constructor(
 ) : ProfilesRepository {
     override fun getSelectedProfileName(): String? = profileStore.getSelectedProfile()
     override fun setSelectedProfileName(profileName: String) {
-        profileStore.saveSelectedProfile(profileName)
+        profileStore.setSelectedProfile(profileName)
+    }
+
+    override fun getDarkModeEnabled(): Boolean =
+        profileStore.getDarkModeEnabled()
+
+    override fun setDarkModeEnabled(isEnabled: Boolean) {
+        profileStore.setDarkModeEnabled(isEnabled)
     }
 
     override suspend fun getAllProfiles(): List<Profile> = dao.getAll()
