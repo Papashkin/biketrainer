@@ -1,11 +1,12 @@
 package com.antsfamily.biketrainer.ui.home.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,16 +22,16 @@ import com.antsfamily.data.model.program.Program
 
 private const val WORKOUT_CHART_SIZE = 200f
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WorkoutCard(
     workout: Program,
     onWorkoutClick: (Program) -> Unit
 ) {
     Card(
-        modifier = Modifier.padding(start = Padding.tiny, end = Padding.small),
-        backgroundColor = MaterialTheme.colors.background,
-        elevation = 0.dp,
+        modifier = Modifier
+            .padding(start = Padding.tiny, end = Padding.small)
+            .background(color = MaterialTheme.colorScheme.background),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         onClick = { onWorkoutClick(workout) }
     ) {
         Column {

@@ -1,13 +1,17 @@
 package com.antsfamily.biketrainer.ui.home.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,9 +38,9 @@ fun HomeScreenContentWithData(
             Modifier.background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        MaterialTheme.colors.surface,
-                        MaterialTheme.colors.surface,
-                        MaterialTheme.colors.background
+                        MaterialTheme.colorScheme.surface,
+                        MaterialTheme.colorScheme.surface,
+                        MaterialTheme.colorScheme.background
                     ),
                 ),
             )
@@ -45,7 +49,7 @@ fun HomeScreenContentWithData(
             modifier = Modifier
                 .padding(top = Padding.x_small)
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.background)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Column {
                 Text(

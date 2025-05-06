@@ -15,7 +15,7 @@ import com.antsfamily.data.model.workouts.WorkoutSegmentParams
 import com.antsfamily.data.model.workouts.WorkoutStairsParams
 import com.antsfamily.domain.Result
 import com.antsfamily.domain.usecase.workout.SaveWorkoutUseCase
-import com.github.mikephil.charting.data.BarEntry
+//import com.github.mikephil.charting.data.BarEntry
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch

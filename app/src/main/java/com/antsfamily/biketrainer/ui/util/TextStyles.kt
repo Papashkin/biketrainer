@@ -1,6 +1,6 @@
 package com.antsfamily.biketrainer.ui.util
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -18,15 +18,15 @@ object TextStyles {
     fun body1Bold() = body1().copy(fontWeight = FontWeight.Bold)
 
     @Composable
-    fun body1Primary() = body1().copy(color = MaterialTheme.colors.primary)
+    fun body1Primary() = body1().copy(color = MaterialTheme.colorScheme.primary)
 
     @Composable
     fun body1SemiboldPrimary() = body1Semibold().copy(
-        color = MaterialTheme.colors.primary
+        color = MaterialTheme.colorScheme.primary
     )
     @Composable
     fun body1SemiboldPrimaryVariant() = body1Semibold().copy(
-        color = MaterialTheme.colors.primaryVariant
+        color = MaterialTheme.colorScheme.primary
     )
 
     /** Header 6 **/
@@ -40,15 +40,15 @@ object TextStyles {
     fun header6Bold() = header6().copy(fontWeight = FontWeight.Bold)
 
     @Composable
-    fun header6Primary() = header6().copy(color = MaterialTheme.colors.primary)
+    fun header6Primary() = header6().copy(color = MaterialTheme.colorScheme.primary)
 
     @Composable
     fun header6SemiboldPrimary() = header6Semibold().copy(
-        color = MaterialTheme.colors.primary
+        color = MaterialTheme.colorScheme.primary
     )
     @Composable
     fun header6SemiboldPrimaryVariant() = header6Semibold().copy(
-        color = MaterialTheme.colors.primaryVariant
+        color = MaterialTheme.colorScheme.primary
     )
 
 }
