@@ -3,19 +3,33 @@ package com.antsfamily.biketrainer.navigation
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.History
+import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.*
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileScreen
 import com.antsfamily.biketrainer.ui.createworkout.CreateWorkoutScreen
 import com.antsfamily.biketrainer.ui.history.HistoryScreen
@@ -39,6 +53,7 @@ fun Navigation() {
         bottomBar = { HomeBottomNavigation(navController = navController, bottomBarState) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = {
+            print(it.toString())
             NavHost(
                 navController = navController,
                 startDestination = Screen.Splash.route
@@ -83,11 +98,11 @@ fun HomeBottomNavigation(navController: NavHostController, visibilityState: Muta
         enter = slideInVertically { it },
         exit = slideOutVertically { it }
     ) {
-        BottomNavigation {
+        NavigationBar {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
             MainBottomItem.listOfTabItems().forEach { item ->
-                BottomNavigationItem(
+                NavigationBarItem(
                     selected = currentRoute == item.route,
                     label = { Text(text = item.label) },
                     onClick = {
@@ -118,19 +133,19 @@ fun NavOptionsBuilder.popUpToTop(navController: NavController) {
 }
 
 sealed class Screen(val route: String) {
-    object Splash : Screen("splash")
-    object CreateProfile : Screen("create_profile")
-    object CreateWorkout : Screen("create_workout")
-    object WorkoutInfo : Screen("workout_info/{workoutName}")
-    object Home : Screen("home")
-    object History : Screen("history")
-    object Settings : Screen("settings")
+    data object Splash : Screen("splash")
+    data object CreateProfile : Screen("create_profile")
+    data object CreateWorkout : Screen("create_workout")
+    data object WorkoutInfo : Screen("workout_info/{workoutName}")
+    data object Home : Screen("home")
+    data object History : Screen("history")
+    data object Settings : Screen("settings")
 }
 
 sealed class MainBottomItem(val route: String, val label: String, val icon: ImageVector) {
-    object Home : MainBottomItem(Screen.Home.route, "Home", Icons.Rounded.Home)
-    object History : MainBottomItem(Screen.History.route, "History", Icons.Rounded.History)
-    object Settings : MainBottomItem(Screen.Settings.route, "Settings", Icons.Rounded.Settings)
+    data object Home : MainBottomItem(Screen.Home.route, "Home", Icons.Rounded.Home)
+    data object History : MainBottomItem(Screen.History.route, "History", Icons.Rounded.DateRange)
+    data object Settings : MainBottomItem(Screen.Settings.route, "Settings", Icons.Rounded.Settings)
 
     companion object {
         fun listOfTabItems() = listOf(Home, History, Settings)

@@ -6,14 +6,12 @@ plugins {
 }
 
 android {
-    namespace = "com.antsfamily.biketrainer.domain"
+    namespace = "com.antsfamily.biketrainer.data"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -21,10 +19,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled = false
+            isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -38,23 +36,20 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
     implementation(project(":android-ant-lib"))
     implementation(project(":antplugin-lib"))
-    implementation(project(":garmin-fit"))
 
-    // Reactive
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
+    // Database
+    implementation("androidx.room:room-runtime:2.4.2")
+    implementation("androidx.room:room-ktx:2.4.2")
+    ksp("androidx.room:room-compiler:2.4.2")
+    implementation("com.google.code.gson:gson:2.8.9")
 
     // DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // Testing
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("org.mockito:mockito-core:4.2.0")
-    androidTestImplementation("org.mockito:mockito-android:4.2.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }

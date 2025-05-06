@@ -1,11 +1,22 @@
 package com.antsfamily.biketrainer.ui.createworkout
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,7 +28,10 @@ import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutState
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutViewModel2
 import com.antsfamily.biketrainer.presentation.createworkout.WorkoutItem
-import com.antsfamily.biketrainer.ui.common.*
+import com.antsfamily.biketrainer.ui.common.DurationOutlinedTextField
+import com.antsfamily.biketrainer.ui.common.FullScreenLoading
+import com.antsfamily.biketrainer.ui.common.LoadingButton
+import com.antsfamily.biketrainer.ui.common.OutlinedTextFieldWithErrorState
 import com.antsfamily.biketrainer.ui.common.workoutchart.WorkoutChart
 import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutType
 import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutTypeSwitcher

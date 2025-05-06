@@ -1,13 +1,23 @@
 package com.antsfamily.biketrainer.ui.createprofile
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -19,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.antsfamily.biketrainer.R
@@ -44,7 +55,6 @@ interface CreateProfileScreen {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun CreateProfileScreen(
     navController: NavController,
@@ -60,7 +70,6 @@ private fun CreateProfileScreen(
     ScreenContent(uiState.value, viewModel)
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ScreenContent(
     uiState: CreateProfileState,
@@ -106,7 +115,10 @@ fun ScreenContent(
                         username = it
                         viewModel.onNameChanged()
                     },
-                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent
+                    ),
                     errorMessage = uiState.nameError
                 )
 
@@ -120,7 +132,10 @@ fun ScreenContent(
                         height = it.toIntOrNull().orZero()
                         viewModel.onHeightChanged()
                     },
-                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent
+                    ),
                     keyboardType = KeyboardType.Number,
                     errorMessage = uiState.heightError
                 )
@@ -135,7 +150,10 @@ fun ScreenContent(
                         weight = it.toIntOrNull().orZero()
                         viewModel.onWeightChanged()
                     },
-                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent
+                    ),
                     keyboardType = KeyboardType.Number,
                     errorMessage = uiState.weightError
                 )
@@ -150,7 +168,10 @@ fun ScreenContent(
                         age = it.toIntOrNull().orZero()
                         viewModel.onAgeChanged()
                     },
-                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent
+                    ),
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done,
                     errorMessage = uiState.ageError,

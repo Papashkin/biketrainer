@@ -1,0 +1,4 @@
+configurations.maybeCreate("default")
+artifacts {
+    add("default", file("antpluginlib_3-8-0.aar"))
+}
