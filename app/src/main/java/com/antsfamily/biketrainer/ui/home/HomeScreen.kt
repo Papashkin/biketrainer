@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.antsfamily.biketrainer.presentation.home.HomeViewModel2
 import com.antsfamily.biketrainer.ui.common.FullScreenLoading
 import com.antsfamily.biketrainer.ui.home.view.HomeScreenContentWithData
@@ -13,16 +12,16 @@ import com.antsfamily.biketrainer.ui.home.view.HomeScreenEmptyContent
 interface HomeScreen {
     companion object {
         @Composable
-        fun Content(navController: NavController) {
-            HomeScreen(navController)
+        fun Content(onNavigate: (String) -> Unit) {
+            HomeScreen(onNavigate = onNavigate)
         }
     }
 }
 
 @Composable
 private fun HomeScreen(
-    navController: NavController,
-    viewModel: HomeViewModel2 = hiltViewModel()
+    viewModel: HomeViewModel2 = hiltViewModel(),
+    onNavigate: (String) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
@@ -38,7 +37,7 @@ private fun HomeScreen(
 
     LaunchedEffect(Unit) {
         viewModel.navigationFlow.collect {
-            navController.navigate(it)
+            onNavigate(it)
         }
     }
 }

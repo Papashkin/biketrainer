@@ -1,40 +1,44 @@
 package com.antsfamily.biketrainer.ui.splash
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.navigation.popUpToTop
 import com.antsfamily.biketrainer.presentation.splash.SplashViewModel2
+import com.antsfamily.biketrainer.ui.util.Padding
 
 interface SplashScreen {
     companion object {
         @Composable
-        fun Content(navController: NavController) {
-            SplashScreen(navController)
+        fun Content(
+            onNavigateToHome: () -> Unit,
+            onNavigateToCreateProfile: () -> Unit
+        ) {
+            SplashScreen(
+                onNavigateToHome = onNavigateToHome,
+                onNavigateToCreateProfile = onNavigateToCreateProfile
+            )
         }
     }
 }
 
 @Composable
 fun SplashScreen(
-    navController: NavController,
     viewModel: SplashViewModel2 = hiltViewModel(),
+    onNavigateToHome: () -> Unit,
+    onNavigateToCreateProfile: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
     if (uiState.value is SplashScreenState.Loading) {
@@ -42,8 +46,13 @@ fun SplashScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.navigationFlow.collect {
-            navController.navigate(it) { popUpToTop(navController) }
+        viewModel.navigateToHomeFlow.collect {
+            onNavigateToHome()
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.navigateToCreateProfileFlow.collect {
+            onNavigateToCreateProfile()
         }
     }
 }
@@ -58,13 +67,11 @@ fun SplashViewWithIconAndSpinner() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AsyncImage(
-                model = R.drawable.ic_cycling_road,
+            Image(
+                painterResource(id = R.drawable.ic_app_icon),
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-                modifier = Modifier.size(100.dp)
             )
-            CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+            CircularProgressIndicator(modifier = Modifier.padding(top = Padding.small))
         }
     }
 }

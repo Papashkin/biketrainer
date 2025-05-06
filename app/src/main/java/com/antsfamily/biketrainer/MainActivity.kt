@@ -28,6 +28,7 @@ class MainActivity : ComponentActivity() {
 fun MainContent(
     viewModel: MainViewModel = hiltViewModel()
 ) {
+    //TODO fix theme setting later in Settings screen
     val state = viewModel.state.collectAsState()
     val systemUiController = rememberSystemUiController()
 

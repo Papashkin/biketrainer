@@ -59,13 +59,24 @@ fun Navigation() {
                 startDestination = Screen.Splash.route
             ) {
                 composable(Screen.Splash.route) {
-                    SplashScreen.Content(navController)
+                    SplashScreen.Content(
+                        onNavigateToHome = {
+                            navController.navigate(Screen.Home.route) { popUpToTop(navController) }
+                        },
+                        onNavigateToCreateProfile = {
+                            navController.navigate(Screen.CreateProfile.route) { popUpToTop(navController) }
+                        }
+                    )
                 }
                 composable(Screen.CreateProfile.route) {
-                    CreateProfileScreen.Content(navController)
+                    CreateProfileScreen.Content { route ->
+                        navController.navigate(route) { popUpToTop(navController) }
+                    }
                 }
                 composable(MainBottomItem.Home.route) {
-                    HomeScreen.Content(navController)
+                    HomeScreen.Content { route ->
+                        navController.navigate(route)
+                    }
                 }
                 composable(MainBottomItem.History.route) {
                     HistoryScreen.Content()
@@ -74,7 +85,9 @@ fun Navigation() {
                     SettingsScreen.Content()
                 }
                 composable(Screen.CreateWorkout.route) {
-                    CreateWorkoutScreen.Content(navController)
+                    CreateWorkoutScreen.Content {
+                        navController.popBackStack()
+                    }
                 }
                 composable(
                     Screen.WorkoutInfo.route,
