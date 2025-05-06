@@ -8,7 +8,7 @@
                 android:thicknessRatio="25.0"
                 android:type="sweep"
                 android:useLevel="false">
-            <solid android:color="?attr/colorOnBackground" />
+            <solid android:color="@color/grey_400" />
         </shape>
 
     </item>

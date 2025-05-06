@@ -6,3 +6,6 @@
 /build
 /captures
 .externalNativeBuild
+android-ant-lib/build
+antplugin-lib/build
+garmin-fit/build

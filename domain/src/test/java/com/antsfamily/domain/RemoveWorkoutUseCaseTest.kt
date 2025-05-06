@@ -59,6 +59,6 @@ class RemoveWorkoutUseCaseTest {
     companion object {
         private const val MOCK_PROGRAM_TITLE = "mock_1"
         private const val MOCK_ERROR_MESSAGE = "Epic fail :("
-        private val MOCK_PROGRAM = Program(MOCK_PROGRAM_TITLE, listOf(), "mocker_1")
+        private val MOCK_PROGRAM = Program(MOCK_PROGRAM_TITLE, listOf())
     }
 }

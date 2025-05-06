@@ -2,8 +2,6 @@ package com.antsfamily.data.local.database
 
 import androidx.room.*
 import com.antsfamily.data.model.profile.Profile
-import com.antsfamily.data.model.profile.ProfileWithPrograms
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class ProfileDao {
@@ -13,10 +11,6 @@ abstract class ProfileDao {
 
     @Query("Select * from profile where name = :profileName")
     abstract suspend fun getProfile(profileName: String): Profile?
-
-    @Transaction
-    @Query("SELECT * from profile where name = :profileName")
-    abstract fun getProfileFlow(profileName: String): Flow<ProfileWithPrograms>
 
     @Insert
     abstract suspend fun addProfile(profile: Profile)

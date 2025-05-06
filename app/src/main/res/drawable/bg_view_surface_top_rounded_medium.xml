@@ -6,7 +6,7 @@
             <corners
                     android:topLeftRadius="@dimen/radius_medium"
                     android:topRightRadius="@dimen/radius_medium" />
-            <solid android:color="?attr/colorSurface" />
+            <solid android:color="@color/grey_400" />
         </shape>
     </item>
 </ripple>
