@@ -93,7 +93,7 @@ class CreateWorkoutViewModel2 @Inject constructor(
 
     fun onRemoveLastStepClick() {
         _uiState.update { it.copy(steps = workoutSteps.dropLast(1)) }
-        workoutSteps.removeLast()
+        workoutSteps.remove(workoutSteps.last())
     }
 
     fun onSaveClick(workoutName: String) {

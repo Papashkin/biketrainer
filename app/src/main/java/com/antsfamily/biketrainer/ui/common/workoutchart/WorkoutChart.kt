@@ -87,24 +87,26 @@ fun WorkoutChart(
                 )
 
                 state.powerLines.forEach { value ->
-                    if (value > viewMaxHeight) return@forEach
-                        drawLine(
-                            color = Color.LightGray,
-                            strokeWidth = Padding.tiny.value,
-                            start = Offset(0f, -value.toFloat()),
-                            end = Offset(viewMaxWidth, -value.toFloat()),
-                            pathEffect = PathEffect.dashPathEffect(
-                                intervals = floatArrayOf(10f, 20f),
-                                phase = 5f
-                            )
+                    if (value > viewMaxHeight) {
+                        return@forEach
+                    }
+                    drawLine(
+                        color = Color.LightGray,
+                        strokeWidth = Padding.tiny.value,
+                        start = Offset(0f, -value.toFloat()),
+                        end = Offset(viewMaxWidth, -value.toFloat()),
+                        pathEffect = PathEffect.dashPathEffect(
+                            intervals = floatArrayOf(10f, 20f),
+                            phase = 5f
                         )
-                        drawIntoCanvas {
-                            it.nativeCanvas.drawText(
-                                value.toString(),
-                                Padding.x_large.value.unaryMinus(),
-                                value.toFloat().minus(10).unaryMinus(),
-                                textPaint
-                            )
+                    )
+                    drawIntoCanvas {
+                        it.nativeCanvas.drawText(
+                            value.toString(),
+                            Padding.x_large.value.unaryMinus(),
+                            value.toFloat().minus(10).unaryMinus(),
+                            textPaint
+                        )
                     }
                 }
 
