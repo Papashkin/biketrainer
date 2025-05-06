@@ -1,9 +1,9 @@
 package com.antsfamily.biketrainer
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,7 +14,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ fun MainContent(
     val systemUiController = rememberSystemUiController()
 
     AppTheme(state.value.isDarkTheme) {
-        systemUiController.setSystemBarsColor(color = MaterialTheme.colors.surface)
+        systemUiController.setSystemBarsColor(color = MaterialTheme.colorScheme.surface)
         Navigation()
     }
 }

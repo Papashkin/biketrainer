@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.antsfamily.domain">
+    package="com.antsfamily.biketrainer.domain">
 
     <queries>
         <package android:name="com.dsi.ant.plugins.antplus" />

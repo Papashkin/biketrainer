@@ -1,0 +1,4 @@
+configurations.maybeCreate("default")
+artifacts {
+    add("default", file("android_antlib_4-14-0.jar"))
+}

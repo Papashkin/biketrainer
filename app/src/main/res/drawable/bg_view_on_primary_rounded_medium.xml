@@ -4,7 +4,7 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/radius_medium" />
-            <solid android:color="?attr/colorOnPrimary" />
+            <solid android:color="@color/grey_400" />
         </shape>
     </item>
 </ripple>
