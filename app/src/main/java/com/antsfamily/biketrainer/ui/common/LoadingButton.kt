@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +39,7 @@ fun LoadingButton(
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                     strokeWidth = Padding.x_small,
-                    color = MaterialTheme.colors.onPrimary
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
                 Box {

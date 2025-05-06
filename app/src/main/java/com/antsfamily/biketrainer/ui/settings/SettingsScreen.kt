@@ -2,15 +2,32 @@ package com.antsfamily.biketrainer.ui.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material.icons.rounded.DarkMode
-import androidx.compose.material.icons.rounded.ReplayCircleFilled
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,9 +67,9 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            MaterialTheme.colors.surface,
-                            MaterialTheme.colors.surface,
-                            MaterialTheme.colors.background
+                            MaterialTheme.colorScheme.surface,
+                            MaterialTheme.colorScheme.surface,
+                            MaterialTheme.colorScheme.background
                         ),
                     ),
                 )
@@ -64,7 +81,7 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
             modifier = Modifier
                 .padding(top = Padding.x_small)
                 .fillMaxWidth()
-                .background(MaterialTheme.colors.background)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Text(
                 stringResource(R.string.compose_settings_profile),
@@ -90,7 +107,7 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     modifier = Modifier
                         .size(60.dp)
                         .background(
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colorScheme.surface,
                             shape = Shapes.smallRoundedShape()
                         )
                 ) {
@@ -120,7 +137,7 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                         .padding(Padding.medium)
                         .clip(Shapes.smallRoundedShape())
                         .background(
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colorScheme.surface,
                             shape = Shapes.smallRoundedShape()
                         )
                         .clickable {
@@ -128,7 +145,7 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                         }
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.ChevronRight,
+                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                         contentDescription = null,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -158,12 +175,12 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     modifier = Modifier
                         .size(60.dp)
                         .background(
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colorScheme.surface,
                             shape = Shapes.smallRoundedShape()
                         )
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.ReplayCircleFilled,
+                        imageVector = Icons.Rounded.CheckCircle,
                         contentDescription = null,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -188,7 +205,7 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                         .padding(Padding.medium)
                         .clip(Shapes.smallRoundedShape())
                         .background(
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colorScheme.surface,
                             shape = Shapes.smallRoundedShape()
                         )
                         .clickable {
@@ -196,7 +213,7 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                         }
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.ChevronRight,
+                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                         contentDescription = null,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -204,15 +221,16 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                         expanded = isCircumferenceExpanded,
                         onDismissRequest = { isCircumferenceExpanded = false }
                     ) {
-                        Circumference.values().forEach {
+                        Circumference.entries.forEach {
                             DropdownMenuItem(
+                                text = {
+                                    Text(text = it.toString())
+                                },
                                 modifier = Modifier.fillMaxSize(),
                                 onClick = {
                                     viewModel.isCircumferenceClicked(it)
                                     isCircumferenceExpanded = false
-                                }) {
-                                Text(text = it.toString())
-                            }
+                                })
                         }
                     }
                 }
@@ -231,12 +249,12 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     modifier = Modifier
                         .size(60.dp)
                         .background(
-                            color = MaterialTheme.colors.surface,
+                            color = MaterialTheme.colorScheme.surface,
                             shape = Shapes.smallRoundedShape()
                         )
                 ) {
                     Icon(
-                        imageVector = Icons.Rounded.DarkMode,
+                        imageVector = Icons.Rounded.Refresh,
                         contentDescription = null,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -260,8 +278,8 @@ private fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     checked = state.value.isDarkModeEnabled,
                     onCheckedChange = { viewModel.onUiModeChanged(it) },
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colors.primaryVariant,
-                        checkedTrackColor = MaterialTheme.colors.primaryVariant
+                        checkedThumbColor = MaterialTheme.colorScheme.primary,
+                        checkedTrackColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }

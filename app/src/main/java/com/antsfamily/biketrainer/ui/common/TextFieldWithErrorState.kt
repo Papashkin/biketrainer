@@ -6,6 +6,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,8 +30,9 @@ fun TextFieldWithErrorState(
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
-        backgroundColor = MaterialTheme.colors.surface,
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedContainerColor = MaterialTheme.colorScheme.surface,
+        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
     ),
     errorMessage: String? = null,
     onDoneClickListener: (() -> Unit)? = null
@@ -50,8 +57,8 @@ fun TextFieldWithErrorState(
         if (isError) {
             Text(
                 text = errorMessage.orEmpty(),
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.labelMedium,
                 modifier = Modifier.padding(start = Padding.medium)
             )
         }
@@ -67,9 +74,9 @@ fun OutlinedTextFieldWithErrorState(
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
-    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-        backgroundColor = MaterialTheme.colors.surface,
-        unfocusedBorderColor = MaterialTheme.colors.surface
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedContainerColor = MaterialTheme.colorScheme.surface,
+        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
     ),
     errorMessage: String? = null,
     enabled: Boolean = true,
@@ -105,9 +112,9 @@ fun DurationOutlinedTextField(
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
-    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(
-        backgroundColor = MaterialTheme.colors.surface,
-        unfocusedBorderColor = MaterialTheme.colors.surface,
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedContainerColor = MaterialTheme.colorScheme.surface,
+        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
         cursorColor = Color.Transparent,
     ),
     errorMessage: String? = null,
