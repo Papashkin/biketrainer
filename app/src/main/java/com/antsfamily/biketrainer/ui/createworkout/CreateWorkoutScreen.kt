@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutState
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutViewModel2
@@ -43,16 +42,18 @@ import com.antsfamily.domain.antservice.orZero
 interface CreateWorkoutScreen {
     companion object {
         @Composable
-        fun Content(navController: NavController) {
-            CreateWorkoutScreen(navController)
+        fun Content(onNavigateBack: () -> Unit) {
+            CreateWorkoutScreen {
+                onNavigateBack()
+            }
         }
     }
 }
 
 @Composable
 fun CreateWorkoutScreen(
-    navController: NavController,
-    viewModel: CreateWorkoutViewModel2 = hiltViewModel()
+    viewModel: CreateWorkoutViewModel2 = hiltViewModel(),
+    onNavigateBack: () -> Unit
 ) {
 
     val uiState = viewModel.uiState.collectAsState()
@@ -71,7 +72,7 @@ fun CreateWorkoutScreen(
 
     LaunchedEffect(Unit) {
         viewModel.navigateBackEvent.collect {
-            navController.popBackStack()
+            onNavigateBack()
         }
     }
 
