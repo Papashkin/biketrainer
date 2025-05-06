@@ -1,8 +1,8 @@
 package com.antsfamily.biketrainer.ui.common
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -15,7 +15,7 @@ import com.antsfamily.biketrainer.util.orEmpty
 fun TextFieldErrorView(error: String?) {
     Text(
         text = error.orEmpty(),
-        color = MaterialTheme.colors.error,
+        color = MaterialTheme.colorScheme.error,
         style = TextStyle(fontSize = FontSize.Caption, fontWeight = FontWeight.Medium),
         modifier = Modifier.padding(start = Padding.medium)
     )

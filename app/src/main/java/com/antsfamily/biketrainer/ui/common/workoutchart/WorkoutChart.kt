@@ -3,17 +3,24 @@ package com.antsfamily.biketrainer.ui.common.workoutchart
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.antsfamily.biketrainer.ui.util.FontSize
 import com.antsfamily.biketrainer.ui.util.Padding
@@ -46,7 +53,7 @@ fun WorkoutChart(
 
     BoxWithConstraints(
         modifier = updatedModifier
-            .background(color = MaterialTheme.colors.surface, shape = RoundedCornerShape(2.dp))
+            .background(color = MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(2.dp))
             .wrapContentSize(align = Alignment.BottomStart)
     ) {
         state.update(workoutSteps)
@@ -55,7 +62,7 @@ fun WorkoutChart(
         val textPaint = Paint().apply {
             textAlign = Paint.Align.CENTER
             textSize = FontSize.H5.value
-            color = MaterialTheme.colors.primaryVariant.toArgb()
+            color = MaterialTheme.colorScheme.primary.toArgb()
         }
 
         Canvas(modifier = Modifier) {

@@ -117,10 +117,14 @@ class CreateWorkoutViewModel @AssistedInject constructor(
     }
 
     private fun updateChart() {
+//        val workoutItem = WorkoutItem(
+//            entries = dataSet.mapIndexed { index, programData ->
+//                BarEntry(index.toFloat(), programData.power.toFloat())
+//            },
+//            labels = dataSet.map { it.duration }
+//        )
         val workoutItem = WorkoutItem(
-            entries = dataSet.mapIndexed { index, programData ->
-                BarEntry(index.toFloat(), programData.power.toFloat())
-            },
+            entries = dataSet.map { it.power.toString() },
             labels = dataSet.map { it.duration }
         )
         changeState {

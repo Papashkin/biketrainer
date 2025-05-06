@@ -1,12 +1,26 @@
 package com.antsfamily.biketrainer.ui.workoutinfo
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,8 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.navigation.popUpToTop
-import com.antsfamily.biketrainer.presentation.EventObserver
 import com.antsfamily.biketrainer.presentation.createprofile.model.LoadingState
 import com.antsfamily.biketrainer.presentation.createworkout.WorkoutItem
 import com.antsfamily.biketrainer.presentation.workoutinfo.WorkoutInfoUiState
@@ -32,7 +44,6 @@ import com.antsfamily.biketrainer.ui.util.Shapes
 import com.antsfamily.biketrainer.ui.util.TextStyles
 import com.antsfamily.biketrainer.util.orEmpty
 import com.antsfamily.domain.antservice.orZero
-import kotlinx.coroutines.flow.collect
 
 
 interface WorkoutInfoScreen {
@@ -156,7 +167,7 @@ fun WorkoutContentView(
     }
 
 
-    Divider(
+    HorizontalDivider(
         thickness = 1.dp,
         modifier = Modifier.padding(vertical = Padding.small)
     )
