@@ -207,6 +207,16 @@
     <string name="compose_settings_dark_mode">Dark mode</string>
     <string name="compose_settings_profile">Profile</string>
 
+    <string name="circumference_700x23">700c x 23mm</string>
+    <string name="circumference_700x25">700c x 25mm</string>
+    <string name="circumference_700x28">700c x 28mm</string>
+    <string name="circumference_700x32">700c x 32mm</string>
+    <string name="circumference_700x35">700c x 35mm</string>
+    <string name="circumference_700x38">700c x 38mm</string>
+    <string name="circumference_700x44">700c x 44mm</string>
+    <string name="circumference_700x50">700c x 50mm</string>
+    <string name="circumference_unknown">Not selected</string>
+
     <!-- ====== Workout info screen ====== -->
     <string name="compose_workout_info_time">Time: %1$s</string>
     <string name="compose_workout_info_average_power">Average power: %1$s W</string>
