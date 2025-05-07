@@ -2,9 +2,9 @@ package com.antsfamily.biketrainer.presentation.settings
 
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.BaseViewModel2
+import com.antsfamily.biketrainer.core.model.Circumference
 import com.antsfamily.biketrainer.ui.util.AppThemeSwitcher
 import com.antsfamily.data.local.repositories.ProfilesRepository
-import com.antsfamily.data.model.Circumference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ class SettingsViewModel @Inject constructor(
         private val themeSwitcher: AppThemeSwitcher
 ) : BaseViewModel2() {
 
-    private val _state = MutableStateFlow(SettingsUiState.empty())
+    private val _state = MutableStateFlow<SettingsUiState>(SettingsUiState.Loading)
     val state: StateFlow<SettingsUiState>
         get() = _state
 
@@ -26,26 +26,41 @@ class SettingsViewModel @Inject constructor(
         getProfileData()
     }
 
-    fun isCircumferenceClicked(circumference: Circumference) {
+    fun onCircumferenceChanged(circumference: Circumference) {
         _state.update {
-            it.copy(wheelCircumference = circumference)
+            when (it) {
+                is SettingsUiState.Content -> it.copy(wheelCircumference = circumference)
+                else -> it
+            }
         }
     }
 
-    fun onUiModeChanged(isDarkModeEnabled: Boolean) = viewModelScope.launch {
+    fun onThemeChanged(isDarkModeEnabled: Boolean) = viewModelScope.launch {
         profilesRepository.setDarkModeEnabled(isDarkModeEnabled)
         themeSwitcher.setAppTheme(isDarkModeEnabled)
         _state.update {
-            it.copy(isDarkModeEnabled = isDarkModeEnabled)
+            when (it) {
+                is SettingsUiState.Content -> it.copy(isDarkModeEnabled = isDarkModeEnabled)
+                else -> it
+            }
         }
     }
 
     private fun getProfileData() = viewModelScope.launch {
-        val isDarkMode = profilesRepository.getDarkModeEnabled()
-        profilesRepository.getSelectedProfileName()?.let { name ->
-            _state.update {
-                it.copy(username = name, isDarkModeEnabled = isDarkMode)
+        try {
+            val isDarkMode = profilesRepository.getDarkModeEnabled()
+            val selectedProfileName = profilesRepository.getSelectedProfileName()
+            selectedProfileName?.let { name ->
+                _state.value = SettingsUiState.Content(
+                    username = name,
+                    isDarkModeEnabled = isDarkMode,
+                    wheelCircumference = Circumference.UNKNOWN
+                )
+            } ?: run {
+                _state.value = SettingsUiState.Error(SettingsErrorType.NO_PROFILES_FOUND)
             }
+        } catch (e: Exception) {
+            _state.value = SettingsUiState.Error(SettingsErrorType.UNKNOWN_ERROR)
         }
     }
 }
