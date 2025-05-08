@@ -1,71 +1,54 @@
 package com.antsfamily.biketrainer.presentation.splash
 
-import android.os.Handler
-import android.os.Looper
-import com.antsfamily.biketrainer.navigation.SplashToCreateProfile
-import com.antsfamily.biketrainer.navigation.SplashToHome
-import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.domain.Result
-import com.antsfamily.domain.usecase.profile.GetSelectedProfileNameUseCase
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.antsfamily.biketrainer.ui.splash.SplashScreenState
+import com.antsfamily.data.local.repositories.ProfilesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashViewModel @AssistedInject constructor(
-    private val getSelectedProfileNameUseCase: GetSelectedProfileNameUseCase
-) : StatefulViewModel<SplashViewModel.State>(State()) {
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val profilesRepository: ProfilesRepository,
+) : ViewModel() {
 
-    @AssistedFactory
-    interface Factory {
-        fun build(): SplashViewModel
+    private val _uiState = MutableStateFlow<SplashScreenState>(SplashScreenState.Loading())
+    val uiState: StateFlow<SplashScreenState> = _uiState
+
+    private val _navigateToHomeFlow = MutableSharedFlow<Unit>()
+    val navigateToHomeFlow: SharedFlow<Unit> = _navigateToHomeFlow.asSharedFlow()
+
+    private val _navigateToCreateProfileFlow = MutableSharedFlow<Unit>()
+    val navigateToCreateProfileFlow: SharedFlow<Unit> = _navigateToCreateProfileFlow.asSharedFlow()
+
+    private val _navigateToSelectProfileFlow = MutableSharedFlow<Unit>()
+    val navigateToSelectProfileFlow: SharedFlow<Unit> = _navigateToSelectProfileFlow.asSharedFlow()
+
+    init {
+        setAppTheme()
     }
 
-    data class State(
-        val isLoading: Boolean = false
-    )
-
-    fun onResume() {
-        showLoading()
-        Handler(Looper.getMainLooper()).postDelayed(::getSelectedProfile, DELAY)
+    private fun setAppTheme() = viewModelScope.launch {
+        val isDarkMode = profilesRepository.getDarkModeEnabled()
+        _uiState.value = SplashScreenState.Loading(isDarkMode)
+        getProfiles()
     }
 
-    private fun getSelectedProfile() {
-        getSelectedProfileNameUseCase(Unit, ::handleSelectedProfileResult)
-    }
-
-    private fun handleSelectedProfileResult(result: Result<String?, Error>) {
-        when (result) {
-            is Result.Success -> handleSuccessResult(result.successData)
-            else -> navigateToCreateProfile()
+    private suspend fun getProfiles() {
+        val profiles = profilesRepository.getAllProfiles()
+        when {
+            profiles.isEmpty() -> _navigateToCreateProfileFlow.emit(Unit)
+            profiles.size == 1 -> _navigateToHomeFlow.emit(Unit)
+            else -> {
+                _navigateToSelectProfileFlow.emit(Unit)
+                //TODO Handle multiple profiles if needed (add new screen with profile selection)
+            }
         }
-    }
-
-    private fun handleSuccessResult(profileName: String?) {
-        profileName?.let {
-            navigateToStart(it)
-        } ?: run {
-            navigateToCreateProfile()
-        }
-    }
-
-    private fun showLoading() {
-        changeState { it.copy(isLoading = true) }
-    }
-
-    private fun navigateToStart(profileName: String) {
-        navigateTo(SplashToHome(profileName))
-        hideLoading()
-    }
-
-    private fun navigateToCreateProfile() {
-        navigateTo(SplashToCreateProfile)
-        hideLoading()
-    }
-
-    private fun hideLoading() {
-        changeState { it.copy(isLoading = false) }
-    }
-
-    companion object {
-        private const val DELAY = 1000L
     }
 }
