@@ -5,7 +5,7 @@ import com.antsfamily.data.local.repositories.WorkoutRepository
 import com.antsfamily.data.model.program.Program
 import com.antsfamily.domain.usecase.workout.GetWorkoutUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +28,7 @@ class GetWorkoutUseCaseTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Test
-    fun `get program success`() = runBlockingTest {
+    fun `get program success`() = runTest {
         Mockito.`when`(repository.getProgram("Test1"))
             .thenReturn(Program("Test1", listOf()))
 
@@ -38,7 +38,7 @@ class GetWorkoutUseCaseTest {
     }
 
     @Test
-    fun `get program failure`() = runBlockingTest {
+    fun `get program failure`() = runTest {
         Mockito.`when`(repository.getProgram("Test1"))
             .thenThrow(RuntimeException("error occurred"))
 
