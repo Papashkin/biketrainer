@@ -1,22 +1,23 @@
 package com.antsfamily.biketrainer.ui.createprofile
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -25,174 +26,170 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.presentation.createprofile.CreateProfileViewModel2
+import com.antsfamily.biketrainer.presentation.createprofile.CreateProfileViewModel
 import com.antsfamily.biketrainer.ui.common.LoadingButton
 import com.antsfamily.biketrainer.ui.common.TextFieldWithErrorState
-import com.antsfamily.biketrainer.ui.createprofile.CreateProfileScreen.Companion.ZERO
-import com.antsfamily.biketrainer.ui.util.FontSize
 import com.antsfamily.biketrainer.ui.util.Padding
-import com.antsfamily.biketrainer.ui.util.appTypography
-import com.antsfamily.biketrainer.util.STRING_EMPTY
-import com.antsfamily.domain.antservice.orZero
+import com.antsfamily.biketrainer.util.orEmpty
 
 interface CreateProfileScreen {
     companion object {
         @Composable
-        fun Content(onNavigate: (String) -> Unit) {
+        fun Content(onNavigateToHome: () -> Unit) {
             CreateProfileScreen {
-                onNavigate(it)
+                onNavigateToHome()
             }
         }
-
-        const val ZERO = 0
     }
 }
 
 @Composable
 private fun CreateProfileScreen(
-    viewModel: CreateProfileViewModel2 = hiltViewModel(),
-    onNavigate: (String) -> Unit,
+    viewModel: CreateProfileViewModel = hiltViewModel(),
+    onNavigateToHome: () -> Unit,
 ) {
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState = viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.navigationFlow.collect {
-            onNavigate(it)
+        viewModel.navigateToHomeEvent.collect {
+            onNavigateToHome()
         }
     }
-    ScreenContent(uiState.value, viewModel)
+
+    ScreenContent(
+        state = uiState.value,
+        onNameChange = { viewModel.onNameChanged(it) },
+        onAgeChange = { viewModel.onAgeChanged(it) },
+        onHeightChange = { viewModel.onHeightChanged(it) },
+        onWeightChange = { viewModel.onWeightChanged(it) },
+        onCreateProfileButtonClick = { viewModel.onProfileCreateClick() },
+    )
 }
 
 @Composable
 fun ScreenContent(
-    uiState: CreateProfileState,
-    viewModel: CreateProfileViewModel2,
+    state: CreateProfileState,
+    onNameChange: (String) -> Unit,
+    onAgeChange: (String) -> Unit,
+    onHeightChange: (String) -> Unit,
+    onWeightChange: (String) -> Unit,
+    onCreateProfileButtonClick: () -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val scrollState = rememberScrollState()
 
-    var username by rememberSaveable { mutableStateOf(STRING_EMPTY) }
-    var height by rememberSaveable { mutableStateOf(ZERO) }
-    var weight by rememberSaveable { mutableStateOf(ZERO) }
-    var age by rememberSaveable { mutableStateOf(ZERO) }
-
-    Box {
-        Column(modifier = Modifier.fillMaxWidth().statusBarsPadding()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .imePadding()
+            .navigationBarsPadding()
+            .background(color = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(Padding.medium)
+                .verticalScroll(scrollState)
+        ) {
+            Text(
+                stringResource(id = R.string.compose_create_profile_title),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(vertical = Padding.large)
+            )
+            Text(
+                stringResource(id = R.string.compose_create_profile_description),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = Padding.regular)
+            )
             Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(horizontal = Padding.medium)
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier.fillMaxSize()
             ) {
-                Text(
-                    stringResource(id = R.string.compose_create_profile_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(top = Padding.huge)
-                )
-                Text(
-                    stringResource(id = R.string.compose_create_profile_username),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(top = Padding.huge)
-                )
                 TextFieldWithErrorState(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = Padding.x_small),
-                    value = username,
-                    onValueChange = {
-                        username = it
-                        viewModel.onNameChanged()
-                    },
-                    errorMessage = uiState.nameError
+                    modifier = Modifier.padding(top = Padding.huge),
+                    value = state.username.orEmpty(),
+                    label = stringResource(id = R.string.compose_create_profile_username),
+                    onValueChange = { onNameChange(it) },
+                    errorMessage = if (state.isUsernameErrorVisible) {
+                        stringResource(R.string.compose_create_profile_username_error)
+                    } else null,
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Text,
                 )
 
-                Text(
-                    stringResource(id = R.string.compose_create_profile_height),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(top = Padding.small)
-                )
                 TextFieldWithErrorState(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = Padding.x_small),
-                    value = if (height > ZERO) height.toString() else STRING_EMPTY,
+                    modifier = Modifier.padding(top = Padding.tiny),
+                    value = state.height?.toString().orEmpty(),
+                    label = stringResource(id = R.string.compose_create_profile_height),
                     onValueChange = {
-                        height = it.toIntOrNull().orZero()
-                        viewModel.onHeightChanged()
+                        onHeightChange(it)
                     },
+                    imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Number,
-                    errorMessage = uiState.heightError
+                    errorMessage = if (state.isHeightErrorVisible) {
+                        stringResource(R.string.compose_create_profile_height_error)
+                    } else null
                 )
 
-                Text(
-                    stringResource(id = R.string.compose_create_profile_weight),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(top = Padding.small)
-                )
                 TextFieldWithErrorState(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = Padding.x_small),
-                    value = if (weight > ZERO) weight.toString() else STRING_EMPTY,
+                    modifier = Modifier.padding(top = Padding.tiny),
+                    value = state.weight?.toString().orEmpty(),
+                    label = stringResource(id = R.string.compose_create_profile_weight),
                     onValueChange = {
-                        weight = it.toIntOrNull().orZero()
-                        viewModel.onWeightChanged()
+                        onWeightChange(it)
                     },
+                    imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Number,
-                    errorMessage = uiState.weightError
+                    errorMessage = if (state.isWeightErrorVisible) {
+                        stringResource(R.string.compose_create_profile_weight_error)
+                    } else null
                 )
 
-                Text(
-                    stringResource(id = R.string.compose_create_profile_age),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(top = Padding.small)
-                )
                 TextFieldWithErrorState(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = Padding.x_small),
-                    value = if (age > ZERO) age.toString() else STRING_EMPTY,
+                    modifier = Modifier.padding(top = Padding.tiny),
+                    label = stringResource(id = R.string.compose_create_profile_age),
+                    value = state.age?.toString().orEmpty(),
                     onValueChange = {
-                        age = it.toIntOrNull().orZero()
-                        viewModel.onAgeChanged()
+                        onAgeChange(it)
                     },
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done,
-                    errorMessage = uiState.ageError,
+                    errorMessage = if (state.isAgeErrorVisible) {
+                        stringResource(R.string.compose_create_profile_age_error)
+                    } else null,
                     onDoneClickListener = {
                         keyboardController?.hide()
-                        viewModel.onProfileCreateClick(username, height, weight, age)
                     }
                 )
+
+                HorizontalDivider(
+                    thickness = Padding.huge,
+                    color = MaterialTheme.colorScheme.surface
+                )
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = Padding.large,
-                        end = Padding.large,
-                        top = Padding.regular,
-                        bottom = Padding.large
-                    )
+        }
+        Box(
+            modifier = Modifier
+                .navigationBarsPadding()
+                .align(Alignment.BottomCenter)
+                .background(color = MaterialTheme.colorScheme.surface),
+        ) {
+            LoadingButton(
+                modifier = Modifier.padding(Padding.medium),
+                onClick = { onCreateProfileButtonClick() },
+                loading = state.isLoading,
+                enabled = state.isCreateProfileButtonEnable,
             ) {
-                LoadingButton(
-                    onClick = { viewModel.onProfileCreateClick(username, height, weight, age) },
-                    loading = uiState.isLoading,
-                    enabled = username.isNotBlank() && height > 0 && weight > 0 && age > 0,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.compose_create_profile_create),
-                        fontSize = FontSize.H6
-                    )
-                }
+                Text(text = stringResource(id = R.string.compose_create_profile_create))
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun CreateProfileScreenPreview() {
-    CreateProfileScreen() {}
+    ScreenContent(CreateProfileState(age = 2), {}, {}, {}, {}) {}
 
 }

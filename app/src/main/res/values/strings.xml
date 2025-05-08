@@ -166,12 +166,17 @@
     <!-- ====================================================== -->
     <!-- ====== Compose part ====== -->
     <!-- ====== Create profile screen ====== -->
-    <string name="compose_create_profile_title">Create profile</string>
+    <string name="compose_create_profile_title">Create your profile</string>
+    <string name="compose_create_profile_description">We use your age, height, and weight to personalize workouts, track your progress, and give accurate performance stats.\nYour data stays secure and helps you get the most out of every ride.</string>
     <string name="compose_create_profile_username">Username</string>
+    <string name="compose_create_profile_username_error">Username is not correct</string>
     <string name="compose_create_profile_height">Height, cm</string>
+    <string name="compose_create_profile_height_error">Height is not correct</string>
     <string name="compose_create_profile_weight">Weight, kg</string>
+    <string name="compose_create_profile_weight_error">Weight is not correct</string>
     <string name="compose_create_profile_age">Age</string>
-    <string name="compose_create_profile_create">Create</string>
+    <string name="compose_create_profile_age_error">You should be older than 12</string>
+    <string name="compose_create_profile_create">Create profile</string>
 
     <!-- ====== Home screen ====== -->
     <string name="compose_home_title">Hello, %1$s</string>
