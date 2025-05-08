@@ -5,7 +5,7 @@ import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.data.model.profile.Profile
 import com.antsfamily.domain.usecase.profile.GetProfileUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +28,7 @@ class GetProfileUseCaseTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Test
-    fun `get profile success`() = runBlockingTest {
+    fun `get profile success`() = runTest {
         Mockito.`when`(repository.getProfile("Test")).thenReturn(
             Profile("Test", 22, "male", 170.0f, 70.0f)
         )
@@ -39,14 +39,14 @@ class GetProfileUseCaseTest {
     }
 
     @Test
-    fun `get profile not existing`() = runBlockingTest {
+    fun `get profile not existing`() = runTest {
         val profile = getProfileUseCase.run("Unit")
 
         assert((profile as? Result.Success)?.successData == null)
     }
 
     @Test
-    fun `get all profiles failure`() = runBlockingTest {
+    fun `get all profiles failure`() = runTest {
         Mockito.`when`(repository.getProfile("Test"))
             .thenThrow(RuntimeException("error occurred"))
 

@@ -4,12 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.domain.usecase.profile.GetSelectedProfileNameUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -28,7 +28,7 @@ class GetSelectedProfileNameUseCaseTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Test
-    fun `get selected profile success`() = runBlockingTest {
+    fun `get selected profile success`() = runTest {
         `when`(repository.getSelectedProfileName()).thenReturn("Test")
 
         val profile = getSelectedProfileNameUseCase.run(Unit)
@@ -37,7 +37,7 @@ class GetSelectedProfileNameUseCaseTest {
     }
 
     @Test
-    fun `get selected profile failure`() = runBlockingTest {
+    fun `get selected profile failure`() = runTest {
         `when`(repository.getSelectedProfileName()).thenThrow(RuntimeException("error occurred"))
 
         val profile = getSelectedProfileNameUseCase.run(Unit)

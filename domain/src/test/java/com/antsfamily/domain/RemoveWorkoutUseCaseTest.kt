@@ -5,7 +5,7 @@ import com.antsfamily.data.local.repositories.WorkoutRepository
 import com.antsfamily.data.model.program.Program
 import com.antsfamily.domain.usecase.workout.RemoveWorkoutUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +28,7 @@ class RemoveWorkoutUseCaseTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Test
-    fun `remove workout successfully`() = runBlockingTest {
+    fun `remove workout successfully`() = runTest {
         Mockito.`when`(repository.getProgram(MOCK_PROGRAM_TITLE)).thenReturn(MOCK_PROGRAM)
         Mockito.`when`(repository.removeProgram(MOCK_PROGRAM)).thenReturn(Unit)
 
@@ -38,7 +38,7 @@ class RemoveWorkoutUseCaseTest {
     }
 
     @Test
-    fun `remove workout with failure 1`() = runBlockingTest {
+    fun `remove workout with failure 1`() = runTest {
         Mockito.`when`(repository.getProgram(MOCK_PROGRAM_TITLE)).thenReturn(MOCK_PROGRAM)
         Mockito.`when`(repository.removeProgram(MOCK_PROGRAM)).thenThrow(RuntimeException("error occurred"))
 
@@ -48,7 +48,7 @@ class RemoveWorkoutUseCaseTest {
     }
 
     @Test
-    fun `remove workout with failure 2`() = runBlockingTest {
+    fun `remove workout with failure 2`() = runTest {
         Mockito.`when`(repository.getProgram(MOCK_PROGRAM_TITLE)).thenThrow(RuntimeException("error occurred"))
 
         val result = useCase.run(MOCK_PROGRAM_TITLE)
