@@ -69,8 +69,8 @@ fun Navigation() {
                     )
                 }
                 composable(Screen.CreateProfile.route) {
-                    CreateProfileScreen.Content { route ->
-                        navController.navigate(route) { popUpToTop(navController) }
+                    CreateProfileScreen.Content {
+                        navController.navigate(MainBottomItem.Home.route) { popUpToTop(navController) }
                     }
                 }
                 composable(MainBottomItem.Home.route) {

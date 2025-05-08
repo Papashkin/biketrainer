@@ -30,7 +30,7 @@ class GetProfileUseCaseTest {
     @Test
     fun `get profile success`() = runTest {
         Mockito.`when`(repository.getProfile("Test")).thenReturn(
-            Profile("Test", 22, "male", 170.0f, 70.0f)
+            Profile("Test", 22, 170.0f, 70.0f)
         )
 
         val profile = getProfileUseCase.run("Test")

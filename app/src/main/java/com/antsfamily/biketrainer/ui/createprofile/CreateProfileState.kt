@@ -2,8 +2,13 @@ package com.antsfamily.biketrainer.ui.createprofile
 
 data class CreateProfileState(
     val isLoading: Boolean = false,
-    val nameError: String? = null,
-    val heightError: String? = null,
-    val weightError: String? = null,
-    val ageError: String? = null,
+    val isCreateProfileButtonEnable: Boolean = false,
+    val username: String? = null,
+    val isUsernameErrorVisible: Boolean = false,
+    val height: Int? = null,
+    val isHeightErrorVisible: Boolean = false,
+    val weight: Int? = null,
+    val isWeightErrorVisible: Boolean = false,
+    val age: Int? = null,
+    val isAgeErrorVisible: Boolean = false,
 )
