@@ -1,5 +1,5 @@
 package com.antsfamily.biketrainer.ui.splash
 
 sealed class SplashScreenState {
-    data object Loading: SplashScreenState()
+    data class Loading(val isDarkTheme: Boolean = false): SplashScreenState()
 }
