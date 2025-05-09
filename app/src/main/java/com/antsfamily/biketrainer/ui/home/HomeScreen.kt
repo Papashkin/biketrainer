@@ -27,11 +27,18 @@ private fun HomeScreen(
 
     when (val state = uiState.value) {
         HomeState.Loading -> FullScreenLoading()
-        is HomeState.EmptyContent -> HomeScreenEmptyContent(state.profileName, viewModel)
+        is HomeState.EmptyContent -> HomeScreenEmptyContent(state.profileName) {
+            viewModel.onCreateWorkoutClick()
+        }
         is HomeState.ContentWithData -> HomeScreenContentWithData(
-            state.profileName,
-            state.workouts,
-            viewModel
+            profileName = state.profileName,
+            workouts = state.workouts,
+            onWorkoutClick = {
+                viewModel.onWorkoutClick(it)
+            },
+            onCreateWorkoutClick = {
+                viewModel.onCreateWorkoutClick()
+            }
         )
     }
 

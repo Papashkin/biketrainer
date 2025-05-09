@@ -2,6 +2,7 @@ package com.antsfamily.biketrainer.ui.home.view
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,9 +15,9 @@ import com.antsfamily.biketrainer.ui.util.Padding
 fun HomeGreetingsView(username: String, modifier: Modifier = Modifier) {
     Text(
         text = stringResource(id = R.string.compose_home_title, username),
-        fontSize = FontSize.H4,
+        style = MaterialTheme.typography.titleLarge,
         modifier = modifier
-            .padding(vertical = Padding.huge, horizontal = Padding.large)
+            .padding(vertical = Padding.huge)
             .fillMaxWidth()
     )
 }
