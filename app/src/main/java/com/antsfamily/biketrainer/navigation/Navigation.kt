@@ -45,7 +45,9 @@ fun Navigation() {
     val snackbarHostState = remember { SnackbarHostState() }
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     bottomBarState.value = when (currentRoute) {
-        MainBottomItem.Home.route, MainBottomItem.History.route, MainBottomItem.Settings.route -> true
+        MainBottomItem.Home.route,
+//        MainBottomItem.History.route,
+        MainBottomItem.Settings.route -> true
         else -> false
     }
 
@@ -78,9 +80,9 @@ fun Navigation() {
                         navController.navigate(route)
                     }
                 }
-                composable(MainBottomItem.History.route) {
-                    HistoryScreen.Content()
-                }
+//                composable(MainBottomItem.History.route) {
+//                    HistoryScreen.Content()
+//                }
                 composable(MainBottomItem.Settings.route) {
                     SettingsScreen.Content()
                 }
@@ -151,16 +153,18 @@ sealed class Screen(val route: String) {
     data object CreateWorkout : Screen("create_workout")
     data object WorkoutInfo : Screen("workout_info/{workoutName}")
     data object Home : Screen("home")
-    data object History : Screen("history")
+//    data object History : Screen("history")
     data object Settings : Screen("settings")
 }
 
 sealed class MainBottomItem(val route: String, val label: String, val icon: ImageVector) {
     data object Home : MainBottomItem(Screen.Home.route, "Home", Icons.Rounded.Home)
-    data object History : MainBottomItem(Screen.History.route, "History", Icons.Rounded.DateRange)
+    //TODO get History back when it's available.
+//    data object History : MainBottomItem(Screen.History.route, "History", Icons.Rounded.DateRange)
     data object Settings : MainBottomItem(Screen.Settings.route, "Settings", Icons.Rounded.Settings)
 
     companion object {
-        fun listOfTabItems() = listOf(Home, History, Settings)
+//        fun listOfTabItems() = listOf(Home, History, Settings)
+        fun listOfTabItems() = listOf(Home, Settings)
     }
 }

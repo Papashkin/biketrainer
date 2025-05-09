@@ -1,6 +1,6 @@
 package com.antsfamily.biketrainer.ui.home.view
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,17 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.presentation.home.HomeViewModel2
 import com.antsfamily.biketrainer.ui.util.Padding
 import com.antsfamily.biketrainer.ui.util.SpanStyles
 import com.antsfamily.biketrainer.ui.util.TextStyles
@@ -29,32 +26,21 @@ import com.antsfamily.data.model.program.Program
 fun HomeScreenContentWithData(
     profileName: String,
     workouts: List<Program>,
-    viewModel: HomeViewModel2
+    onWorkoutClick: (Program) -> Unit,
+    onCreateWorkoutClick: () -> Unit
 ) {
     val scrollState = rememberLazyListState()
-    Column(modifier = Modifier.fillMaxWidth()) {
-        HomeGreetingsView(
-            profileName,
-            Modifier.background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.surface,
-                        MaterialTheme.colorScheme.surface,
-                        MaterialTheme.colorScheme.background
-                    ),
-                ),
-            )
-        )
+    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Padding.medium)) {
+        HomeGreetingsView(profileName)
         Column(
             modifier = Modifier
                 .padding(top = Padding.x_small)
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
         ) {
             Column {
                 Text(
                     text = stringResource(R.string.compose_home_workouts),
-                    style = TextStyles.header6Bold(),
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(top = Padding.x_large, start = Padding.large)
                 )
                 LazyRow(
@@ -66,7 +52,7 @@ fun HomeScreenContentWithData(
                 ) {
                     items(workouts) { workout ->
                         WorkoutCard(workout) {
-                            viewModel.onWorkoutClick(workout)
+                            onWorkoutClick(workout)
                         }
                     }
                 }
@@ -80,13 +66,14 @@ fun HomeScreenContentWithData(
                     style = TextStyles.body1(),
                     modifier = Modifier.padding(horizontal = Padding.tiny),
                 )
-                ClickableText(
+                Text(
                     text = AnnotatedString(
                         text = stringResource(R.string.compose_home_create_workout_2),
                         spanStyle = SpanStyles.body1SemiboldPrimaryVariant()
                     ),
-                    onClick = { viewModel.onCreateWorkoutClick() },
-                    modifier = Modifier.padding(horizontal = Padding.tiny),
+                    modifier = Modifier
+                        .clickable { onCreateWorkoutClick() }
+                        .padding(horizontal = Padding.tiny),
                 )
             }
         }
