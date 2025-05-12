@@ -229,5 +229,16 @@
     <string name="compose_workout_info_search_sensors">Search sensors</string>
     <string name="compose_workout_info_delete">Delete</string>
     <string name="compose_workout_info_run">Run</string>
+    <string name="workout_step_title_cooldown">From %1$d W to %2$d W</string>
+    <string name="workout_step_title_intervals">%1$d x %2$s at %3$d W</string>
+    <string name="workout_step_title_onestep">%1$d W</string>
+    <string name="workout_step_title_warmup">From %1$d W to %2$d W</string>
+    <string name="workout_step_subtitle_cooldown">in %1$s</string>
+    <string name="workout_step_subtitle_onestep">during %1$s</string>
+    <string name="workout_step_subtitle_intervals">+ %1$s at %2$d W</string>
+    <string name="workout_step_subtitle_warmup">in %1$s</string>
+    <string name="create_workout_description">Choose a workout stage to add to your program.\nEach option lets you customize a specific part of your training.</string>
+    <string name="create_workout_your_workout">Your workout:</string>
+    <string name="create_workout_total_duration">Total duration: %1$s</string>
 
 </resources>

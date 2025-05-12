@@ -122,9 +122,7 @@ fun ScreenContent(
                     modifier = Modifier.padding(top = Padding.tiny),
                     value = state.height?.toString().orEmpty(),
                     label = stringResource(id = R.string.compose_create_profile_height),
-                    onValueChange = {
-                        onHeightChange(it)
-                    },
+                    onValueChange = { onHeightChange(it) },
                     imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Number,
                     errorMessage = if (state.isHeightErrorVisible) {
@@ -136,9 +134,7 @@ fun ScreenContent(
                     modifier = Modifier.padding(top = Padding.tiny),
                     value = state.weight?.toString().orEmpty(),
                     label = stringResource(id = R.string.compose_create_profile_weight),
-                    onValueChange = {
-                        onWeightChange(it)
-                    },
+                    onValueChange = { onWeightChange(it) },
                     imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Number,
                     errorMessage = if (state.isWeightErrorVisible) {
@@ -150,9 +146,7 @@ fun ScreenContent(
                     modifier = Modifier.padding(top = Padding.tiny),
                     label = stringResource(id = R.string.compose_create_profile_age),
                     value = state.age?.toString().orEmpty(),
-                    onValueChange = {
-                        onAgeChange(it)
-                    },
+                    onValueChange = { onAgeChange(it) },
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done,
                     errorMessage = if (state.isAgeErrorVisible) {
@@ -162,7 +156,6 @@ fun ScreenContent(
                         keyboardController?.hide()
                     }
                 )
-
                 HorizontalDivider(
                     thickness = Padding.huge,
                     color = MaterialTheme.colorScheme.surface
