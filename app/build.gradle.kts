@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.activity.ktx)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling)
@@ -80,50 +81,16 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
 
-    // UI
-//    implementation("androidx.appcompat:appcompat:1.4.1")
-//    implementation("androidx.fragment:fragment-ktx:1.4.1")
-//    implementation("androidx.recyclerview:recyclerview:1.2.1")
-//    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-//    implementation("com.google.android.material:material:1.5.0")
-//    implementation("com.facebook.shimmer:shimmer:0.5.0")
-
     implementation(libs.lottie)
     implementation(libs.coil)
-
-    // lifecycle
-//    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-//    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-//    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
-
-    // navigation
-//    implementation("androidx.navigation:navigation-fragment-ktx:$navigation_version")
-//    implementation("androidx.navigation:navigation-ui-ktx:$navigation_version")
-//    implementation("androidx.navigation:navigation-dynamic-features-fragment:$navigation_version")
 
     // DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-//    implementation("com.google.dagger:hilt-android:$hilt_version")
-//    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
-//    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
 
     // Reactive
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
 
-    //Jetpack Compose
-//    implementation("androidx.compose.ui:ui:$compose_version")
-//    implementation("androidx.compose.ui:ui-tooling:$compose_version") // Tooling support (Previews, etc.)
-//    implementation("androidx.compose.foundation:foundation:$compose_version") // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-//    implementation("androidx.compose.material:material:$compose_version") // Material Design
-//    implementation("androidx.compose.material:material-icons-core:$compose_version") // Material design icons
-//    implementation("androidx.compose.material:material-icons-extended:$compose_version") // Integration with observables
-//    implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
-//    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1") // viewModels for Compose
-//    implementation("androidx.activity:activity-compose:1.4.0")
-//    implementation("androidx.navigation:navigation-compose:2.4.2")
-//    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha")
+
 }
