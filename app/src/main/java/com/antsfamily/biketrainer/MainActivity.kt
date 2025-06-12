@@ -10,7 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.antsfamily.biketrainer.navigation.Navigation
 import com.antsfamily.biketrainer.presentation.main.MainViewModel
 import com.antsfamily.biketrainer.ui.util.AppTheme
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+//import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,10 +29,10 @@ fun MainContent(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
-    val systemUiController = rememberSystemUiController()
+//    val systemUiController = rememberSystemUiController()
 
     AppTheme(state.value) {
-        systemUiController.setSystemBarsColor(color = MaterialTheme.colorScheme.surface)
+//        systemUiController.setSystemBarsColor(color = MaterialTheme.colorScheme.surface)
         Navigation()
     }
 }
