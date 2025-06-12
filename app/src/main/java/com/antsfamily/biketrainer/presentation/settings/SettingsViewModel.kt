@@ -1,7 +1,7 @@
 package com.antsfamily.biketrainer.presentation.settings
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.BaseViewModel2
 import com.antsfamily.biketrainer.core.model.Circumference
 import com.antsfamily.biketrainer.ui.util.AppThemeSwitcher
 import com.antsfamily.data.local.repositories.ProfilesRepository
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val profilesRepository: ProfilesRepository,
         private val themeSwitcher: AppThemeSwitcher
-) : BaseViewModel2() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow<SettingsUiState>(SettingsUiState.Loading)
     val state: StateFlow<SettingsUiState>

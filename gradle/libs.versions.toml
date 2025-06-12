@@ -1,7 +1,7 @@
 [versions]
 agp = "8.7.3"
 kotlin = "2.0.20"
-ksp = "2.0.20-1.0.25"
+ksp = "2.1.10-1.0.30"
 androidxCore = "1.16.0"
 androidxCoreSplashscreen = "1.1.0-rc01"
 androidxActivity = "1.10.1"
@@ -69,8 +69,13 @@ crypto = { group = "androidx.security", name = "security-crypto", version.ref = 
 inAppUpdate = { group = "com.google.android.play", name = "app-update", version.ref = "googleAppUpdate" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
-vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
-vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+
+room-runtime = { group = "androidx.room", name = "room-runtime", version = "2.4.2" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version = "2.4.2" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version = "2.4.2" }
+
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.4.2" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = "1.4.2" }
 
 # TESTING
 androidx-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "coreTesting" }

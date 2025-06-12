@@ -7,11 +7,11 @@ plugins {
 
 android {
     namespace = "com.antsfamily.biketrainer.domain"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -44,17 +44,19 @@ dependencies {
     implementation(project(":garmin-fit"))
 
     // Reactive
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
     // DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
     // Testing
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("org.mockito:mockito-core:4.2.0")
-    androidTestImplementation("org.mockito:mockito-android:4.2.0")
+    testImplementation(libs.junit)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito)
+
+//    testImplementation("org.mockito:mockito-core:4.2.0")
+//    androidTestImplementation("org.mockito:mockito-android:4.2.0")
 }
