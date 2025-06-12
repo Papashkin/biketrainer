@@ -28,6 +28,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileScreen
@@ -87,9 +88,11 @@ fun Navigation() {
                     SettingsScreen.Content()
                 }
                 composable(Screen.CreateWorkout.route) {
-                    CreateWorkoutScreen.Content {
-                        navController.popBackStack()
-                    }
+                    CreateWorkoutScreen.Content(
+                        onNavigateBack = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
                 composable(
                     Screen.WorkoutInfo.route,
@@ -155,6 +158,7 @@ sealed class Screen(val route: String) {
     data object Home : Screen("home")
 //    data object History : Screen("history")
     data object Settings : Screen("settings")
+    data object WorkoutNameDialog : Screen("workout_name_dialog")
 }
 
 sealed class MainBottomItem(val route: String, val label: String, val icon: ImageVector) {

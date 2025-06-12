@@ -55,11 +55,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
-
-//    composeOptions {
-//        kotlinCompilerExtensionVersion compose_version
-//        kotlinCompilerVersion kotlin_version
-//    }
+    lint {
+        disable += "NullSafeMutableLiveData"
+    }
 }
 
 dependencies {
@@ -114,11 +112,6 @@ dependencies {
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
 
-    // Charts
-    implementation(libs.vico.compose)
-    implementation(libs.vico.compose.m3)
-//    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
     //Jetpack Compose
 //    implementation("androidx.compose.ui:ui:$compose_version")
 //    implementation("androidx.compose.ui:ui-tooling:$compose_version") // Tooling support (Previews, etc.)
@@ -133,14 +126,4 @@ dependencies {
 //    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 //    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha")
-
-    // Testing
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test:runner:1.4.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("org.mockito:mockito-core:4.2.0")
-    androidTestImplementation("org.mockito:mockito-android:4.2.0")
 }

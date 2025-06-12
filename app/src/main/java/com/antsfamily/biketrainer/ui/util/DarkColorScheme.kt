@@ -1,9 +1,9 @@
 package com.antsfamily.biketrainer.ui.util
 
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
 
-val darkColorScheme = lightColorScheme(
+val darkColorScheme = darkColorScheme(
      primary = Color(0xFFFFB694),
      onPrimary = Color(0xFF561F00),
      primaryContainer = Color(0xFFFE6A00),
@@ -32,4 +32,5 @@ val darkColorScheme = lightColorScheme(
      inversePrimary = Color(0xFFA14000),
      inverseSurface = Color(0xFFE5E2E0),
      inverseOnSurface = Color(0xFF31302F),
+     scrim = Color(0xFF000000)
 )

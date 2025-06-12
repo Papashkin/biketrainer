@@ -35,4 +35,5 @@ val lightColorScheme = lightColorScheme(
      inversePrimary = Color(0xFFFFB694),
      inverseSurface = Color(0xFF31302F),
      inverseOnSurface = Color(0xFFF4F0EE),
+     scrim = Color(0xFF000000)
 )

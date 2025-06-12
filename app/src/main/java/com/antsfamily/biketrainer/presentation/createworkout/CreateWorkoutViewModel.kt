@@ -1,187 +1,196 @@
 package com.antsfamily.biketrainer.presentation.createworkout
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.navigation.CreateProgramToAddInterval
-import com.antsfamily.biketrainer.navigation.CreateProgramToAddSegment
-import com.antsfamily.biketrainer.navigation.CreateProgramToAddStairs
-import com.antsfamily.biketrainer.presentation.Event
-import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutItem
-import com.antsfamily.data.model.program.ProgramData
-import com.antsfamily.data.model.workouts.WorkoutIntervalParams
-import com.antsfamily.data.model.workouts.WorkoutSegmentParams
-import com.antsfamily.data.model.workouts.WorkoutStairsParams
-import com.antsfamily.domain.Result
-import com.antsfamily.domain.usecase.workout.SaveWorkoutUseCase
-//import com.github.mikephil.charting.data.BarEntry
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import com.antsfamily.biketrainer.ui.createworkout.model.IndexedWorkoutStep
+import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutStep
+import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutType
+import com.antsfamily.data.local.repositories.WorkoutRepository
+import com.antsfamily.data.model.program.Program
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CreateWorkoutViewModel @AssistedInject constructor(
-    private val saveWorkoutUseCase: SaveWorkoutUseCase
-) : StatefulViewModel<CreateWorkoutViewModel.State>(State()) {
+@HiltViewModel
+class CreateWorkoutViewModel @Inject constructor(
+    private val workoutRepository: WorkoutRepository,
+) : ViewModel() {
 
-    @AssistedFactory
-    interface Factory {
-        fun build() : CreateWorkoutViewModel
-    }
+    private val _state = MutableStateFlow(CreateWorkoutUiState.Content.Empty)
+    val state: StateFlow<CreateWorkoutUiState> = _state
 
-    data class State(
-        val isLoading: Boolean = false,
-        val isEmptyBarChartVisible: Boolean = true,
-        val isBarChartVisible: Boolean = false,
-        val programName: String? = null,
-        val programNameError: String? = null,
-        val barItem: WorkoutItem? = null,
-        val workoutError: String? = null
-    )
+    private val _navigateBackEvent = MutableSharedFlow<Unit>()
+    val navigateBackEvent: SharedFlow<Unit> = _navigateBackEvent.asSharedFlow()
 
-    private val _clearInputFieldsEvent = MutableLiveData<Event<Unit>>()
-    val clearInputFieldsEvent: LiveData<Event<Unit>>
-        get() = _clearInputFieldsEvent
+    private val _showWorkoutNameDialogEvent = MutableSharedFlow<String?>()
+    val showWorkoutNameDialogEvent: SharedFlow<String?> = _showWorkoutNameDialogEvent.asSharedFlow()
 
-    private var dataSet: MutableList<ProgramData> = mutableListOf()
+    private val _setOneStepDialogVisibilityEvent = MutableSharedFlow<Boolean>()
+    val setOneStepDialogVisibilityEvent: SharedFlow<Boolean> =
+        _setOneStepDialogVisibilityEvent.asSharedFlow()
 
-    fun onBackClick() {
-        navigateBack()
-    }
+    private val _editOneStepDialogEvent = MutableSharedFlow<IndexedWorkoutStep?>()
+    val editOneStepDialogEvent: SharedFlow<IndexedWorkoutStep?> =
+        _editOneStepDialogEvent.asSharedFlow()
 
-    fun onProgramNameChange() {
-        changeState { it.copy(programNameError = null) }
-    }
+    private val _setWarmUpDialogVisibilityEvent = MutableSharedFlow<Boolean>()
+    val setWarmUpDialogVisibilityEvent: SharedFlow<Boolean> =
+        _setWarmUpDialogVisibilityEvent.asSharedFlow()
 
-    fun onIntervalsClick() {
-        navigateTo(CreateProgramToAddInterval)
-    }
+    private val _editWarmUpDialogEvent = MutableSharedFlow<IndexedWorkoutStep?>()
+    val editWarmUpDialogEvent: SharedFlow<IndexedWorkoutStep?> =
+        _editWarmUpDialogEvent.asSharedFlow()
 
-    fun onSegmentClick() {
-        navigateTo(CreateProgramToAddSegment)
-    }
+    private val _setIntervalDialogVisibilityEvent = MutableSharedFlow<Boolean>()
+    val setIntervalDialogVisibilityEvent: SharedFlow<Boolean> =
+        _setIntervalDialogVisibilityEvent.asSharedFlow()
 
-    fun onStairsClick() {
-        navigateTo(CreateProgramToAddStairs)
-    }
+    private val _editIntervalDialogEvent = MutableSharedFlow<IndexedWorkoutStep?>()
+    val editIntervalDialogEvent: SharedFlow<IndexedWorkoutStep?> =
+        _editIntervalDialogEvent.asSharedFlow()
 
-    fun onCreateClick(name: String) {
-        if (isValid(name)) {
-            saveProgram(name)
+    private val _setCoolDownDialogVisibilityEvent = MutableSharedFlow<Boolean>()
+    val setCoolDownDialogVisibilityEvent: SharedFlow<Boolean> =
+        _setCoolDownDialogVisibilityEvent.asSharedFlow()
+
+    private val _editCoolDownDialogEvent = MutableSharedFlow<IndexedWorkoutStep?>()
+    val editCoolDownDialogEvent: SharedFlow<IndexedWorkoutStep?> =
+        _editCoolDownDialogEvent.asSharedFlow()
+
+    fun onWorkoutChipClick(type: WorkoutType) = viewModelScope.launch {
+        when (type) {
+            WorkoutType.WarmUp -> _setWarmUpDialogVisibilityEvent.emit(true)
+            WorkoutType.OneStep -> _setOneStepDialogVisibilityEvent.emit(true)
+            WorkoutType.Intervals -> _setIntervalDialogVisibilityEvent.emit(true)
+            WorkoutType.CoolDown -> _setCoolDownDialogVisibilityEvent.emit(true)
         }
     }
 
-    fun onSegmentAdd(segment: WorkoutSegmentParams?) {
-        segment?.let {
-            setSegment(it)
-            updateChart()
+    fun onWorkoutEditClick(step: IndexedWorkoutStep) = viewModelScope.launch {
+        val selectedStep = _state.value.steps.firstOrNull { it.index == step.index }
+        selectedStep?.let {
+            when (it.step) {
+                is WorkoutStep.WarmUp -> _editWarmUpDialogEvent.emit(it)
+                is WorkoutStep.OneStep -> _editOneStepDialogEvent.emit(it)
+                is WorkoutStep.Intervals -> _editIntervalDialogEvent.emit(it)
+                is WorkoutStep.CoolDown -> _editCoolDownDialogEvent.emit(it)
+            }
         }
     }
 
-    fun onIntervalAdd(interval: WorkoutIntervalParams?) {
-        interval?.let {
-            setInterval(it)
-            updateChart()
-        }
+    fun onTitleClick(currentTile: String) = viewModelScope.launch {
+        _showWorkoutNameDialogEvent.emit(currentTile)
     }
 
-    fun onStairsAdd(stairs: WorkoutStairsParams?) {
-        stairs?.let {
-            setStairs(it)
-            updateChart()
-        }
+    fun onTitleChange(title: String) = viewModelScope.launch {
+        _showWorkoutNameDialogEvent.emit(null)
+        _state.update { it.copy(name = title.trim()) }
     }
 
-    private fun setSegment(workout: WorkoutSegmentParams) {
-        dataSet.add(ProgramData(workout.power, workout.duration))
-    }
-
-    private fun setInterval(workout: WorkoutIntervalParams) {
-        for (interval in 0 until workout.times) {
-            setSegment(WorkoutSegmentParams(workout.peakPower, workout.peakDuration))
-            setSegment(WorkoutSegmentParams(workout.restPower, workout.restDuration))
-        }
-    }
-
-    private fun setStairs(workout: WorkoutStairsParams) {
-        val stepPower = (workout.endPower - workout.startPower) / workout.steps.minus(1)
-        val durationForEachStep = workout.duration / workout.steps
-        for (index in 0 until workout.steps) {
-            setSegment(
-                WorkoutSegmentParams(
-                    workout.startPower + stepPower.times(index),
-                    durationForEachStep
-                )
+    fun onWorkoutStepDelete(step: IndexedWorkoutStep) {
+        val updatedWorkoutSteps = _state.value.steps.filter { it.index != step.index }
+        _state.update { state ->
+            state.copy(
+                steps = reindexWorkoutSteps(updatedWorkoutSteps),
+                totalDuration = updatedWorkoutSteps.sumOf { it.step.getTotalDuration() }
             )
         }
     }
 
-    private fun updateChart() {
-//        val workoutItem = WorkoutItem(
-//            entries = dataSet.mapIndexed { index, programData ->
-//                BarEntry(index.toFloat(), programData.power.toFloat())
-//            },
-//            labels = dataSet.map { it.duration }
-//        )
-        val workoutItem = WorkoutItem(
-            entries = dataSet.map { it.power.toString() },
-            labels = dataSet.map { it.duration }
-        )
-        changeState {
-            it.copy(
-                barItem = workoutItem,
-                isEmptyBarChartVisible = dataSet.isEmpty(),
-                isBarChartVisible = dataSet.isNotEmpty(),
-                workoutError = null
+    fun onOneStepAdd(step: WorkoutStep.OneStep) = viewModelScope.launch {
+        handleNewWorkoutStep(step)
+    }
+
+    fun onOneStepChange(id: Int, step: WorkoutStep.OneStep) = viewModelScope.launch {
+        handleWorkoutStepChanges(id, step)
+    }
+
+    fun onWarmUpStepAdd(step: WorkoutStep.WarmUp) = viewModelScope.launch {
+        handleNewWorkoutStep(step)
+    }
+
+    fun onWarmUpStepChange(id: Int, step: WorkoutStep.WarmUp) = viewModelScope.launch {
+        handleWorkoutStepChanges(id, step)
+    }
+
+    fun onIntervalsAdd(step: WorkoutStep.Intervals) = viewModelScope.launch {
+        handleNewWorkoutStep(step)
+    }
+
+    fun onIntervalsChange(id: Int, step: WorkoutStep.Intervals) = viewModelScope.launch {
+        handleWorkoutStepChanges(id, step)
+    }
+
+    fun onCoolDownStepAdd(step: WorkoutStep.CoolDown) = viewModelScope.launch {
+        handleNewWorkoutStep(step)
+    }
+
+    fun onCoolDownStepChange(id: Int, step: WorkoutStep.CoolDown) = viewModelScope.launch {
+        handleWorkoutStepChanges(id, step)
+    }
+
+    private fun handleWorkoutStepChanges(id: Int, step: WorkoutStep) = viewModelScope.launch {
+        val indexedStep = IndexedWorkoutStep(index = id, step = step)
+        updateWorkoutSteps(indexedStep, false)
+        when (step) {
+            is WorkoutStep.CoolDown -> _editCoolDownDialogEvent.emit(null)
+            is WorkoutStep.Intervals -> _editIntervalDialogEvent.emit(null)
+            is WorkoutStep.OneStep -> _editOneStepDialogEvent.emit(null)
+            is WorkoutStep.WarmUp -> _editWarmUpDialogEvent.emit(null)
+        }
+    }
+
+    private fun handleNewWorkoutStep(step: WorkoutStep) = viewModelScope.launch {
+        val workoutSize = _state.value.steps.size
+        val indexedStep = IndexedWorkoutStep(index = workoutSize.plus(1), step = step)
+        updateWorkoutSteps(indexedStep, true)
+        when (step) {
+            is WorkoutStep.CoolDown -> _setCoolDownDialogVisibilityEvent.emit(false)
+            is WorkoutStep.Intervals -> _setIntervalDialogVisibilityEvent.emit(false)
+            is WorkoutStep.OneStep -> _setOneStepDialogVisibilityEvent.emit(false)
+            is WorkoutStep.WarmUp -> _setWarmUpDialogVisibilityEvent.emit(false)
+        }
+    }
+
+    private fun updateWorkoutSteps(newStep: IndexedWorkoutStep, isItemNew: Boolean) {
+        val currentSteps = _state.value.steps
+        val updatedSteps = if (isItemNew) {
+            currentSteps.plus(newStep)
+        } else {
+            currentSteps.map { if (it.index == newStep.index) newStep else it }
+        }
+        val totalDuration = updatedSteps.sumOf { it.step.getTotalDuration() }
+        _state.update { state ->
+            state.copy(
+                steps = updatedSteps,
+                totalDuration = totalDuration,
+                isSafeWorkoutButtonEnable = updatedSteps.isNotEmpty() && !state.name.isNullOrBlank() && totalDuration > 600
             )
         }
     }
 
-    private fun isValid(name: String): Boolean {
-        val isNameValid = name.isNotBlank()
-        val isWorkoutValid = dataSet.isNotEmpty()
-
-        if (!isNameValid) {
-            changeState { it.copy(programNameError = "Program name is invalid") }
-        }
-        if (!isWorkoutValid) {
-            changeState { it.copy(workoutError = "Program should contain at least 1 segment") }
-        }
-
-        return isNameValid && isWorkoutValid
+    private fun reindexWorkoutSteps(items: List<IndexedWorkoutStep>): List<IndexedWorkoutStep> {
+        return items.mapIndexed { index, it -> it.copy(index = index) }
     }
 
-    private fun saveProgram(name: String) = viewModelScope.launch {
-        showLoading()
-        saveWorkoutUseCase(
-            SaveWorkoutUseCase.Params(name = name, data = dataSet),
-            ::handleSaveProgramResult
-        )
-    }
-
-    private fun handleSaveProgramResult(result: Result<Unit, Error>) {
-        when (result) {
-            is Result.Success -> {
-                showSuccessSnackbar("Program was successfully saved")
-                refreshState()
-            }
-            is Result.Failure -> {
-                showErrorSnackbar("Something went wrong. Please try it again later or change the name of the program")
-            }
-        }
-        hideLoading()
-    }
-
-    private fun refreshState() {
-        changeState { State() }
-        _clearInputFieldsEvent.postValue(Event(Unit))
-    }
-
-    private fun showLoading() {
-        changeState { it.copy(isLoading = true) }
-    }
-
-    private fun hideLoading() {
-        changeState { it.copy(isLoading = false) }
-    }
+//    fun onSaveClick() = viewModelScope.launch {
+//        _state.update { it.copy(isSafeWorkoutLoadingVisible = true) }
+//        try {
+//            workoutRepository.insertProgram(Program(workoutName, workoutSteps))
+//            workoutSteps.clear()
+//            _uiState.update { it.copy(steps = emptyList()) }
+//            _clearFieldsEvent.emit(Unit)
+//        } catch (e: Exception) {
+//            Log.e(this::class.java.name, e.message.orEmpty())
+//        } finally {
+//            _state.update { it.copy(isSafeWorkoutLoadingVisible = false) }
+//        }
+//    }
 }

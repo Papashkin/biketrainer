@@ -59,7 +59,7 @@ fun TextFieldWithErrorState(
             onDone = { onDoneClickListener?.invoke() }
         ),
         shape = RoundedCornerShape(Padding.regular),
-        textStyle = MaterialTheme.typography.bodyMedium,
+        textStyle = MaterialTheme.typography.bodyLarge,
         modifier = modifier.fillMaxWidth()
     )
 }

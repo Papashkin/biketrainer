@@ -1,14 +1,17 @@
 package com.antsfamily.biketrainer.presentation.workoutinfo
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.BaseViewModel2
 import com.antsfamily.biketrainer.presentation.createprofile.model.LoadingState
 import com.antsfamily.biketrainer.util.fullTimeFormat
 import com.antsfamily.data.local.repositories.WorkoutRepository
 import com.antsfamily.data.model.program.Program
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,10 +20,16 @@ import javax.inject.Inject
 @HiltViewModel
 class WorkoutInfoViewModel @Inject constructor(
     private val workoutRepository: WorkoutRepository
-) : BaseViewModel2() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(WorkoutInfoUiState())
     val uiState: StateFlow<WorkoutInfoUiState> = _uiState
+
+    private val _navigateBackEvent = MutableSharedFlow<Unit>()
+    val navigateBackEvent: SharedFlow<Unit> = _navigateBackEvent.asSharedFlow()
+
+    private val _showSnackbarBackEvent = MutableSharedFlow<String>()
+    val showSnackbarBackEvent: SharedFlow<String> = _showSnackbarBackEvent.asSharedFlow()
 
     private var workout: Program? = null
 
@@ -64,7 +73,7 @@ class WorkoutInfoViewModel @Inject constructor(
             showLoading()
             workout?.let {
                 workoutRepository.removeProgram(it)
-                showSnackbar("Workout was successfully deleted")
+                _showSnackbarBackEvent.emit("Workout was successfully deleted")
             }
         } catch (e: Exception) {
             hideLoading()
@@ -77,5 +86,9 @@ class WorkoutInfoViewModel @Inject constructor(
 
     private fun hideLoading() {
         _uiState.update { it.copy(loadingState = LoadingState.Nothing) }
+    }
+
+    private fun navigateBack() = viewModelScope.launch {
+        _navigateBackEvent.emit(Unit)
     }
 }
