@@ -1,6 +1,7 @@
 package com.antsfamily.domain.model
 
 data class Workout(
+    val id: Int,
     val title: String,
     val data: List<IndexedWorkoutStep>,
 ) {

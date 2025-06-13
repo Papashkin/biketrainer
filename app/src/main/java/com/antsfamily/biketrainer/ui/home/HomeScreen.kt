@@ -12,8 +12,16 @@ import com.antsfamily.biketrainer.ui.home.view.HomeScreenEmptyContent
 interface HomeScreen {
     companion object {
         @Composable
-        fun Content(onNavigate: (String) -> Unit) {
-            HomeScreen(onNavigate = onNavigate)
+        fun Content(
+            navigateToCreateWorkout: () -> Unit,
+            navigateToEditWorkout: (Int) -> Unit,
+            navigateToWorkoutInfo: (Int, String) -> Unit
+        ) {
+            HomeScreen(
+                navigateToCreateWorkout = navigateToCreateWorkout,
+                navigateToEditWorkout = navigateToEditWorkout,
+                navigateToWorkoutInfo = navigateToWorkoutInfo
+            )
         }
     }
 }
@@ -21,7 +29,9 @@ interface HomeScreen {
 @Composable
 private fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    onNavigate: (String) -> Unit
+    navigateToCreateWorkout: () -> Unit,
+    navigateToEditWorkout: (Int) -> Unit,
+    navigateToWorkoutInfo: (Int, String) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
@@ -30,21 +40,29 @@ private fun HomeScreen(
         is HomeState.EmptyContent -> HomeScreenEmptyContent(state.profileName) {
             viewModel.onCreateWorkoutClick()
         }
+
         is HomeState.ContentWithData -> HomeScreenContentWithData(
             profileName = state.profileName,
             workouts = state.workouts,
-            onWorkoutClick = {
-                viewModel.onWorkoutClick(it)
-            },
-            onCreateWorkoutClick = {
-                viewModel.onCreateWorkoutClick()
-            }
+            onWorkoutClick = { viewModel.onWorkoutClick(it) },
+            onEditWorkoutClick = { viewModel.onEditWorkoutClick(it) },
+            onCreateWorkoutClick = { viewModel.onCreateWorkoutClick() }
         )
     }
 
     LaunchedEffect(Unit) {
-        viewModel.navigationFlow.collect {
-            onNavigate(it)
+        viewModel.navigationToEditWorkout.collect {
+            navigateToEditWorkout(it)
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.navigationToWorkoutInfo.collect {
+            navigateToWorkoutInfo(it.first, it.second)
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.navigationToCreateWorkout.collect {
+            navigateToCreateWorkout()
         }
     }
 }

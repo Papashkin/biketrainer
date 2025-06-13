@@ -22,7 +22,7 @@ data class WorkoutDTO(
 )
 
 fun Workout.toDTO(): WorkoutDTO = WorkoutDTO(
-    id = Random.nextInt(),
+    id = this.id,
     title = this.title,
     data = this.data.map { it.toDTO() }
 )
