@@ -1,6 +1,6 @@
 package com.antsfamily.biketrainer.presentation.createworkout
 
-import com.antsfamily.biketrainer.ui.createworkout.model.IndexedWorkoutStep
+import com.antsfamily.domain.model.IndexedWorkoutStep
 
 sealed class CreateWorkoutUiState {
     data class Content(
@@ -9,11 +9,18 @@ sealed class CreateWorkoutUiState {
         val totalDuration: Int,
         val isSafeWorkoutButtonEnable: Boolean,
         val isSafeWorkoutLoadingVisible: Boolean,
-    ): CreateWorkoutUiState() {
+    ) : CreateWorkoutUiState() {
 
         companion object {
-            val Empty = Content(null, listOf(), 0, false, false)
+            val Empty = Content(
+                name = null,
+                steps = listOf(),
+                totalDuration = 0,
+                isSafeWorkoutButtonEnable = false,
+                isSafeWorkoutLoadingVisible = false
+            )
         }
     }
-    data object Loading: CreateWorkoutUiState()
+
+    data object Loading : CreateWorkoutUiState()
 }

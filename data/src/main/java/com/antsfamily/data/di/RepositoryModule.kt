@@ -1,9 +1,9 @@
 package com.antsfamily.data.di
 
-import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.data.local.repositories.ProfilesRepositoryImpl
-import com.antsfamily.data.local.repositories.WorkoutRepository
 import com.antsfamily.data.local.repositories.WorkoutRepositoryImpl
+import com.antsfamily.domain.repository.ProfilesRepository
+import com.antsfamily.domain.repository.WorkoutRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

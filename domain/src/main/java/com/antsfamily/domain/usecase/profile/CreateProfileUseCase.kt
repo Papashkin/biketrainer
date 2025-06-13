@@ -1,7 +1,7 @@
 package com.antsfamily.domain.usecase.profile
 
-import com.antsfamily.data.local.repositories.ProfilesRepository
-import com.antsfamily.data.model.profile.Profile
+import com.antsfamily.domain.model.Profile
+import com.antsfamily.domain.repository.ProfilesRepository
 import javax.inject.Inject
 
 class CreateProfileUseCase @Inject constructor(

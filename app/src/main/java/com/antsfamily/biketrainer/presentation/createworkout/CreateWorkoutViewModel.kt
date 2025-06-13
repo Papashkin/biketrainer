@@ -3,11 +3,10 @@ package com.antsfamily.biketrainer.presentation.createworkout
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.ui.createworkout.model.IndexedWorkoutStep
-import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutStep
 import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutType
-import com.antsfamily.data.local.repositories.WorkoutRepository
-import com.antsfamily.data.model.program.Program
+import com.antsfamily.domain.model.IndexedWorkoutStep
+import com.antsfamily.domain.model.WorkoutStep
+import com.antsfamily.domain.usecase.workout.SaveWorkoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateWorkoutViewModel @Inject constructor(
-    private val workoutRepository: WorkoutRepository,
+    private val saveWorkoutUseCase: SaveWorkoutUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CreateWorkoutUiState.Content.Empty)
@@ -180,17 +179,17 @@ class CreateWorkoutViewModel @Inject constructor(
         return items.mapIndexed { index, it -> it.copy(index = index) }
     }
 
-//    fun onSaveClick() = viewModelScope.launch {
-//        _state.update { it.copy(isSafeWorkoutLoadingVisible = true) }
-//        try {
-//            workoutRepository.insertProgram(Program(workoutName, workoutSteps))
-//            workoutSteps.clear()
-//            _uiState.update { it.copy(steps = emptyList()) }
-//            _clearFieldsEvent.emit(Unit)
-//        } catch (e: Exception) {
-//            Log.e(this::class.java.name, e.message.orEmpty())
-//        } finally {
-//            _state.update { it.copy(isSafeWorkoutLoadingVisible = false) }
-//        }
-//    }
+    fun onSaveClick() = viewModelScope.launch {
+        _state.update { it.copy(isSafeWorkoutLoadingVisible = true) }
+        try {
+            _state.value.name?.let {
+                saveWorkoutUseCase(it, _state.value.steps)
+            }
+            _state.value = CreateWorkoutUiState.Content.Empty
+        } catch (e: Exception) {
+            Log.e(this::class.java.name, e.message.orEmpty())
+        } finally {
+            _state.update { it.copy(isSafeWorkoutLoadingVisible = false) }
+        }
+    }
 }

@@ -27,7 +27,7 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideProgramDao(database: AntsBikeTrainerDatabase) = database.programsDao()
+    fun provideWorkoutDao(database: AntsBikeTrainerDatabase) = database.workoutDao()
 
     @Singleton
     @Provides

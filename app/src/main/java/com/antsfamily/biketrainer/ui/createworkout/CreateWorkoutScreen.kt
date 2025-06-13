@@ -34,9 +34,6 @@ import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutUiStat
 import com.antsfamily.biketrainer.presentation.createworkout.CreateWorkoutViewModel
 import com.antsfamily.biketrainer.ui.common.FullScreenLoading
 import com.antsfamily.biketrainer.ui.common.LoadingButton
-import com.antsfamily.biketrainer.ui.createworkout.model.Duration
-import com.antsfamily.biketrainer.ui.createworkout.model.IndexedWorkoutStep
-import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutStep
 import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutType
 import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutCoolDownStepDialog
 import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutIntervalsStepDialog
@@ -47,6 +44,9 @@ import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutTypeSwitcher
 import com.antsfamily.biketrainer.ui.createworkout.view.WorkoutWarmUpStepDialog
 import com.antsfamily.biketrainer.ui.util.Padding
 import com.antsfamily.biketrainer.util.fullTimeFormat
+import com.antsfamily.domain.model.Duration
+import com.antsfamily.domain.model.IndexedWorkoutStep
+import com.antsfamily.domain.model.WorkoutStep
 
 interface CreateWorkoutScreen {
     companion object {
@@ -153,7 +153,8 @@ fun CreateWorkoutScreen(
             onWorkoutChipClicked = { viewModel.onWorkoutChipClick(it) },
             onTitleClick = { viewModel.onTitleClick(it) },
             onWorkoutEditClick = { viewModel.onWorkoutEditClick(it) },
-            onWorkoutDeleteClick = { viewModel.onWorkoutStepDelete(it) }
+            onWorkoutDeleteClick = { viewModel.onWorkoutStepDelete(it) },
+            onWorkoutSaveClick = { viewModel.onSaveClick() }
         )
     }
 
@@ -231,7 +232,8 @@ fun CreateWorkoutContent(
     onTitleClick: (String) -> Unit,
     onWorkoutChipClicked: (WorkoutType) -> Unit,
     onWorkoutEditClick: (IndexedWorkoutStep) -> Unit,
-    onWorkoutDeleteClick: (IndexedWorkoutStep) -> Unit
+    onWorkoutDeleteClick: (IndexedWorkoutStep) -> Unit,
+    onWorkoutSaveClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -323,7 +325,7 @@ fun CreateWorkoutContent(
         ) {
             LoadingButton(
                 modifier = Modifier.padding(Padding.medium),
-                onClick = { },
+                onClick = { onWorkoutSaveClick() },
                 loading = content.isSafeWorkoutLoadingVisible,
                 enabled = content.isSafeWorkoutButtonEnable,
             ) {
@@ -357,6 +359,7 @@ private fun CreateWorkoutContentPreview() {
             isSafeWorkoutButtonEnable = false,
             isSafeWorkoutLoadingVisible = false,
         ),
+        {},
         {},
         {},
         {},

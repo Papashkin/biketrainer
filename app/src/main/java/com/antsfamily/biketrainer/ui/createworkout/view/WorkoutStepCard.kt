@@ -26,12 +26,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.antsfamily.biketrainer.ui.createworkout.model.Duration
-import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutStep
-import com.antsfamily.biketrainer.ui.createworkout.model.getIconId
-import com.antsfamily.biketrainer.ui.createworkout.model.toCardSubtitleStringRes
-import com.antsfamily.biketrainer.ui.createworkout.model.toCardTitleStringRes
 import com.antsfamily.biketrainer.ui.util.Padding
+import com.antsfamily.biketrainer.ui.util.getIconId
+import com.antsfamily.biketrainer.ui.util.getWorkoutSubtitle
+import com.antsfamily.biketrainer.ui.util.getWorkoutTitle
+import com.antsfamily.domain.model.Duration
+import com.antsfamily.domain.model.WorkoutStep
 
 @Composable
 fun WorkoutStepCard(
@@ -43,8 +43,8 @@ fun WorkoutStepCard(
     ListItem(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.surfaceContainer, RectangleShape),
-        headlineContent = { Text(step.toCardTitleStringRes(context)) },
-        supportingContent = { Text(step.toCardSubtitleStringRes(context)) },
+        headlineContent = { Text(context.getWorkoutTitle(step)) },
+        supportingContent = { Text(context.getWorkoutSubtitle(step)) },
         leadingContent = {
             Box(
                 modifier = Modifier

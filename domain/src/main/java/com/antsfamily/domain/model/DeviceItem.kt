@@ -1,4 +1,4 @@
-package com.antsfamily.data.model
+package com.antsfamily.domain.model
 
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceType
 import com.dsi.ant.plugins.antplus.pccbase.MultiDeviceSearch.MultiDeviceSearchResult

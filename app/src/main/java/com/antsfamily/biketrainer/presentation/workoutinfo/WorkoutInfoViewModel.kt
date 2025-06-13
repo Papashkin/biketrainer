@@ -3,9 +3,8 @@ package com.antsfamily.biketrainer.presentation.workoutinfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.presentation.createprofile.model.LoadingState
-import com.antsfamily.biketrainer.util.fullTimeFormat
-import com.antsfamily.data.local.repositories.WorkoutRepository
-import com.antsfamily.data.model.program.Program
+import com.antsfamily.domain.model.Workout
+import com.antsfamily.domain.repository.WorkoutRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,19 +30,19 @@ class WorkoutInfoViewModel @Inject constructor(
     private val _showSnackbarBackEvent = MutableSharedFlow<String>()
     val showSnackbarBackEvent: SharedFlow<String> = _showSnackbarBackEvent.asSharedFlow()
 
-    private var workout: Program? = null
+    private var workout: Workout? = null
 
     fun getWorkout(workoutName: String) = viewModelScope.launch {
-        workoutRepository.getProgram(workoutName)?.let { workout ->
+        workoutRepository.getWorkoutByName(workoutName)?.let { workout ->
             this@WorkoutInfoViewModel.workout = workout
             _uiState.update { state ->
                 state.copy(
                     loadingState = LoadingState.Success(workout.title),
-                    program = workout.data,
+//                    program = workout.data,
                     programName = workoutName,
-                    duration = workout.data.sumOf { it.duration }.fullTimeFormat(),
-                    maxPower = workout.data.maxOf { it.power }.toString(),
-                    avgPower = workout.data.sumOf { it.power }.div(workout.data.size).toString()
+//                    duration = workout.data.sumOf { it.duration }.fullTimeFormat(),
+//                    maxPower = workout.data.maxOf { it.power }.toString(),
+//                    avgPower = workout.data.sumOf { it.power }.div(workout.data.size).toString()
                 )
             }
         }
@@ -72,7 +71,7 @@ class WorkoutInfoViewModel @Inject constructor(
         try {
             showLoading()
             workout?.let {
-                workoutRepository.removeProgram(it)
+                workoutRepository.removeWorkout(it)
                 _showSnackbarBackEvent.emit("Workout was successfully deleted")
             }
         } catch (e: Exception) {

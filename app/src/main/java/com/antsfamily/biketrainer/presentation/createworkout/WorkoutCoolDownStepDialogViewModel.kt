@@ -2,10 +2,10 @@ package com.antsfamily.biketrainer.presentation.createworkout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.ui.createworkout.model.Duration
-import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutStep
-import com.antsfamily.biketrainer.ui.createworkout.model.orEmpty
+import com.antsfamily.biketrainer.ui.util.orEmpty
 import com.antsfamily.domain.antservice.orZero
+import com.antsfamily.domain.model.Duration
+import com.antsfamily.domain.model.WorkoutStep
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow

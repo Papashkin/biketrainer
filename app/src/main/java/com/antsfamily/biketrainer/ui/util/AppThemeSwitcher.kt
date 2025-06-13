@@ -1,6 +1,6 @@
 package com.antsfamily.biketrainer.ui.util
 
-import com.antsfamily.data.local.repositories.ProfilesRepository
+import com.antsfamily.domain.repository.ProfilesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject

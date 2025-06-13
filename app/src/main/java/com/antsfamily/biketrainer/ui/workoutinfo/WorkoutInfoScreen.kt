@@ -23,7 +23,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -37,10 +36,8 @@ import com.antsfamily.biketrainer.presentation.workoutinfo.WorkoutInfoUiState
 import com.antsfamily.biketrainer.presentation.workoutinfo.WorkoutInfoViewModel
 import com.antsfamily.biketrainer.ui.common.FullScreenLoading
 import com.antsfamily.biketrainer.ui.common.LoadingButton
-import com.antsfamily.biketrainer.ui.common.workoutchart.WorkoutChart
 import com.antsfamily.biketrainer.ui.util.FontSize
 import com.antsfamily.biketrainer.ui.util.Padding
-import com.antsfamily.biketrainer.ui.util.Shapes
 import com.antsfamily.biketrainer.ui.util.TextStyles
 import com.antsfamily.biketrainer.util.orEmpty
 import com.antsfamily.domain.antservice.orZero
@@ -132,13 +129,6 @@ fun WorkoutContentView(
     Row(
         modifier = Modifier.padding(top = Padding.medium)
     ) {
-        WorkoutChart(
-            workoutSteps = state.program,
-            height = 100f,
-            modifier = Modifier
-                .weight(2f)
-                .clip(Shapes.smallRoundedShape())
-        )
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
@@ -188,7 +178,7 @@ fun WorkoutContentView(
     LoadingButton(
         onClick = { viewModel.onSearchSensorsClick() },
         modifier = Modifier.padding(vertical = Padding.x_small),
-        enabled = state.program.isNotEmpty()
+//        enabled = state.program.isNotEmpty()
     ) {
         Text(text = stringResource(id = R.string.compose_workout_info_search_sensors))
     }
@@ -196,7 +186,7 @@ fun WorkoutContentView(
     LoadingButton(
         onClick = { viewModel.onRunWorkoutClick() },
         modifier = Modifier.padding(vertical = Padding.x_small),
-        enabled = state.program.isNotEmpty()
+//        enabled = state.program.isNotEmpty()
     ) {
         Text(text = stringResource(id = R.string.compose_workout_info_run))
     }

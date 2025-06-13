@@ -35,11 +35,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.presentation.createworkout.WorkoutIntervalsStepDialogViewModel
 import com.antsfamily.biketrainer.ui.common.TextFieldWithErrorState
-import com.antsfamily.biketrainer.ui.createworkout.model.Duration
-import com.antsfamily.biketrainer.ui.createworkout.model.WorkoutStep
-import com.antsfamily.biketrainer.ui.createworkout.model.orEmpty
 import com.antsfamily.biketrainer.ui.util.Padding
+import com.antsfamily.biketrainer.ui.util.orEmpty
 import com.antsfamily.biketrainer.util.orEmpty
+import com.antsfamily.domain.model.Duration
+import com.antsfamily.domain.model.WorkoutStep
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

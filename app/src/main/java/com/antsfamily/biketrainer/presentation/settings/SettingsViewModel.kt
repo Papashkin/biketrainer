@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.core.model.Circumference
 import com.antsfamily.biketrainer.ui.util.AppThemeSwitcher
-import com.antsfamily.data.local.repositories.ProfilesRepository
+import com.antsfamily.domain.repository.ProfilesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val profilesRepository: ProfilesRepository,
-        private val themeSwitcher: AppThemeSwitcher
+    private val themeSwitcher: AppThemeSwitcher
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<SettingsUiState>(SettingsUiState.Loading)

@@ -1,99 +1,83 @@
 package com.antsfamily.biketrainer.presentation.home
 
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.BuildConfig
-import com.antsfamily.biketrainer.navigation.HomeToCreateProgram
-import com.antsfamily.biketrainer.navigation.HomeToProgramInfo
-import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.data.local.repositories.WorkoutRepository
-import com.antsfamily.data.model.profile.Profile
-import com.antsfamily.data.model.program.Program
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import com.antsfamily.biketrainer.navigation.Screen
+import com.antsfamily.biketrainer.ui.home.HomeState
+import com.antsfamily.domain.model.Workout
+import com.antsfamily.domain.repository.ProfilesRepository
+import com.antsfamily.domain.repository.WorkoutRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class HomeViewModel @AssistedInject constructor(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val profilesRepository: ProfilesRepository,
     private val workoutRepository: WorkoutRepository,
-    @Assisted private val profileName: String,
-) : StatefulViewModel<HomeViewModel.State>(State()) {
+) : ViewModel() {
 
-    @AssistedFactory
-    interface Factory {
-        fun build(profileName: String): HomeViewModel
-    }
+    private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
+    val uiState: StateFlow<HomeState> = _uiState
 
-    data class State(
-        val dateTime: String? = null,
-        val appVersion: String? = null,
-        val isProgramsLoading: Boolean = true,
-        val isProgramsVisible: Boolean = false,
-        val isEmptyProgramsVisible: Boolean = false,
-        val profile: Profile? = null,
-        val programs: List<Program> = emptyList(),
-    )
+    private val _navigationFlow = MutableSharedFlow<String>()
+    val navigationFlow: SharedFlow<String> = _navigationFlow.asSharedFlow()
+
+    private var username: String? = null
 
     init {
-        getProfileWithPrograms()
-        getDateTimeAndAppVersion()
+        getContent()
     }
 
-    fun onSettingsClick() {
-        // TODO: later
+    fun onCreateWorkoutClick() {
+        navigateTo(Screen.CreateWorkout)
     }
 
-    fun onProgramClick(item: Program) {
-        navigateTo(HomeToProgramInfo(item.title))
+    fun onWorkoutClick(workout: Workout) {
+        navigateTo(Screen.WorkoutInfo, workout.title)
     }
 
-    fun onCreateProgramClick() {
-        navigateTo(HomeToCreateProgram)
-    }
-
-    private fun getProfileWithPrograms() = viewModelScope.launch {
-        workoutRepository.programs
-            .onStart { showLoading() }
-            .onCompletion { Log.e("ProgramsRepo", "!!!! COMPLETE !!!!") }
-            .collect { handleProfileWithPrograms(it) }
-    }
-
-    private fun getDateTimeAndAppVersion() {
-        val date = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_FORMAT_FULL))
-        changeState {
-            it.copy(
-                dateTime = date,
-                appVersion = BuildConfig.VERSION_NAME
-            )
+    private fun getContent() = viewModelScope.launch {
+        val workouts = workoutRepository.getAllWorkouts()
+        Log.wtf(this@HomeViewModel::class.simpleName, workouts.size.toString())
+        if (workouts.isEmpty()) {
+            profilesRepository.getSelectedProfileName()?.let {
+                username = it
+                getWorkouts()
+            }
         }
     }
 
-    private fun showLoading() {
-        changeState {
-            it.copy(
-                isProgramsLoading = true,
-                isProgramsVisible = false,
-                isEmptyProgramsVisible = false
-            )
+    private fun getWorkouts() = viewModelScope.launch {
+        workoutRepository.workouts
+            .onStart { /* no-op */ }
+            .onCompletion { Log.e("WorkoutsRepo", "!!!! COMPLETE !!!!") }
+            .collect { handleWorkouts(it) }
+    }
+
+    private fun handleWorkouts(workouts: List<Workout>) {
+        username?.let {
+            _uiState.value = if (workouts.isEmpty()) {
+                HomeState.EmptyContent(it)
+            } else {
+                HomeState.ContentWithData(it, workouts)
+            }
         }
     }
 
-    private fun handleProfileWithPrograms(programs: List<Program>) {
-        changeState {
-            it.copy(
-                isProgramsLoading = false,
-                isProgramsVisible = programs.isNotEmpty(),
-                isEmptyProgramsVisible = programs.isEmpty(),
-                programs = programs,
-            )
-        }
+    private fun navigateTo(screen: Screen) = viewModelScope.launch {
+        _navigationFlow.emit(screen.route)
     }
 
-    companion object {
-        private const val DATE_FORMAT_FULL = "EEEE, MMMM dd, yyyy"
+    private fun navigateTo(screen: Screen, argument: String) = viewModelScope.launch {
+        _navigationFlow.emit("${screen.route.substringBefore("/")}/$argument")
     }
 }
