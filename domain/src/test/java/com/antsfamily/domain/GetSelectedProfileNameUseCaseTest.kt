@@ -1,7 +1,7 @@
 package com.antsfamily.domain
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.antsfamily.data.local.repositories.ProfilesRepository
+import com.antsfamily.domain.repository.ProfilesRepository
 import com.antsfamily.domain.usecase.profile.GetSelectedProfileNameUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
