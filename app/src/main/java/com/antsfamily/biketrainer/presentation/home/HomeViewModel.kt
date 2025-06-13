@@ -31,8 +31,6 @@ class HomeViewModel @Inject constructor(
     private val _navigationFlow = MutableSharedFlow<String>()
     val navigationFlow: SharedFlow<String> = _navigationFlow.asSharedFlow()
 
-    private var username: String? = null
-
     init {
         getContent()
     }
@@ -46,30 +44,24 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getContent() = viewModelScope.launch {
-        val workouts = workoutRepository.getAllWorkouts()
-        Log.wtf(this@HomeViewModel::class.simpleName, workouts.size.toString())
-        if (workouts.isEmpty()) {
-            profilesRepository.getSelectedProfileName()?.let {
-                username = it
-                getWorkouts()
-            }
+        val username = profilesRepository.getSelectedProfileName()
+        username?.let {
+            getWorkouts(it)
         }
     }
 
-    private fun getWorkouts() = viewModelScope.launch {
+    private fun getWorkouts(username: String) = viewModelScope.launch {
         workoutRepository.workouts
             .onStart { /* no-op */ }
             .onCompletion { Log.e("WorkoutsRepo", "!!!! COMPLETE !!!!") }
-            .collect { handleWorkouts(it) }
+            .collect { handleWorkouts(username, it) }
     }
 
-    private fun handleWorkouts(workouts: List<Workout>) {
-        username?.let {
-            _uiState.value = if (workouts.isEmpty()) {
-                HomeState.EmptyContent(it)
-            } else {
-                HomeState.ContentWithData(it, workouts)
-            }
+    private fun handleWorkouts(username: String, workouts: List<Workout>) {
+        _uiState.value = if (workouts.isEmpty()) {
+            HomeState.EmptyContent(username)
+        } else {
+            HomeState.ContentWithData(username, workouts)
         }
     }
 
