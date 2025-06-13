@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.tooling.preview.Preview
 import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.ui.util.Padding
 import com.antsfamily.biketrainer.ui.util.SpanStyles
@@ -30,7 +32,11 @@ fun HomeScreenContentWithData(
     onCreateWorkoutClick: () -> Unit
 ) {
     val scrollState = rememberLazyListState()
-    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = Padding.medium)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = Padding.medium)
+    ) {
         HomeGreetingsView(profileName)
         Column(
             modifier = Modifier
@@ -40,14 +46,11 @@ fun HomeScreenContentWithData(
             Column {
                 Text(
                     text = stringResource(R.string.compose_home_workouts),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(top = Padding.x_large, start = Padding.large)
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(top = Padding.x_large)
                 )
-                LazyRow(
-                    contentPadding = PaddingValues(
-                        vertical = Padding.small,
-                        horizontal = Padding.large
-                    ),
+                LazyColumn(
+                    contentPadding = PaddingValues(vertical = Padding.small),
                     state = scrollState,
                 ) {
                     items(workouts) { workout ->
@@ -78,4 +81,16 @@ fun HomeScreenContentWithData(
             }
         }
     }
+}
+
+
+@Preview
+@Composable
+fun HomeScreenContentWithDataPreview(modifier: Modifier = Modifier) {
+    HomeScreenContentWithData(
+        "John Doe", listOf(Workout("mock 1", listOf())
+        ),
+        {},
+        {}
+    )
 }
