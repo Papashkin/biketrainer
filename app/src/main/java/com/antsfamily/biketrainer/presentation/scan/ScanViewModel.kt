@@ -9,7 +9,7 @@ import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
 import com.antsfamily.biketrainer.util.DeviceSearcher
 import com.antsfamily.biketrainer.util.getErrorMessageOrNull
-import com.antsfamily.data.model.DeviceItem
+import com.antsfamily.domain.model.DeviceItem
 import com.antsfamily.domain.Result
 import com.antsfamily.domain.antservice.device.*
 import com.antsfamily.domain.usecase.BindAntChannelUseCase

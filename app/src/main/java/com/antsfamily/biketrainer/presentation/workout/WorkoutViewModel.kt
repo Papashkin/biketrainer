@@ -6,9 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.presentation.Event
 import com.antsfamily.biketrainer.presentation.StatefulViewModel
-import com.antsfamily.data.model.WorkoutState
-import com.antsfamily.data.model.program.Program
-import com.antsfamily.data.model.program.ProgramData
 import com.antsfamily.domain.Result
 import com.antsfamily.domain.antservice.device.BikeCadenceDevice
 import com.antsfamily.domain.antservice.device.BikePowerDevice
@@ -16,6 +13,7 @@ import com.antsfamily.domain.antservice.device.BikeSpeedDistanceDevice
 import com.antsfamily.domain.antservice.device.FitnessEquipmentDevice
 import com.antsfamily.domain.antservice.device.HeartRateDevice
 import com.antsfamily.domain.antservice.orZero
+import com.antsfamily.domain.model.Workout
 import com.antsfamily.domain.usecase.WorkoutTimerFlow
 import com.antsfamily.domain.usecase.workout.GetWorkoutUseCase
 import com.dsi.ant.plugins.antplus.pcc.defines.DeviceType
@@ -53,14 +51,14 @@ class WorkoutViewModel @AssistedInject constructor(
         val stopButtonVisible: Boolean = false,
         val stepRemainingTime: Long = 0L,
         val progress: Int = 100,
-        val currentStep: ProgramData? = null,
-        val nextStep: ProgramData? = null,
+//        val currentStep: ProgramData? = null,
+//        val nextStep: ProgramData? = null,
         val heartRate: Int? = null,
         val cadence: Int? = null,
         val speed: BigDecimal? = null,
         val distance: BigDecimal? = null,
         val power: Int? = null,
-        val program: List<ProgramData> = emptyList(),
+//        val program: List<ProgramData> = emptyList(),
         val workoutRemainingTime: Long = 0L,
         val workoutPassedTime: Long = 0L,
     )
@@ -69,7 +67,7 @@ class WorkoutViewModel @AssistedInject constructor(
     val resetChartHighlightsEvent: LiveData<Event<Unit>>
         get() = _resetChartHighlightsEvent
 
-    private var workoutState: WorkoutState = WorkoutState.READY
+//    private var workoutState: WorkoutState = WorkoutState.READY
     private var isTargetPowerSetSuccessfully: Boolean = false
     private var currentStepNumber: Int = 0
 
@@ -82,7 +80,7 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     fun onStartClick() = viewModelScope.launch {
-        workoutState = WorkoutState.IN_PROGRESS
+//        workoutState = WorkoutState.IN_PROGRESS
         changeState {
             it.copy(
                 startButtonVisible = false,
@@ -94,7 +92,7 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     fun onPauseClick() {
-        workoutState = WorkoutState.PAUSE
+//        workoutState = WorkoutState.PAUSE
         setPausePowerToDevice()
         changeState {
             it.copy(
@@ -107,7 +105,7 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     fun onContinueClick() {
-        workoutState = WorkoutState.IN_PROGRESS
+//        workoutState = WorkoutState.IN_PROGRESS
         setTargetPowerToDevice()
         changeState {
             it.copy(
@@ -120,7 +118,7 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     fun onStopClick() {
-        workoutState = WorkoutState.STOP
+//        workoutState = WorkoutState.STOP
         currentStepNumber = 0
         resetWorkoutChartHighlights()
         resetWorkoutFields()
@@ -141,7 +139,7 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     private fun handleProgramResult(
-        result: Result<Program, Error>, devices: List<MultiDeviceSearchResult>
+        result: Result<Workout, Error>, devices: List<MultiDeviceSearchResult>
     ) {
         when (result) {
             is Result.Success -> handleProgramSuccessResult(result.successData, devices)
@@ -150,7 +148,7 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     private fun handleProgramSuccessResult(
-        program: Program,
+        program: Workout,
         devices: List<MultiDeviceSearchResult>
     ) {
         setDevices(devices)
@@ -159,12 +157,12 @@ class WorkoutViewModel @AssistedInject constructor(
                 title = program.title,
                 allRounds = program.data.size,
                 currentRound = currentStepNumber,
-                nextStep = program.data[currentStepNumber],
-                stepRemainingTime = program.data[currentStepNumber].duration,
+//                nextStep = program.data[currentStepNumber],
+//                stepRemainingTime = program.data[currentStepNumber].duration,
                 progress = 100,
                 startButtonVisible = true,
-                program = program.data,
-                workoutRemainingTime = program.data.sumOf { it.duration },
+//                program = program.data,
+//                workoutRemainingTime = program.data.sumOf { it.duration },
                 workoutPassedTime = 0L,
             )
         }
@@ -189,13 +187,13 @@ class WorkoutViewModel @AssistedInject constructor(
     }
 
     private fun startWorkoutTimerFlow() = viewModelScope.launch {
-        workoutTimerFlow(PERIOD).collect {
-            showDataFromSensors()
-            if (workoutState == WorkoutState.IN_PROGRESS) {
-                setTargetPowerToDevice()
-                updateView()
-            }
-        }
+//        workoutTimerFlow(PERIOD).collect {
+//            showDataFromSensors()
+//            if (workoutState == WorkoutState.IN_PROGRESS) {
+//                setTargetPowerToDevice()
+//                updateView()
+//            }
+//        }
     }
 
     private fun subscribeToBikeCadence() = viewModelScope.launch {
@@ -233,25 +231,25 @@ class WorkoutViewModel @AssistedInject constructor(
                 cadence = getCadenceValue(),
                 power = getPowerValue(),
                 speed = getSpeedValue(),
-                distance = getDistanceValue()
+//                distance = getDistanceValue()
             )
         }
     }
 
     private fun setTargetPowerToDevice() {
-        if (!isTargetPowerSetSuccessfully) {
-            state.value?.currentStep?.let { data ->
-                fitnessEquipmentDevice.setTargetPower(
-                    data.power.toBigDecimal(),
-                    {
-                        Log.d(this::class.java.simpleName, "Set target power with result: $it")
-                        isTargetPowerSetSuccessfully = it == RequestStatus.SUCCESS
-                    }, {
-                        isTargetPowerSetSuccessfully = it
-                    }
-                )
-            }
-        }
+//        if (!isTargetPowerSetSuccessfully) {
+//            state.value?.currentStep?.let { data ->
+//                fitnessEquipmentDevice.setTargetPower(
+//                    data.power.toBigDecimal(),
+//                    {
+//                        Log.d(this::class.java.simpleName, "Set target power with result: $it")
+//                        isTargetPowerSetSuccessfully = it == RequestStatus.SUCCESS
+//                    }, {
+//                        isTargetPowerSetSuccessfully = it
+//                    }
+//                )
+//            }
+//        }
     }
 
     private fun setPausePowerToDevice() {
@@ -272,18 +270,18 @@ class WorkoutViewModel @AssistedInject constructor(
             (remainingTime >= ONE) -> updateView(remainingTime)
             else -> {
                 currentStepNumber = currentStepNumber.inc()
-                if (currentStepNumber < state.value?.program?.size.orZero()) {
-                    val updatedRemainingTime = state.value?.program
-                        ?.getOrNull(currentStepNumber)?.duration.orZero()
-                    isTargetPowerSetSuccessfully = false
-                    updateView(updatedRemainingTime)
-                } else {
-                    resetWorkoutChartHighlights()
-                    workoutState = WorkoutState.READY
-                    currentStepNumber = 0
-                    resetWorkoutFields()
-                    showSuccessSnackbar("Your workout is finished! Well done!")
-                }
+//                if (currentStepNumber < state.value?.program?.size.orZero()) {
+//                    val updatedRemainingTime = state.value?.program
+//                        ?.getOrNull(currentStepNumber)?.duration.orZero()
+//                    isTargetPowerSetSuccessfully = false
+//                    updateView(updatedRemainingTime)
+//                } else {
+//                    resetWorkoutChartHighlights()
+//                    workoutState = WorkoutState.READY
+//                    currentStepNumber = 0
+//                    resetWorkoutFields()
+//                    showSuccessSnackbar("Your workout is finished! Well done!")
+//                }
             }
         }
     }
@@ -293,10 +291,10 @@ class WorkoutViewModel @AssistedInject constructor(
         changeState {
             it.copy(
                 currentRound = currentStepNumber + 1,
-                currentStep = it.program.getOrNull(currentStepNumber),
-                nextStep = it.program.getOrNull(currentStepNumber + 1),
-                progress = stepRemainingTime.times(HUNDRED)
-                    .div(it.program.getOrNull(currentStepNumber)?.duration ?: 1).toInt(),
+//                currentStep = it.program.getOrNull(currentStepNumber),
+//                nextStep = it.program.getOrNull(currentStepNumber + 1),
+//                progress = stepRemainingTime.times(HUNDRED)
+//                    .div(it.program.getOrNull(currentStepNumber)?.duration ?: 1).toInt(),
                 stepRemainingTime = stepRemainingTime,
                 workoutRemainingTime = it.workoutRemainingTime.minus(1),
                 workoutPassedTime = it.workoutPassedTime.plus(1),
@@ -308,15 +306,15 @@ class WorkoutViewModel @AssistedInject constructor(
         changeState { state ->
             state.copy(
                 currentRound = currentStepNumber,
-                currentStep = null,
-                nextStep = state.program.getOrNull(currentStepNumber),
-                stepRemainingTime = state.program.getOrNull(currentStepNumber)?.duration.orZero(),
+//                currentStep = null,
+//                nextStep = state.program.getOrNull(currentStepNumber),
+//                stepRemainingTime = state.program.getOrNull(currentStepNumber)?.duration.orZero(),
                 progress = 100,
                 startButtonVisible = true,
                 pauseButtonVisible = false,
                 stopButtonVisible = false,
-                program = state.program,
-                workoutRemainingTime = state.program.sumOf { it.duration },
+//                program = state.program,
+                workoutRemainingTime = 0, //TODO state.program.sumOf { it.duration },
                 workoutPassedTime = 0L,
             )
         }
@@ -330,13 +328,13 @@ class WorkoutViewModel @AssistedInject constructor(
     private fun getSpeedValue() = (speedDistanceDevice.speed ?: fitnessEquipmentDevice.speed)
         ?.setScale(1, RoundingMode.HALF_DOWN)
 
-    private fun getDistanceValue() = when (workoutState) {
-        WorkoutState.IN_PROGRESS,
-        WorkoutState.PAUSE -> (speedDistanceDevice.distance ?: fitnessEquipmentDevice.distance)
-            ?.divide(METERS_IN_KILOMETER, 2, RoundingMode.HALF_DOWN)
-        WorkoutState.READY,
-        WorkoutState.STOP -> BigDecimal.ZERO
-    }
+//    private fun getDistanceValue() = when (workoutState) {
+//        WorkoutState.IN_PROGRESS,
+//        WorkoutState.PAUSE -> (speedDistanceDevice.distance ?: fitnessEquipmentDevice.distance)
+//            ?.divide(METERS_IN_KILOMETER, 2, RoundingMode.HALF_DOWN)
+//        WorkoutState.READY,
+//        WorkoutState.STOP -> BigDecimal.ZERO
+//    }
 
     private fun getPowerValue() = (powerDevice.power ?: fitnessEquipmentDevice.power)
         ?.setScale(2, RoundingMode.HALF_DOWN)?.toInt()

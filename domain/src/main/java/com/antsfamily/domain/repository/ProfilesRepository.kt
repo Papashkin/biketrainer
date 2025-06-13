@@ -1,6 +1,6 @@
-package com.antsfamily.data.local.repositories
+package com.antsfamily.domain.repository
 
-import com.antsfamily.data.model.profile.Profile
+import com.antsfamily.domain.model.Profile
 
 interface ProfilesRepository {
     fun getSelectedProfileName(): String?

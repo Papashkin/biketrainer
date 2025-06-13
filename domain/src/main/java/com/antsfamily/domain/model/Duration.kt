@@ -1,4 +1,4 @@
-package com.antsfamily.biketrainer.ui.createworkout.model
+package com.antsfamily.domain.model
 
 data class Duration(
     val minutes: Int,
@@ -16,8 +16,6 @@ data class Duration(
 
     val isEmpty: Boolean = this == Empty
 }
-
-fun Duration?.orEmpty(): Duration = this ?: Duration.Empty
 
 fun Long.toDuration(): Duration {
     val minutes = this / 60

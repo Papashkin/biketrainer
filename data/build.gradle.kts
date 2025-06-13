@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -36,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
     implementation(project(":android-ant-lib"))
     implementation(project(":antplugin-lib"))
 
@@ -44,6 +46,7 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     implementation(libs.gson)
+    implementation(libs.serialization)
 
     // DI
     implementation(libs.hilt.android)

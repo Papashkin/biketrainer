@@ -14,18 +14,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.antsfamily.biketrainer.R
-import com.antsfamily.biketrainer.ui.common.workoutchart.WorkoutChart
 import com.antsfamily.biketrainer.ui.util.FontSize
 import com.antsfamily.biketrainer.ui.util.Padding
 import com.antsfamily.biketrainer.ui.util.TextStyles
-import com.antsfamily.data.model.program.Program
+import com.antsfamily.domain.model.Workout
 
 private const val WORKOUT_CHART_SIZE = 200f
 
 @Composable
 fun WorkoutCard(
-    workout: Program,
-    onWorkoutClick: (Program) -> Unit
+    workout: Workout,
+    onWorkoutClick: (Workout) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -35,11 +34,11 @@ fun WorkoutCard(
         onClick = { onWorkoutClick(workout) }
     ) {
         Column {
-            WorkoutChart(
-                width = WORKOUT_CHART_SIZE,
-                height = WORKOUT_CHART_SIZE,
-                workoutSteps = workout.data
-            )
+//            WorkoutChart(
+//                width = WORKOUT_CHART_SIZE,
+//                height = WORKOUT_CHART_SIZE,
+//                workoutSteps = workout.data
+//            )
             Column {
                 Text(
                     text = workout.title,
@@ -48,14 +47,14 @@ fun WorkoutCard(
                 )
                 Text(
                     text = stringResource(
-                        id = R.string.compose_home_workout_power,
-                        workout.getAveragePower()
+                        id = R.string.compose_home_workout_power, 100
+//                        workout.data.sumOf { it.step. } .getAveragePower()
                     ),
                     style = TextStyles.body1(),
                     modifier = Modifier.padding(start = Padding.tiny, top = Padding.small)
                 )
                 Text(
-                    text = workout.getDuration(),
+                    text = workout.data.sumOf { it.step.getTotalDuration() }.toString(),
                     fontSize = FontSize.Caption,
                     modifier = Modifier.padding(Padding.tiny)
                 )

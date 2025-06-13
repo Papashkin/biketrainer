@@ -1,8 +1,8 @@
 package com.antsfamily.domain.usecase.profile
 
-import com.antsfamily.data.local.repositories.ProfilesRepository
 import com.antsfamily.domain.BaseUseCase
 import com.antsfamily.domain.Result
+import com.antsfamily.domain.repository.ProfilesRepository
 import javax.inject.Inject
 
 class GetSelectedProfileNameUseCase @Inject constructor(

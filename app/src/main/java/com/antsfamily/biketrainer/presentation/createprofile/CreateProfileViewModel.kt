@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileState
-import com.antsfamily.data.model.profile.Profile
+import com.antsfamily.domain.model.Profile
 import com.antsfamily.domain.antservice.orZero
 import com.antsfamily.domain.usecase.profile.CreateProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -20,13 +20,13 @@ import com.antsfamily.biketrainer.R
 import com.antsfamily.biketrainer.ui.util.Padding
 import com.antsfamily.biketrainer.ui.util.SpanStyles
 import com.antsfamily.biketrainer.ui.util.TextStyles
-import com.antsfamily.data.model.program.Program
+import com.antsfamily.domain.model.Workout
 
 @Composable
 fun HomeScreenContentWithData(
     profileName: String,
-    workouts: List<Program>,
-    onWorkoutClick: (Program) -> Unit,
+    workouts: List<Workout>,
+    onWorkoutClick: (Workout) -> Unit,
     onCreateWorkoutClick: () -> Unit
 ) {
     val scrollState = rememberLazyListState()

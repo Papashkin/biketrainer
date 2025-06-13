@@ -12,8 +12,6 @@ android {
     defaultConfig {
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -38,7 +36,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
     implementation(project(":android-ant-lib"))
     implementation(project(":antplugin-lib"))
     implementation(project(":garmin-fit"))
