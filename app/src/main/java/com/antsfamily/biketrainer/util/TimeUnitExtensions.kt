@@ -1,5 +1,6 @@
 package com.antsfamily.biketrainer.util
 
+import androidx.compose.ui.text.intl.Locale
 import java.util.concurrent.TimeUnit
 
 /**

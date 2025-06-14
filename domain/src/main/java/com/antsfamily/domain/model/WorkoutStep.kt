@@ -2,20 +2,34 @@ package com.antsfamily.domain.model
 
 sealed class WorkoutStep {
 
-    data class OneStep(val power: Int, val duration: Duration) : WorkoutStep()
+    abstract val averagePower: Int
+
+    data class OneStep(val power: Int, val duration: Duration) : WorkoutStep() {
+        override val averagePower: Int
+            get() = power
+    }
     data class Intervals(
         val power: Int,
         val powerDuration: Duration,
         val rest: Int,
         val restDuration: Duration,
         val reps: Int
-    ) : WorkoutStep()
+    ) : WorkoutStep() {
+        override val averagePower: Int
+            get() = (power + rest)/2
+    }
 
     data class WarmUp(val startPower: Int, val endPower: Int, val duration: Duration) :
-        WorkoutStep()
+        WorkoutStep() {
+        override val averagePower: Int
+            get() = (endPower - startPower)/2
+        }
 
     data class CoolDown(val startPower: Int, val endPower: Int, val duration: Duration) :
-        WorkoutStep()
+        WorkoutStep() {
+        override val averagePower: Int
+            get() = (startPower - endPower)/2
+        }
 
     fun formatDuration(duration: Duration): String {
         if (duration.isZero) return ""

@@ -187,7 +187,7 @@
     <string name="compose_home_create_workout_2">Create another one</string>
 
     <!-- ====== Home screen - Workout card ====== -->
-    <string name="compose_home_workout_power">%1$d W avg.</string>
+    <string name="compose_home_workout_support_text">%1$d W avg. / %2$s</string>
 
     <!-- ====== Create workout screen ====== -->
     <string name="compose_create_workout_title">New workout</string>
