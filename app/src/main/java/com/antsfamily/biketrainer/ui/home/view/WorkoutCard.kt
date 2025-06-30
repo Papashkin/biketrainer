@@ -1,15 +1,21 @@
 package com.antsfamily.biketrainer.ui.home.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +31,8 @@ import com.antsfamily.domain.model.WorkoutStep
 @Composable
 fun WorkoutCard(
     workout: Workout,
-    onWorkoutClick: (Workout) -> Unit
+    onWorkoutClick: (Int) -> Unit,
+    onEditClick: (Int) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -35,7 +42,7 @@ fun WorkoutCard(
                 shape = RoundedCornerShape(16.dp)
             ),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        onClick = { onWorkoutClick(workout) }
+        onClick = { onWorkoutClick(workout.id) }
     ) {
         ListItem(
             modifier = Modifier.height(100.dp),
@@ -58,6 +65,17 @@ fun WorkoutCard(
             leadingContent = {
                 IconCardRounded(imageRes = R.drawable.ic_workout)
             },
+            trailingContent = {
+                Icon(
+                    Icons.Outlined.Edit,
+                    null,
+                    tint = MaterialTheme.colorScheme.outline,
+                    modifier = Modifier.clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) { onEditClick(workout.id) }
+                )
+            }
         )
     }
 }
@@ -67,9 +85,10 @@ fun WorkoutCard(
 private fun WorkoutCardPreview() {
     WorkoutCard(
         Workout(
+            id = 2,
             title = "test 1",
             data = listOf(
                 IndexedWorkoutStep(1, WorkoutStep.OneStep(200, Duration(1, 0)))
             )
-        ), {})
+        ), {}, {})
 }

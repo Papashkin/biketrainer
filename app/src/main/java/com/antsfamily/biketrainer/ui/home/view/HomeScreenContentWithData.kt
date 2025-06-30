@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +27,8 @@ import com.antsfamily.domain.model.Workout
 fun HomeScreenContentWithData(
     profileName: String,
     workouts: List<Workout>,
-    onWorkoutClick: (Workout) -> Unit,
+    onWorkoutClick: (Int) -> Unit,
+    onEditWorkoutClick: (Int) -> Unit,
     onCreateWorkoutClick: () -> Unit
 ) {
     val scrollState = rememberLazyListState()
@@ -54,9 +54,11 @@ fun HomeScreenContentWithData(
                     state = scrollState,
                 ) {
                     items(workouts) { workout ->
-                        WorkoutCard(workout) {
-                            onWorkoutClick(workout)
-                        }
+                        WorkoutCard(
+                            workout = workout,
+                            onWorkoutClick = { onWorkoutClick(it) },
+                            onEditClick = { onEditWorkoutClick(it) }
+                        )
                     }
                 }
             }
@@ -88,8 +90,9 @@ fun HomeScreenContentWithData(
 @Composable
 fun HomeScreenContentWithDataPreview(modifier: Modifier = Modifier) {
     HomeScreenContentWithData(
-        "John Doe", listOf(Workout("mock 1", listOf())
+        "John Doe", listOf(Workout(2, "mock 1", listOf())
         ),
+        {},
         {},
         {}
     )

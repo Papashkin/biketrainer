@@ -24,7 +24,7 @@ import com.antsfamily.biketrainer.ui.util.Padding
 fun IconCardRounded(
     modifier: Modifier = Modifier,
     @DrawableRes imageRes: Int,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceDim,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceBright,
     imageSize: Dp = 48.dp,
     cardRadius: Dp = 6.dp
 ) {

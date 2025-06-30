@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
@@ -28,12 +27,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.antsfamily.biketrainer.ui.createprofile.CreateProfileScreen
 import com.antsfamily.biketrainer.ui.createworkout.CreateWorkoutScreen
-import com.antsfamily.biketrainer.ui.history.HistoryScreen
 import com.antsfamily.biketrainer.ui.home.HomeScreen
 import com.antsfamily.biketrainer.ui.settings.SettingsScreen
 import com.antsfamily.biketrainer.ui.splash.SplashScreen
@@ -67,7 +64,9 @@ fun Navigation() {
                             navController.navigate(Screen.Home.route) { popUpToTop(navController) }
                         },
                         onNavigateToCreateProfile = {
-                            navController.navigate(Screen.CreateProfile.route) { popUpToTop(navController) }
+                            navController.navigate(Screen.CreateProfile.route) {
+                                popUpToTop(navController)
+                            }
                         }
                     )
                 }
@@ -77,9 +76,15 @@ fun Navigation() {
                     }
                 }
                 composable(MainBottomItem.Home.route) {
-                    HomeScreen.Content { route ->
-                        navController.navigate(route)
-                    }
+                    HomeScreen.Content(
+                        navigateToEditWorkout = {
+                            //TODO implement navigation to editWorkout
+                        },
+                        navigateToWorkoutInfo = { _, _ ->
+                            navController.navigate(Screen.WorkoutInfo.route)
+                        },
+                        navigateToCreateWorkout = { navController.navigate(Screen.CreateWorkout) }
+                    )
                 }
 //                composable(MainBottomItem.History.route) {
 //                    HistoryScreen.Content()

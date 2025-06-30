@@ -3,7 +3,6 @@ package com.antsfamily.biketrainer.presentation.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.antsfamily.biketrainer.navigation.Screen
 import com.antsfamily.biketrainer.ui.home.HomeState
 import com.antsfamily.domain.model.Workout
 import com.antsfamily.domain.repository.ProfilesRepository
@@ -28,19 +27,35 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState: StateFlow<HomeState> = _uiState
 
-    private val _navigationFlow = MutableSharedFlow<String>()
-    val navigationFlow: SharedFlow<String> = _navigationFlow.asSharedFlow()
+    private val _navigationToCreateWorkout = MutableSharedFlow<Unit>()
+    val navigationToCreateWorkout: SharedFlow<Unit> = _navigationToCreateWorkout.asSharedFlow()
+
+    private val _navigationToWorkoutInfo = MutableSharedFlow<Pair<Int, String>>()
+    val navigationToWorkoutInfo: SharedFlow<Pair<Int, String>> = _navigationToWorkoutInfo.asSharedFlow()
+
+    private val _navigationToEditWorkout = MutableSharedFlow<Int>()
+    val navigationToEditWorkout: SharedFlow<Int> = _navigationToEditWorkout.asSharedFlow()
 
     init {
         getContent()
     }
 
-    fun onCreateWorkoutClick() {
-        navigateTo(Screen.CreateWorkout)
+    fun onCreateWorkoutClick() = viewModelScope.launch {
+        _navigationToCreateWorkout.emit(Unit)
     }
 
-    fun onWorkoutClick(workout: Workout) {
-        navigateTo(Screen.WorkoutInfo, workout.title)
+    fun onWorkoutClick(workoutId: Int) = viewModelScope.launch {
+        val workouts = (_uiState.value as? HomeState.ContentWithData)?.workouts.orEmpty()
+        workouts.firstOrNull { it.id == workoutId }?.let {
+            _navigationToWorkoutInfo.emit(it.id to it.title)
+        }
+    }
+
+    fun onEditWorkoutClick(workoutId: Int) = viewModelScope.launch {
+        val workouts = (_uiState.value as? HomeState.ContentWithData)?.workouts.orEmpty()
+        workouts.firstOrNull { it.id == workoutId }?.let {
+            _navigationToEditWorkout.emit(it.id)
+        }
     }
 
     private fun getContent() = viewModelScope.launch {
@@ -63,13 +78,5 @@ class HomeViewModel @Inject constructor(
         } else {
             HomeState.ContentWithData(username, workouts)
         }
-    }
-
-    private fun navigateTo(screen: Screen) = viewModelScope.launch {
-        _navigationFlow.emit(screen.route)
-    }
-
-    private fun navigateTo(screen: Screen, argument: String) = viewModelScope.launch {
-        _navigationFlow.emit("${screen.route.substringBefore("/")}/$argument")
     }
 }
