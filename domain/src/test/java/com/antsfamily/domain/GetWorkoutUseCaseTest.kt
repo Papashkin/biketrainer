@@ -30,11 +30,11 @@ class GetWorkoutUseCaseTest {
     @Test
     fun `get program success`() = runTest {
         Mockito.`when`(repository.getWorkoutByName("Test1"))
-            .thenReturn(Workout("Test1", listOf()))
+            .thenReturn(Workout(2,"Test1", listOf()))
 
         val program = getProgramUseCase.run("Test1")
 
-        assert((program as? Result.Success)?.successData?.title == "Test1")
+        assert((program as? Result.Success)?.successData?.id == 2)
     }
 
     @Test
