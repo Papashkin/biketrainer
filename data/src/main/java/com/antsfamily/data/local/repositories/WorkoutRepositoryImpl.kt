@@ -41,6 +41,16 @@ class WorkoutRepositoryImpl @Inject constructor(private val dao: WorkoutDao) : W
         }
     }
 
+    override suspend fun getWorkoutById(id: Int): Workout? {
+        val workoutDTO = dao.getWorkoutById(id)
+        return workoutDTO?.let {
+            Workout(
+                id = it.id,
+                title = it.title,
+                data = it.data.map { step -> step.toDomainModel() })
+        }
+    }
+
     override suspend fun insertWorkout(workout: Workout) = dao.insertWorkout(workout.toDTO())
     override suspend fun updateWorkout(workout: Workout) = dao.updateWorkout(workout.toDTO())
     override suspend fun removeWorkout(workout: Workout) = dao.deleteWorkout(workout.toDTO())

@@ -47,40 +47,41 @@ interface WorkoutInfoScreen {
     companion object {
         @Composable
         fun Content(
-            navController: NavController,
+            navigateBack: () -> Unit,
             snackbarHostState: SnackbarHostState,
-            workoutName: String,
-        ) = WorkoutInfoScreen(navController, snackbarHostState, workoutName)
+            workoutId: Int,
+        ) = WorkoutInfoScreen(
+            snackbarHostState = snackbarHostState,
+            workoutId = workoutId,
+            navigateBack = {
+                navigateBack()
+            })
     }
 }
 
 @Composable
 fun WorkoutInfoScreen(
-    navController: NavController,
     snackbarHostState: SnackbarHostState,
-    workoutName: String,
-    viewModel: WorkoutInfoViewModel = hiltViewModel()
+    workoutId: Int,
+    navigateBack: () -> Unit,
+    viewModel: WorkoutInfoViewModel = hiltViewModel<WorkoutInfoViewModel, WorkoutInfoViewModel.Factory> {
+        it.create(workoutId)
+    }
 ) {
-    viewModel.getWorkout(workoutName)
-
     val uiState = viewModel.uiState.collectAsState()
-
-    var workoutItem by rememberSaveable { mutableStateOf(WorkoutItem()) }
-    var name by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         //TODO scan implementation
     }
 
     LaunchedEffect(Unit) {
-        viewModel.navigateBackEvent.collect {
-            navController.popBackStack()
-        }
+        viewModel.navigateBackEvent.collect { navigateBack() }
     }
 
     LaunchedEffect(Unit) {
         viewModel.showSnackbarBackEvent.collect {
-            val snackbarResult = snackbarHostState.showSnackbar(it, duration = SnackbarDuration.Short)
+            val snackbarResult =
+                snackbarHostState.showSnackbar(it, duration = SnackbarDuration.Short)
             when (snackbarResult) {
                 SnackbarResult.Dismissed -> viewModel.onDeleteSnackbarDismissed()
                 else -> {
@@ -105,7 +106,7 @@ fun WorkoutInfoScreen(
                 .padding(horizontal = Padding.large)
         ) {
             Text(
-                text = uiState.value.programName.orEmpty(),
+                text = uiState.value.name.orEmpty(),
                 fontSize = FontSize.H4,
                 modifier = Modifier
                     .padding(top = Padding.huge, start = Padding.large, end = Padding.large)
@@ -136,7 +137,10 @@ fun WorkoutContentView(
                 .padding(top = Padding.x_small, start = Padding.small)
         ) {
             Text(
-                text =  stringResource(id = R.string.compose_workout_info_time, state.duration ?: "-"),
+                text = stringResource(
+                    id = R.string.compose_workout_info_time,
+                    state.duration ?: "-"
+                ),
                 style = TextStyles.body1(),
                 modifier = Modifier.padding(Padding.tiny)
             )
@@ -149,7 +153,10 @@ fun WorkoutContentView(
                 modifier = Modifier.padding(Padding.tiny)
             )
             Text(
-                text = stringResource(id = R.string.compose_workout_info_max_power, state.maxPower ?: "-"),
+                text = stringResource(
+                    id = R.string.compose_workout_info_max_power,
+                    state.maxPower ?: "-"
+                ),
                 style = TextStyles.body1(),
                 modifier = Modifier.padding(Padding.tiny)
             )
