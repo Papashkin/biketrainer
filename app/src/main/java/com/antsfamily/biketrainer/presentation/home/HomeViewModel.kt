@@ -30,8 +30,8 @@ class HomeViewModel @Inject constructor(
     private val _navigationToCreateWorkout = MutableSharedFlow<Unit>()
     val navigationToCreateWorkout: SharedFlow<Unit> = _navigationToCreateWorkout.asSharedFlow()
 
-    private val _navigationToWorkoutInfo = MutableSharedFlow<Pair<Int, String>>()
-    val navigationToWorkoutInfo: SharedFlow<Pair<Int, String>> = _navigationToWorkoutInfo.asSharedFlow()
+    private val _navigationToWorkoutInfo = MutableSharedFlow<Int>()
+    val navigationToWorkoutInfo: SharedFlow<Int> = _navigationToWorkoutInfo.asSharedFlow()
 
     private val _navigationToEditWorkout = MutableSharedFlow<Int>()
     val navigationToEditWorkout: SharedFlow<Int> = _navigationToEditWorkout.asSharedFlow()
@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
     fun onWorkoutClick(workoutId: Int) = viewModelScope.launch {
         val workouts = (_uiState.value as? HomeState.ContentWithData)?.workouts.orEmpty()
         workouts.firstOrNull { it.id == workoutId }?.let {
-            _navigationToWorkoutInfo.emit(it.id to it.title)
+            _navigationToWorkoutInfo.emit(it.id)
         }
     }
 

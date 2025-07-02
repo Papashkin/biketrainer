@@ -3,8 +3,10 @@ package com.antsfamily.biketrainer.presentation.workoutinfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.antsfamily.biketrainer.presentation.createprofile.model.LoadingState
-import com.antsfamily.domain.model.Workout
 import com.antsfamily.domain.repository.WorkoutRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,13 +15,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
-@HiltViewModel
-class WorkoutInfoViewModel @Inject constructor(
-    private val workoutRepository: WorkoutRepository
+@HiltViewModel(assistedFactory = WorkoutInfoViewModel.Factory::class)
+class WorkoutInfoViewModel @AssistedInject constructor(
+    private val workoutRepository: WorkoutRepository,
+    @Assisted("id") workoutId: Int
 ) : ViewModel() {
+
+    @AssistedFactory
+    interface Factory {
+        fun create(@Assisted("id") workoutId: Int): WorkoutInfoViewModel
+    }
 
     private val _uiState = MutableStateFlow(WorkoutInfoUiState())
     val uiState: StateFlow<WorkoutInfoUiState> = _uiState
@@ -30,19 +37,21 @@ class WorkoutInfoViewModel @Inject constructor(
     private val _showSnackbarBackEvent = MutableSharedFlow<String>()
     val showSnackbarBackEvent: SharedFlow<String> = _showSnackbarBackEvent.asSharedFlow()
 
-    private var workout: Workout? = null
+    init {
+        getWorkout(workoutId)
+    }
 
-    fun getWorkout(workoutName: String) = viewModelScope.launch {
-        workoutRepository.getWorkoutByName(workoutName)?.let { workout ->
-            this@WorkoutInfoViewModel.workout = workout
+    private fun getWorkout(workoutId: Int) = viewModelScope.launch {
+        workoutRepository.getWorkoutById(workoutId)?.let {
+
             _uiState.update { state ->
                 state.copy(
-                    loadingState = LoadingState.Success(workout.title),
-//                    program = workout.data,
-                    programName = workoutName,
-//                    duration = workout.data.sumOf { it.duration }.fullTimeFormat(),
+                    loadingState = LoadingState.Success(it.title),
+                    workout = it,
+                    name = it.title,
+                    duration = it.totalDuration.toString(),
+                    avgPower = it.averagePower.toString()
 //                    maxPower = workout.data.maxOf { it.power }.toString(),
-//                    avgPower = workout.data.sumOf { it.power }.div(workout.data.size).toString()
                 )
             }
         }
@@ -53,7 +62,7 @@ class WorkoutInfoViewModel @Inject constructor(
     }
 
     fun onRunWorkoutClick() {
-        _uiState.value.programName?.let {
+        _uiState.value.name?.let {
             // TODO: implement the navigation to workout screen
         }
     }
@@ -70,11 +79,13 @@ class WorkoutInfoViewModel @Inject constructor(
     private fun deleteWorkout() = viewModelScope.launch {
         try {
             showLoading()
-            workout?.let {
+            _uiState.value.workout?.let {
                 workoutRepository.removeWorkout(it)
                 _showSnackbarBackEvent.emit("Workout was successfully deleted")
             }
         } catch (e: Exception) {
+            hideLoading()
+        } finally {
             hideLoading()
         }
     }

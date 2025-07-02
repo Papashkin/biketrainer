@@ -20,6 +20,9 @@ abstract class WorkoutDao {
     @Query("Select * from workoutdto where title = :title")
     abstract suspend fun getWorkoutByTitle(title: String): WorkoutDTO?
 
+    @Query("Select * from workoutdto where id = :id")
+    abstract suspend fun getWorkoutById(id: Int): WorkoutDTO?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertWorkout(workout: WorkoutDTO)
 

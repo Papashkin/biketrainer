@@ -15,7 +15,7 @@ interface HomeScreen {
         fun Content(
             navigateToCreateWorkout: () -> Unit,
             navigateToEditWorkout: (Int) -> Unit,
-            navigateToWorkoutInfo: (Int, String) -> Unit
+            navigateToWorkoutInfo: (Int) -> Unit
         ) {
             HomeScreen(
                 navigateToCreateWorkout = navigateToCreateWorkout,
@@ -31,7 +31,7 @@ private fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToCreateWorkout: () -> Unit,
     navigateToEditWorkout: (Int) -> Unit,
-    navigateToWorkoutInfo: (Int, String) -> Unit
+    navigateToWorkoutInfo: (Int) -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
@@ -51,18 +51,12 @@ private fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.navigationToEditWorkout.collect {
-            navigateToEditWorkout(it)
-        }
+        viewModel.navigationToEditWorkout.collect { navigateToEditWorkout(it) }
     }
     LaunchedEffect(Unit) {
-        viewModel.navigationToWorkoutInfo.collect {
-            navigateToWorkoutInfo(it.first, it.second)
-        }
+        viewModel.navigationToWorkoutInfo.collect { navigateToWorkoutInfo(it) }
     }
     LaunchedEffect(Unit) {
-        viewModel.navigationToCreateWorkout.collect {
-            navigateToCreateWorkout()
-        }
+        viewModel.navigationToCreateWorkout.collect { navigateToCreateWorkout() }
     }
 }
