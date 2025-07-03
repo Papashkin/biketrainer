@@ -229,6 +229,7 @@
     <string name="compose_workout_info_search_sensors">Search sensors</string>
     <string name="compose_workout_info_delete">Delete</string>
     <string name="compose_workout_info_run">Run</string>
+    <string name="compose_workout_info_description">This indoor cycling workout lasted %1$s, with an average power of %2$d W and a peak power of %3$d W.</string>
     <string name="workout_step_title_cooldown">From %1$d W to %2$d W</string>
     <string name="workout_step_title_intervals">%1$d x %2$s at %3$d W</string>
     <string name="workout_step_title_onestep">%1$d W</string>

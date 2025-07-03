@@ -36,8 +36,8 @@ import com.antsfamily.domain.model.WorkoutStep
 @Composable
 fun WorkoutStepCard(
     step: WorkoutStep,
-    onDeleteClick: () -> Unit,
-    onEditClick: () -> Unit,
+    onDeleteClick: (() -> Unit)? = null,
+    onEditClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     ListItem(
@@ -59,19 +59,24 @@ fun WorkoutStepCard(
         },
         trailingContent = {
             Row {
-                Icon(
-                    Icons.Outlined.Edit,
-                    null,
-                    tint = MaterialTheme.colorScheme.outline,
-                    modifier = Modifier.clickable { onEditClick() }
-                )
+                onEditClick?.let {
+                    Icon(
+                        Icons.Outlined.Edit,
+                        null,
+                        tint = MaterialTheme.colorScheme.outline,
+                        modifier = Modifier.clickable { it.invoke() }
+                    )
+                }
                 Spacer(Modifier.width(10.dp))
-                Icon(
-                    Icons.Outlined.Delete,
-                    null,
-                    tint = MaterialTheme.colorScheme.outline,
-                    modifier = Modifier.clickable { onDeleteClick() }
-                )
+                onDeleteClick?.let {
+
+                    Icon(
+                        Icons.Outlined.Delete,
+                        null,
+                        tint = MaterialTheme.colorScheme.outline,
+                        modifier = Modifier.clickable { it.invoke() }
+                    )
+                }
             }
         },
     )
@@ -103,7 +108,6 @@ private fun WorkoutStepCardPreview() {
             onEditClick = {})
         WorkoutStepCard(
             step = WorkoutStep.CoolDown(400, 130, duration),
-            onDeleteClick = {},
-            onEditClick = {})
+        )
     }
 }
