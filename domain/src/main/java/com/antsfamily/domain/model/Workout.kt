@@ -10,6 +10,11 @@ data class Workout(
             return data.sumOf { it.step.averagePower } / data.size
         }
 
+    val maxPower: Int
+        get() {
+            return data.maxOf { it.step.maxPower }
+        }
+
     val totalDuration: Long
         get() {
             val allDurations = data.sumOf { it.step.getTotalDuration() }.toLong()
